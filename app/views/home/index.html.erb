@@ -1,0 +1,37 @@
+<% content_for :title, "元素モンスターズ図鑑" %>
+<div class="flex min-h-screen flex-col bg-slate-950">
+  <header class="border-b border-white/10 bg-slate-950/90 px-5 py-4 backdrop-blur sm:px-8">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4">
+      <%= link_to root_path, class: "flex items-center gap-2 text-lg font-bold tracking-tight text-white sm:text-xl" do %>
+        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-400 font-black text-slate-950">E</span><span>元素モンスターズ図鑑</span>
+      <% end %>
+      <nav aria-label="メインナビゲーション" class="flex items-center gap-2 text-sm font-semibold">
+        <a href="#start" class="inline-flex rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10">ユーザー登録</a>
+        <a href="#start" class="inline-flex rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10">ログイン</a>
+        <a href="#encyclopedia" class="rounded-lg bg-cyan-400 px-3 py-2 text-slate-950 transition hover:bg-cyan-300">図鑑を見る</a>
+      </nav>
+    </div>
+  </header>
+  <main class="flex flex-1 items-center px-5 py-16 sm:px-8 sm:py-24">
+    <section class="mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+      <div class="text-center lg:text-left">
+        <p class="mb-5 inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-1.5 text-sm font-semibold text-cyan-200">学びと創作がつながる場所</p>
+        <h1 class="text-4xl font-black tracking-tight text-white sm:text-6xl">元素モンスターズ<br class="hidden sm:block">図鑑</h1>
+        <p class="mt-6 text-lg font-bold leading-relaxed text-cyan-200 sm:text-xl">見つけよう、推し元素。<br>「覚える」から「好きになる」へ。</p>
+        <p class="mx-auto mt-5 max-w-xl leading-8 text-slate-300 lg:mx-0">元素をモチーフにした個性豊かなモンスターと出会いながら、元素の名前や記号を楽しく学べる図鑑です。あなたの作品も、誰かの学びのきっかけになります。</p>
+        <div id="start" class="mt-9 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
+          <a href="#" class="rounded-xl bg-cyan-400 px-6 py-3.5 text-center font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5 hover:bg-cyan-300">ユーザー登録</a>
+          <a href="#" class="rounded-xl border border-slate-500 px-6 py-3.5 text-center font-bold text-white transition hover:border-cyan-300 hover:bg-white/10">ログイン</a>
+        </div>
+      </div>
+      <div id="encyclopedia" class="relative mx-auto w-full max-w-md rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-900 p-6 shadow-2xl shadow-cyan-950/50 sm:p-8">
+        <p class="text-sm font-semibold tracking-[0.2em] text-cyan-300">ELEMENT NO. 01</p>
+        <div class="mt-6 rounded-2xl border border-cyan-300/20 bg-slate-950/50 p-6 text-center"><p class="text-7xl font-black text-cyan-300">H</p><p class="mt-3 text-2xl font-bold text-white">水素</p><p class="mt-1 text-sm text-slate-400">Hydrogen</p></div>
+        <div class="mt-6 grid grid-cols-2 gap-3 text-sm"><div class="rounded-xl bg-white/5 p-4"><p class="text-slate-400">元素記号</p><p class="mt-1 font-bold text-white">H</p></div><div class="rounded-xl bg-white/5 p-4"><p class="text-slate-400">原子番号</p><p class="mt-1 font-bold text-white">1</p></div></div>
+      </div>
+    </section>
+  </main>
+  <footer class="border-t border-white/10 px-5 py-6 sm:px-8">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-slate-400 sm:flex-row"><p>&copy; <%= Time.current.year %> 元素モンスターズ図鑑</p><nav aria-label="フッターナビゲーション" class="flex gap-5"><a href="#" class="transition hover:text-cyan-300">利用規約</a><a href="#" class="transition hover:text-cyan-300">プライバシーポリシー</a></nav></div>
+  </footer>
+</div>
