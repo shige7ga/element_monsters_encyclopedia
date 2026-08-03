@@ -1,31 +1,7 @@
-<%# ページ全体と認証モーダルのStimulus管理 %>
+<%# トップページ固有コンテンツと認証モーダル %>
 <% content_for :title, "元素モンスターズ図鑑" %>
 
-<div data-controller="modal" class="flex min-h-screen flex-col bg-slate-950">
-  <%# ヘッダー: サービス名と主要ナビゲーション %>
-  <header class="border-b border-white/10 bg-slate-950/90 px-5 py-4 backdrop-blur sm:px-8">
-    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4">
-      <%# サービスロゴ・タイトル %>
-      <%= link_to root_path, class: "flex items-center gap-2 text-lg font-bold tracking-tight text-white sm:text-xl" do %>
-        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-400 font-black text-slate-950">E</span>
-        <span>元素モンスターズ図鑑</span>
-      <% end %>
-
-      <%# ユーザー登録・ログイン・図鑑への導線 %>
-      <nav aria-label="メインナビゲーション" class="flex items-center gap-2 text-sm font-semibold">
-        <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="inline-flex rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10">
-          ユーザー登録
-        </button>
-        <button type="button" data-action="modal#open" data-modal-dialog-param="login" class="inline-flex rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10">
-          ログイン
-        </button>
-        <a href="#encyclopedia" class="rounded-lg bg-cyan-400 px-3 py-2 text-slate-950 transition hover:bg-cyan-300">
-          図鑑を見る
-        </a>
-      </nav>
-    </div>
-  </header>
-
+<div class="flex flex-1 flex-col bg-slate-950">
   <%# メイン: サービス概要と認証への主要導線 %>
   <main class="flex flex-1 items-center px-5 py-16 sm:px-8 sm:py-24">
     <section class="mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
@@ -72,26 +48,16 @@
   </main>
 
   <%# 認証モーダル: Turbo Frameでフォームを読み込み、閉じても入力DOMを保持 %>
-  <dialog data-modal-target="dialog" data-modal-dialog="registration" data-action="click->modal#closeOnBackdrop" class="m-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/70">
-    <%= turbo_frame_tag "registration_modal", src: new_user_registration_path do %>
+  <dialog data-modal-target="dialog" data-modal-dialog="registration" data-modal-source="<%= new_user_registration_path %>" data-action="click->modal#closeOnBackdrop" class="m-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/70">
+    <%= turbo_frame_tag "registration_modal" do %>
       <div class="p-6 text-slate-600">読み込み中...</div>
     <% end %>
   </dialog>
 
-  <dialog data-modal-target="dialog" data-modal-dialog="login" data-action="click->modal#closeOnBackdrop" class="m-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/70">
-    <%= turbo_frame_tag "login_modal", src: new_user_session_path do %>
+  <dialog data-modal-target="dialog" data-modal-dialog="login" data-modal-source="<%= new_user_session_path %>" data-action="click->modal#closeOnBackdrop" class="m-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/70">
+    <%= turbo_frame_tag "login_modal" do %>
       <div class="p-6 text-slate-600">読み込み中...</div>
     <% end %>
   </dialog>
 
-  <%# フッター: 規約への導線 %>
-  <footer class="border-t border-white/10 px-5 py-6 sm:px-8">
-    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-slate-400 sm:flex-row">
-      <p>&copy; <%= Time.current.year %> 元素モンスターズ図鑑</p>
-      <nav aria-label="フッターナビゲーション" class="flex gap-5">
-        <a href="#" class="transition hover:text-cyan-300">利用規約</a>
-        <a href="#" class="transition hover:text-cyan-300">プライバシーポリシー</a>
-      </nav>
-    </div>
-  </footer>
 </div>

@@ -9,6 +9,33 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_url
   end
 
+  test "未ログイン時は共通ヘッダーに認証用ナビゲーションを表示する" do
+    get root_url
+
+    assert_select 'nav[aria-label="メインナビゲーション"]' do
+      assert_select "button", "ユーザー登録"
+      assert_select "button", "ログイン"
+      assert_select "a", "図鑑を見る"
+    end
+    assert_select 'button[data-navigation-target="button"]'
+    assert_select 'nav[data-navigation-target="menu"]'
+    assert_select 'dialog[data-modal-source="/users/sign_in"] turbo-frame#login_modal:not([src])'
+    assert_select 'dialog[data-modal-source="/users/sign_up"] turbo-frame#registration_modal:not([src])'
+  end
+
+  test "ログイン時は共通ヘッダーに会員用ナビゲーションを表示する" do
+    sign_in users(:one)
+
+    get root_url
+
+    assert_select 'nav[aria-label="メインナビゲーション"]' do
+      assert_select "a", "図鑑を見る"
+      assert_select "a", "周期表"
+      assert_select "a", "マイページ"
+      assert_select "form button", "ログアウト"
+    end
+  end
+
   test "ユーザー登録後にマイページへ遷移する" do
     post user_registration_url, params: { user: { name: "登録太郎", user_id: "registered_user", email: "registered@example.test", password: "password123", password_confirmation: "password123" } }
 
