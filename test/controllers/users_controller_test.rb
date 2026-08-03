@@ -39,7 +39,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_select "turbo-frame#registration_modal"
-    assert_select ".text-rose-600", minimum: 1
+    assert_select ".text-rose-600", minimum: 3
   end
   test "ログインエラーはモーダル内に表示される" do
     post user_session_url, params: { user: { login: "unknown_user", password: "password123" } }, headers: { "Turbo-Frame" => "login_modal" }
@@ -47,5 +47,14 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     assert_select "turbo-frame#login_modal"
     assert_select ".text-rose-600", minimum: 1
+  end
+  test "メールアドレスとユーザーIDの重複エラーは各欄に表示される" do
+    user = users(:one)
+
+    post user_registration_url, params: { user: { user_id: user.user_id, email: user.email, password: "password123", password_confirmation: "password123" } }, headers: { "Turbo-Frame" => "registration_modal" }
+
+    assert_response :unprocessable_entity
+    assert_select "turbo-frame#registration_modal"
+    assert_select ".text-rose-600", { minimum: 2 }
   end
 end

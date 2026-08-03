@@ -10,10 +10,10 @@
     </div>
 
     <%# ユーザー登録フォーム %>
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "mt-6 space-y-4" }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "mt-6 space-y-4", novalidate: true }) do |f| %>
       <%# 名前入力欄（任意） %>
       <div>
-        <%= f.label :name, "名前（任意）", class: "mb-1 block text-sm font-semibold" %>
+        <%= f.label :name, "ユーザー名（任意）", class: "mb-1 block text-sm font-semibold" %>
         <%= f.text_field :name, autocomplete: "name", class: "w-full rounded-lg border-slate-300" %>
         <% if resource.errors[:name].any? %>
           <p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:name).join("、") %></p>
@@ -23,7 +23,7 @@
       <%# ユーザーID入力欄 %>
       <div>
         <%= f.label :user_id, "ユーザーID", class: "mb-1 block text-sm font-semibold" %>
-        <%= f.text_field :user_id, required: true, autocomplete: "username", class: "w-full rounded-lg border-slate-300" %>
+        <%= f.text_field :user_id, autocomplete: "username", class: "w-full rounded-lg border-slate-300" %>
         <% if resource.errors[:user_id].any? %>
           <p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:user_id).join("、") %></p>
         <% end %>
@@ -32,7 +32,7 @@
       <%# メールアドレス入力欄 %>
       <div>
         <%= f.label :email, "メールアドレス", class: "mb-1 block text-sm font-semibold" %>
-        <%= f.email_field :email, required: true, autofocus: true, autocomplete: "email", class: "w-full rounded-lg border-slate-300" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full rounded-lg border-slate-300" %>
         <% if resource.errors[:email].any? %>
           <p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:email).join("、") %></p>
         <% end %>
@@ -41,7 +41,7 @@
       <%# パスワード入力欄と文字数の注意書き %>
       <div>
         <%= f.label :password, "パスワード", class: "mb-1 block text-sm font-semibold" %>
-        <%= f.password_field :password, required: true, autocomplete: "new-password", class: "w-full rounded-lg border-slate-300" %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "w-full rounded-lg border-slate-300" %>
         <% if @minimum_password_length %>
           <p class="mt-1 text-sm text-slate-500">パスワードは<%= @minimum_password_length %>文字以上で入力してください。</p>
         <% end %>
@@ -53,7 +53,7 @@
       <%# パスワード確認入力欄 %>
       <div>
         <%= f.label :password_confirmation, "パスワード（確認）", class: "mb-1 block text-sm font-semibold" %>
-        <%= f.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "w-full rounded-lg border-slate-300" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full rounded-lg border-slate-300" %>
         <% if resource.errors[:password_confirmation].any? %>
           <p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:password_confirmation).join("、") %></p>
         <% end %>
