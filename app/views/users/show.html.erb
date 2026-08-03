@@ -6,11 +6,15 @@
 <% content_for :title, "マイページ | 元素モンスターズ図鑑" %>
 
 <div class="flex min-h-screen flex-col bg-slate-950">
+  <%# ヘッダー: サービス名とマイページ用ナビゲーション %>
   <header class="border-b border-white/10 bg-slate-950/90 px-5 py-4 backdrop-blur sm:px-8">
     <div class="mx-auto flex max-w-6xl items-center justify-between gap-4">
+      <%# サービスロゴ・タイトル %>
       <%= link_to root_path, class: "flex items-center gap-2 text-lg font-bold tracking-tight text-white sm:text-xl" do %>
-        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-400 font-black text-slate-950">E</span><span>元素モンスターズ図鑑</span>
+        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-400 font-black text-slate-950">E</span>
+        <span>元素モンスターズ図鑑</span>
       <% end %>
+      <%# 図鑑への導線・ログアウト操作 %>
       <nav aria-label="マイページナビゲーション" class="flex items-center gap-2 text-sm font-semibold">
         <%= link_to "図鑑を見る", root_path(anchor: "encyclopedia"), class: "rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10" %>
         <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "rounded-lg border border-slate-500 px-3 py-2 text-white transition hover:border-cyan-300 hover:bg-white/10" %>
@@ -18,25 +22,49 @@
     </div>
   </header>
 
+  <%# メイン: ユーザー情報と次の行動への導線 %>
   <main class="flex flex-1 items-center px-5 py-16 sm:px-8 sm:py-24">
     <section class="mx-auto w-full max-w-4xl">
-      <p class="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-1.5 text-sm font-semibold text-cyan-200">MY ELEMENTS</p>
-      <h1 class="mt-5 text-4xl font-black tracking-tight text-white sm:text-5xl">マイページ</h1>
-      <p class="mt-3 text-lg leading-8 text-slate-300">ようこそ、<span class="font-bold text-cyan-200"><%= current_user.name.presence || current_user.user_id %></span>さん。あなたの「推し元素」を見つけにいきましょう。</p>
+      <%# ページタイトル・歓迎メッセージ %>
+      <p class="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-1.5 text-sm font-semibold text-cyan-200">
+        MY ELEMENTS
+      </p>
+      <h1 class="mt-5 text-4xl font-black tracking-tight text-white sm:text-5xl">
+        マイページ
+      </h1>
+      <p class="mt-3 text-lg leading-8 text-slate-300">
+        ようこそ、<span class="font-bold text-cyan-200"><%= current_user.name.presence || current_user.user_id %></span>さん。あなたの「推し元素」を見つけにいきましょう。
+      </p>
 
+      <%# ユーザープロフィールと図鑑への導線 %>
       <div class="mt-10 grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
+        <%# プロフィールカード %>
         <section class="rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-900 p-6 shadow-2xl shadow-cyan-950/50 sm:p-8">
           <p class="text-sm font-semibold tracking-[0.2em] text-cyan-300">PROFILE</p>
           <div class="mt-6 flex items-center gap-4">
-            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-400 text-2xl font-black text-slate-950"><%= (current_user.name.presence || current_user.user_id).first.upcase %></div>
-            <div><p class="text-2xl font-bold text-white"><%= current_user.name.presence || "名前未設定" %></p><p class="mt-1 text-slate-400">ユーザーID: <%= current_user.user_id %></p></div>
+            <%# ユーザー名の頭文字アイコン %>
+            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-400 text-2xl font-black text-slate-950">
+              <%= (current_user.name.presence || current_user.user_id).first.upcase %>
+            </div>
+            <div>
+              <p class="text-2xl font-bold text-white"><%= current_user.name.presence || "名前未設定" %></p>
+              <p class="mt-1 text-slate-400">ユーザーID: <%= current_user.user_id %></p>
+            </div>
           </div>
+          <%# アカウント情報 %>
           <dl class="mt-8 space-y-4 border-t border-white/10 pt-6 text-sm">
-            <div class="flex justify-between gap-4"><dt class="text-slate-400">メールアドレス</dt><dd class="break-all text-right font-medium text-white"><%= current_user.email %></dd></div>
-            <div class="flex justify-between gap-4"><dt class="text-slate-400">ステータス</dt><dd class="font-medium text-cyan-300">図鑑をはじめよう</dd></div>
+            <div class="flex justify-between gap-4">
+              <dt class="text-slate-400">メールアドレス</dt>
+              <dd class="break-all text-right font-medium text-white"><%= current_user.email %></dd>
+            </div>
+            <div class="flex justify-between gap-4">
+              <dt class="text-slate-400">ステータス</dt>
+              <dd class="font-medium text-cyan-300">図鑑をはじめよう</dd>
+            </div>
           </dl>
         </section>
 
+        <%# 図鑑ページへの案内カード %>
         <section class="rounded-3xl border border-cyan-300/20 bg-cyan-300/10 p-6 sm:p-8">
           <p class="text-sm font-semibold tracking-[0.2em] text-cyan-200">NEXT STEP</p>
           <h2 class="mt-4 text-2xl font-bold text-white">最初の元素に出会おう</h2>
@@ -47,7 +75,14 @@
     </section>
   </main>
 
+  <%# フッター: 規約への導線 %>
   <footer class="border-t border-white/10 px-5 py-6 sm:px-8">
-    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-slate-400 sm:flex-row"><p>&copy; <%= Time.current.year %> 元素モンスターズ図鑑</p><div class="flex gap-5"><a href="#" class="transition hover:text-cyan-300">利用規約</a><a href="#" class="transition hover:text-cyan-300">プライバシーポリシー</a></div></div>
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-slate-400 sm:flex-row">
+      <p>&copy; <%= Time.current.year %> 元素モンスターズ図鑑</p>
+      <nav aria-label="フッターナビゲーション" class="flex gap-5">
+        <a href="#" class="transition hover:text-cyan-300">利用規約</a>
+        <a href="#" class="transition hover:text-cyan-300">プライバシーポリシー</a>
+      </nav>
+    </div>
   </footer>
 </div>
