@@ -19,7 +19,7 @@ module Users
     end
 
     def add_blank_errors
-      resource.errors.add(:login, :blank) if params.dig(resource_name, :login).blank?
+      resource.errors.add(:login, "Email or user ID can't be blank") if params.dig(resource_name, :login).blank?
       resource.errors.add(:password, :blank) if params.dig(resource_name, :password).blank?
     end
   end

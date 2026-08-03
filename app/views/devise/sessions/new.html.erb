@@ -21,7 +21,7 @@
         <%= f.label :login, "メールアドレスまたはユーザーID", class: "mb-1 block text-sm font-semibold" %>
         <%= f.text_field :login, autofocus: true, autocomplete: "username", class: "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-slate-950 focus:ring-1 focus:ring-slate-950" %>
         <% if resource.errors[:login].any? %>
-          <p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:login).join("、") %></p>
+          <p class="mt-1 text-sm text-rose-600"><%= resource.errors.messages_for(:login).join("、") %></p>
         <% end %>
       </div>
 

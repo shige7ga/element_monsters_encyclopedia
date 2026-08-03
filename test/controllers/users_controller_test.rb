@@ -55,7 +55,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     post user_session_url, params: { user: { login: "", password: "" } }, headers: { "Turbo-Frame" => "login_modal" }
 
     assert_response :unprocessable_entity
-    assert_select "p.text-rose-600", /Login can.t be blank/
+    assert_select "p.text-rose-600", /Email or user ID can.t be blank/
     assert_select "p.text-rose-600", /Password can.t be blank/
     assert_select "p[role=alert]", count: 0
   end
