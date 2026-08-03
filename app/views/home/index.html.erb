@@ -1,13 +1,13 @@
 <% content_for :title, "元素モンスターズ図鑑" %>
-<div class="flex min-h-screen flex-col bg-slate-950">
+<div data-controller="modal" class="flex min-h-screen flex-col bg-slate-950">
   <header class="border-b border-white/10 bg-slate-950/90 px-5 py-4 backdrop-blur sm:px-8">
     <div class="mx-auto flex max-w-6xl items-center justify-between gap-4">
       <%= link_to root_path, class: "flex items-center gap-2 text-lg font-bold tracking-tight text-white sm:text-xl" do %>
         <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-400 font-black text-slate-950">E</span><span>元素モンスターズ図鑑</span>
       <% end %>
       <nav aria-label="メインナビゲーション" class="flex items-center gap-2 text-sm font-semibold">
-        <%= link_to "ユーザー登録", new_user_registration_path, class: "inline-flex rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10" %>
-        <%= link_to "ログイン", new_user_session_path, class: "inline-flex rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10" %>
+        <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="inline-flex rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10">ユーザー登録</button>
+        <button type="button" data-action="modal#open" data-modal-dialog-param="login" class="inline-flex rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10">ログイン</button>
         <a href="#encyclopedia" class="rounded-lg bg-cyan-400 px-3 py-2 text-slate-950 transition hover:bg-cyan-300">図鑑を見る</a>
       </nav>
     </div>
@@ -20,8 +20,8 @@
         <p class="mt-6 text-lg font-bold leading-relaxed text-cyan-200 sm:text-xl">見つけよう、推し元素。<br>「覚える」から「好きになる」へ。</p>
         <p class="mx-auto mt-5 max-w-xl leading-8 text-slate-300 lg:mx-0">元素をモチーフにした個性豊かなモンスターと出会いながら、元素の名前や記号を楽しく学べる図鑑です。あなたの作品も、誰かの学びのきっかけになります。</p>
         <div id="start" class="mt-9 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
-          <%= link_to "ユーザー登録", new_user_registration_path, class: "rounded-xl bg-cyan-400 px-6 py-3.5 text-center font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5 hover:bg-cyan-300" %>
-          <%= link_to "ログイン", new_user_session_path, class: "rounded-xl border border-slate-500 px-6 py-3.5 text-center font-bold text-white transition hover:border-cyan-300 hover:bg-white/10" %>
+          <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="rounded-xl bg-cyan-400 px-6 py-3.5 text-center font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5 hover:bg-cyan-300">ユーザー登録</button>
+          <button type="button" data-action="modal#open" data-modal-dialog-param="login" class="rounded-xl border border-slate-500 px-6 py-3.5 text-center font-bold text-white transition hover:border-cyan-300 hover:bg-white/10">ログイン</button>
         </div>
       </div>
       <div id="encyclopedia" class="relative mx-auto w-full max-w-md rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-900 p-6 shadow-2xl shadow-cyan-950/50 sm:p-8">
@@ -31,6 +31,33 @@
       </div>
     </section>
   </main>
+  <dialog data-modal-target="dialog" data-modal-dialog="registration" data-action="click->modal#closeOnBackdrop" class="m-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/70">
+    <div class="p-6 sm:p-8">
+      <div class="flex items-center justify-between"><h2 class="text-2xl font-bold">ユーザー登録</h2><button type="button" data-action="modal#close" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100" aria-label="閉じる">✕</button></div>
+      <p class="mt-2 text-sm text-slate-600">あなたの作品と学びを、図鑑に残しませんか。</p>
+      <%= form_with model: User.new, scope: :user, url: user_registration_path, class: "mt-6 space-y-4", data: { turbo: false } do |f| %>
+        <div><%= f.label :name, "名前（任意）", class: "mb-1 block text-sm font-semibold" %><%= f.text_field :name, autocomplete: "name", class: "w-full rounded-lg border-slate-300" %></div>
+        <div><%= f.label :user_id, "ユーザーID", class: "mb-1 block text-sm font-semibold" %><%= f.text_field :user_id, required: true, autocomplete: "username", class: "w-full rounded-lg border-slate-300" %></div>
+        <div><%= f.label :email, "メールアドレス", class: "mb-1 block text-sm font-semibold" %><%= f.email_field :email, required: true, autocomplete: "email", class: "w-full rounded-lg border-slate-300" %></div>
+        <div><%= f.label :password, "パスワード", class: "mb-1 block text-sm font-semibold" %><%= f.password_field :password, required: true, autocomplete: "new-password", class: "w-full rounded-lg border-slate-300" %></div>
+        <div><%= f.label :password_confirmation, "パスワード（確認）", class: "mb-1 block text-sm font-semibold" %><%= f.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "w-full rounded-lg border-slate-300" %></div>
+        <%= f.submit "登録する", class: "w-full rounded-lg bg-cyan-500 px-4 py-3 font-bold text-slate-950 hover:bg-cyan-400" %>
+      <% end %>
+    </div>
+  </dialog>
+  <dialog data-modal-target="dialog" data-modal-dialog="login" data-action="click->modal#closeOnBackdrop" class="m-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/70">
+    <div class="p-6 sm:p-8">
+      <div class="flex items-center justify-between"><h2 class="text-2xl font-bold">ログイン</h2><button type="button" data-action="modal#close" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100" aria-label="閉じる">✕</button></div>
+      <p class="mt-2 text-sm text-slate-600">メールアドレスまたはユーザーIDでログインできます。</p>
+      <%= form_with model: User.new, scope: :user, url: user_session_path, class: "mt-6 space-y-4", data: { turbo: false } do |f| %>
+        <div><%= f.label :login, "メールアドレスまたはユーザーID", class: "mb-1 block text-sm font-semibold" %><%= f.text_field :login, required: true, autocomplete: "username", class: "w-full rounded-lg border-slate-300" %></div>
+        <div><%= f.label :password, "パスワード", class: "mb-1 block text-sm font-semibold" %><%= f.password_field :password, required: true, autocomplete: "current-password", class: "w-full rounded-lg border-slate-300" %></div>
+        <div class="flex items-center gap-2"><%= f.check_box :remember_me, class: "rounded border-slate-300 text-cyan-500" %><%= f.label :remember_me, "ログイン状態を保持する", class: "text-sm" %></div>
+        <%= f.submit "ログイン", class: "w-full rounded-lg bg-cyan-500 px-4 py-3 font-bold text-slate-950 hover:bg-cyan-400" %>
+      <% end %>
+    </div>
+  </dialog>
+
   <footer class="border-t border-white/10 px-5 py-6 sm:px-8">
     <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-slate-400 sm:flex-row"><p>&copy; <%= Time.current.year %> 元素モンスターズ図鑑</p><nav aria-label="フッターナビゲーション" class="flex gap-5"><a href="#" class="transition hover:text-cyan-300">利用規約</a><a href="#" class="transition hover:text-cyan-300">プライバシーポリシー</a></nav></div>
   </footer>
