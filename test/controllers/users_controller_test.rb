@@ -28,11 +28,14 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select "main a", "図鑑を見る"
   end
 
-  test "ログイン時は共通ヘッダーに会員用ナビゲーションを表示する" do
+  test "ログイン時にrootへアクセスするとマイページへ遷移する" do
     sign_in users(:one)
 
     get root_url
 
+    assert_redirected_to mypage_url
+    follow_redirect!
+    assert_select "h1", "マイページ"
     assert_select 'nav[aria-label="メインナビゲーション"]' do
       assert_select "a", "図鑑を見る"
       assert_select "a", "周期表"
