@@ -26,6 +26,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select "h1", "マイページ"
     assert_select %q(meta[name="turbo-visit-control"][content="reload"])
   end
+
   test "登録フォームはパスワード条件を表示する" do
     get new_user_registration_url, headers: { "Turbo-Frame" => "registration_modal" }
 
@@ -41,13 +42,15 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select "turbo-frame#registration_modal"
     assert_select ".text-rose-600", minimum: 3
   end
+
   test "ログインエラーはモーダル内に表示される" do
     post user_session_url, params: { user: { login: "unknown_user", password: "password123" } }, headers: { "Turbo-Frame" => "login_modal" }
 
     assert_response :unprocessable_entity
     assert_select "turbo-frame#login_modal"
-    assert_select ".text-rose-600", minimum: 1
+    assert_select "#user_login + p.text-rose-600", minimum: 1
   end
+
   test "メールアドレスとユーザーIDの重複エラーは各欄に表示される" do
     user = users(:one)
 
