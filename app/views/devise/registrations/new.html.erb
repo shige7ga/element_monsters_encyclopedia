@@ -1,33 +1,65 @@
+<%# ユーザー登録モーダル用Turbo Frame %>
 <%= turbo_frame_tag "registration_modal" do %>
   <div class="p-6 sm:p-8">
-    <div class="flex items-center justify-between"><h2 class="text-2xl font-bold">ユーザー登録</h2><button type="button" data-action="modal#close" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100" aria-label="閉じる">✕</button></div>
+    <%# モーダルタイトル・閉じるボタン %>
+    <div class="flex items-center justify-between">
+      <h2 class="text-2xl font-bold">ユーザー登録</h2>
+      <button type="button" data-action="modal#close" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100" aria-label="閉じる">
+        ✕
+      </button>
+    </div>
+
+    <%# ユーザー登録フォーム %>
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "mt-6 space-y-4" }) do |f| %>
+      <%# 名前入力欄（任意） %>
       <div>
         <%= f.label :name, "名前（任意）", class: "mb-1 block text-sm font-semibold" %>
         <%= f.text_field :name, autocomplete: "name", class: "w-full rounded-lg border-slate-300" %>
-        <% if resource.errors[:name].any? %><p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:name).join("、") %></p><% end %>
+        <% if resource.errors[:name].any? %>
+          <p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:name).join("、") %></p>
+        <% end %>
       </div>
+
+      <%# ユーザーID入力欄 %>
       <div>
         <%= f.label :user_id, "ユーザーID", class: "mb-1 block text-sm font-semibold" %>
         <%= f.text_field :user_id, required: true, autocomplete: "username", class: "w-full rounded-lg border-slate-300" %>
-        <% if resource.errors[:user_id].any? %><p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:user_id).join("、") %></p><% end %>
+        <% if resource.errors[:user_id].any? %>
+          <p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:user_id).join("、") %></p>
+        <% end %>
       </div>
+
+      <%# メールアドレス入力欄 %>
       <div>
         <%= f.label :email, "メールアドレス", class: "mb-1 block text-sm font-semibold" %>
         <%= f.email_field :email, required: true, autofocus: true, autocomplete: "email", class: "w-full rounded-lg border-slate-300" %>
-        <% if resource.errors[:email].any? %><p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:email).join("、") %></p><% end %>
+        <% if resource.errors[:email].any? %>
+          <p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:email).join("、") %></p>
+        <% end %>
       </div>
+
+      <%# パスワード入力欄と文字数の注意書き %>
       <div>
         <%= f.label :password, "パスワード", class: "mb-1 block text-sm font-semibold" %>
         <%= f.password_field :password, required: true, autocomplete: "new-password", class: "w-full rounded-lg border-slate-300" %>
-        <% if @minimum_password_length %><p class="mt-1 text-sm text-slate-500">パスワードは<%= @minimum_password_length %>文字以上で入力してください。</p><% end %>
-        <% if resource.errors[:password].any? %><p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:password).join("、") %></p><% end %>
+        <% if @minimum_password_length %>
+          <p class="mt-1 text-sm text-slate-500">パスワードは<%= @minimum_password_length %>文字以上で入力してください。</p>
+        <% end %>
+        <% if resource.errors[:password].any? %>
+          <p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:password).join("、") %></p>
+        <% end %>
       </div>
+
+      <%# パスワード確認入力欄 %>
       <div>
         <%= f.label :password_confirmation, "パスワード（確認）", class: "mb-1 block text-sm font-semibold" %>
         <%= f.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "w-full rounded-lg border-slate-300" %>
-        <% if resource.errors[:password_confirmation].any? %><p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:password_confirmation).join("、") %></p><% end %>
+        <% if resource.errors[:password_confirmation].any? %>
+          <p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:password_confirmation).join("、") %></p>
+        <% end %>
       </div>
+
+      <%# ユーザー登録ボタン %>
       <%= f.submit "登録する", class: "w-full rounded-lg bg-cyan-500 px-4 py-3 font-bold text-slate-950 hover:bg-cyan-400" %>
     <% end %>
   </div>

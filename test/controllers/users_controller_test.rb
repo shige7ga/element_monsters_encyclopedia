@@ -24,6 +24,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :success
     assert_select "h1", "マイページ"
+    assert_select %q(meta[name="turbo-visit-control"][content="reload"])
   end
   test "登録フォームはパスワード条件を表示する" do
     get new_user_registration_url, headers: { "Turbo-Frame" => "registration_modal" }

@@ -1,3 +1,8 @@
+<%# Turbo Frame内の認証成功後はマイページ全体へ遷移する %>
+<% content_for :head do %>
+  <meta name="turbo-visit-control" content="reload">
+<% end %>
+
 <% content_for :title, "マイページ | 元素モンスターズ図鑑" %>
 
 <div class="flex min-h-screen flex-col bg-slate-950">
