@@ -6,8 +6,11 @@
   <main class="flex flex-1 items-center px-5 py-12 sm:px-8 sm:py-20">
     <section id="encyclopedia" class="mx-auto grid w-full max-w-7xl items-center gap-8 lg:grid-cols-[0.8fr_1.4fr_0.8fr] lg:gap-4">
       <%# 左側のモンスター: 水素くん %>
-      <figure class="order-2 mx-auto w-full max-w-xs text-center lg:order-1 lg:max-w-none">
+      <figure class="relative order-2 mx-auto w-full max-w-xs text-center lg:order-1 lg:max-w-none">
         <%= image_tag "hydrogen_kun.png", alt: "水素くん", class: "mx-auto h-52 w-full object-contain sm:h-64 lg:h-[30rem]" %>
+        <%# 左上の元素記号バッジ・右下のキャラクター名 %>
+        <span aria-hidden="true" class="absolute left-2 top-2 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-lg font-black text-slate-950 shadow-lg sm:h-12 sm:w-12 sm:text-xl">H</span>
+        <figcaption class="absolute bottom-2 right-2 rounded-full bg-slate-950/85 px-3 py-1 text-sm font-bold text-white shadow-lg">水素くん</figcaption>
       </figure>
 
       <%# 中央: サービスタイトル・キャッチコピー・主要導線 %>
@@ -41,11 +44,17 @@
 
       <%# 右側のモンスター: ヘリウムウィッチとリチウムゴーレム %>
       <div class="order-3 mx-auto flex w-full max-w-md items-end justify-center gap-2 sm:gap-5 lg:order-3 lg:max-w-none lg:flex-col lg:items-center lg:gap-0">
-        <figure class="w-1/2 text-center lg:w-full">
+        <figure class="relative w-1/2 text-center lg:w-full">
           <%= image_tag "helium_witch.png", alt: "ヘリウムウィッチ", class: "mx-auto h-32 w-full object-contain sm:h-44 lg:h-56" %>
+          <%# 左上の元素記号バッジ・右下のキャラクター名 %>
+          <span aria-hidden="true" class="absolute left-1 top-1 flex h-8 w-8 items-center justify-center rounded-full bg-cyan-400 text-sm font-black text-slate-950 shadow-lg sm:left-2 sm:top-2 sm:h-10 sm:w-10 sm:text-lg">He</span>
+          <figcaption class="absolute bottom-1 right-1 rounded-full bg-slate-950/85 px-2 py-1 text-xs font-bold text-white shadow-lg sm:bottom-2 sm:right-2 sm:px-3 sm:text-sm">ヘリウムウィッチ</figcaption>
         </figure>
-        <figure class="w-1/2 text-center lg:-mt-6 lg:w-full">
+        <figure class="relative w-1/2 text-center lg:-mt-6 lg:w-full">
           <%= image_tag "lithium_golem.png", alt: "リチウムゴーレム", class: "mx-auto h-32 w-full object-contain sm:h-44 lg:h-56" %>
+          <%# 左上の元素記号バッジ・右下のキャラクター名 %>
+          <span aria-hidden="true" class="absolute left-1 top-1 flex h-8 w-8 items-center justify-center rounded-full bg-cyan-400 text-sm font-black text-slate-950 shadow-lg sm:left-2 sm:top-2 sm:h-10 sm:w-10 sm:text-lg">Li</span>
+          <figcaption class="absolute bottom-1 right-1 rounded-full bg-slate-950/85 px-2 py-1 text-xs font-bold text-white shadow-lg sm:bottom-2 sm:right-2 sm:px-3 sm:text-sm">リチウムゴーレム</figcaption>
         </figure>
       </div>
     </section>
