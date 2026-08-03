@@ -5,6 +5,10 @@ export default class extends Controller {
 
   open(event) {
     const dialog = this.dialogTargets.find((target) => target.dataset.modalDialog === event.params.dialog)
+    const frame = dialog?.querySelector("turbo-frame")
+
+    if (frame && !frame.src) frame.src = dialog.dataset.modalSource
+
     dialog?.showModal()
   }
 
