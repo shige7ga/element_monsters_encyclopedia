@@ -21,6 +21,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select 'nav[data-navigation-target="menu"]'
     assert_select 'dialog[data-modal-source="/users/sign_in"] turbo-frame#login_modal:not([src])'
     assert_select 'dialog[data-modal-source="/users/sign_up"] turbo-frame#registration_modal:not([src])'
+    assert_select 'img[alt="水素くん"]'
+    assert_select 'img[alt="ヘリウムウィッチ"]'
+    assert_select 'img[alt="リチウムゴーレム"]'
   end
 
   test "ログイン時は共通ヘッダーに会員用ナビゲーションを表示する" do

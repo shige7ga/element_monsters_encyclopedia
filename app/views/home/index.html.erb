@@ -31,19 +31,32 @@
         </div>
       </div>
 
-      <%# 元素図鑑のプレビューカード %>
-      <div id="encyclopedia" class="relative mx-auto w-full max-w-md rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-900 p-6 shadow-2xl shadow-cyan-950/50 sm:p-8">
-        <p class="text-sm font-semibold tracking-[0.2em] text-cyan-300">ELEMENT NO. 01</p>
-        <div class="mt-6 rounded-2xl border border-cyan-300/20 bg-slate-950/50 p-6 text-center">
-          <p class="text-7xl font-black text-cyan-300">H</p>
-          <p class="mt-3 text-2xl font-bold text-white">水素</p>
-          <p class="mt-1 text-sm text-slate-400">Hydrogen</p>
+      <%# モンスター画像: 元素記号を楽しく覚えられることを伝えるメインビジュアル %>
+      <section id="encyclopedia" aria-labelledby="monster-showcase-title" class="relative mx-auto w-full max-w-xl rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-900 p-5 shadow-2xl shadow-cyan-950/50 sm:p-7">
+        <p class="text-sm font-semibold tracking-[0.2em] text-cyan-300">MEET THE MONSTERS</p>
+        <h2 id="monster-showcase-title" class="mt-3 text-2xl font-black text-white sm:text-3xl">
+          モンスターと一緒に、元素記号を覚えよう！
+        </h2>
+        <p class="mt-2 text-sm leading-6 text-slate-300">
+          水素・ヘリウム・リチウム。個性豊かな仲間たちが、あなたの学びを楽しくします。
+        </p>
+
+        <%# 3体のモンスターを同じ高さのカードに並べ、すぐ目に入るように表示 %>
+        <div class="mt-5 grid grid-cols-3 items-end gap-2 sm:gap-3">
+          <figure class="rounded-2xl border border-cyan-300/20 bg-slate-950/50 p-2 text-center sm:p-3">
+            <%= image_tag "hydrogen_kun.png", alt: "水素くん", class: "h-28 w-full object-contain sm:h-36" %>
+            <figcaption class="mt-2 text-xs font-bold text-cyan-200">H・水素</figcaption>
+          </figure>
+          <figure class="rounded-2xl border border-cyan-300/20 bg-slate-950/50 p-2 text-center sm:p-3">
+            <%= image_tag "helium_witch.png", alt: "ヘリウムウィッチ", class: "h-28 w-full object-contain sm:h-36" %>
+            <figcaption class="mt-2 text-xs font-bold text-cyan-200">He・ヘリウム</figcaption>
+          </figure>
+          <figure class="rounded-2xl border border-cyan-300/20 bg-slate-950/50 p-2 text-center sm:p-3">
+            <%= image_tag "lithium_golem.png", alt: "リチウムゴーレム", class: "h-28 w-full object-contain sm:h-36" %>
+            <figcaption class="mt-2 text-xs font-bold text-cyan-200">Li・リチウム</figcaption>
+          </figure>
         </div>
-        <div class="mt-6 grid grid-cols-2 gap-3 text-sm">
-          <div class="rounded-xl bg-white/5 p-4"><p class="text-slate-400">元素記号</p><p class="mt-1 font-bold text-white">H</p></div>
-          <div class="rounded-xl bg-white/5 p-4"><p class="text-slate-400">原子番号</p><p class="mt-1 font-bold text-white">1</p></div>
-        </div>
-      </div>
+      </section>
     </section>
   </main>
 
