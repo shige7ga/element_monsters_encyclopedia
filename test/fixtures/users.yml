@@ -1,0 +1,11 @@
+one:
+  name: テストユーザー1
+  user_id: element_one
+  email: one@example.test
+  encrypted_password: encrypted-password
+
+two:
+  name: テストユーザー2
+  user_id: element_two
+  email: two@example.test
+  encrypted_password: encrypted-password
