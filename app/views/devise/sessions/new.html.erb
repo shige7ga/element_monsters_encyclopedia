@@ -1,26 +1,20 @@
-<h2>ログイン</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <p><%= f.label :login, "メールアドレスまたはユーザーID" %></p>
-    <p><%= f.text_field :login, autofocus: true, autocomplete: "username" %></p>
-  </div>
-
-  <div class="field">
-    <p><%= f.label :password %></p>
-    <p><%= f.password_field :password, autocomplete: "current-password" %></p>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <p><%= f.check_box :remember_me %></p>
-      <p><%= f.label :remember_me %></p>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "ログイン" %>
+<%= turbo_frame_tag "login_modal" do %>
+  <div class="p-6 sm:p-8">
+    <div class="flex items-center justify-between"><h2 class="text-2xl font-bold">ログイン</h2><button type="button" data-action="modal#close" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100" aria-label="閉じる">✕</button></div>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "mt-6 space-y-4" }) do |f| %>
+      <div>
+        <%= f.label :login, "メールアドレスまたはユーザーID", class: "mb-1 block text-sm font-semibold" %>
+        <%= f.text_field :login, required: true, autofocus: true, autocomplete: "username", class: "w-full rounded-lg border-slate-300" %>
+        <% if resource.errors[:login].any? %><p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:login).join("、") %></p><% end %>
+      </div>
+      <div>
+        <%= f.label :password, "パスワード", class: "mb-1 block text-sm font-semibold" %>
+        <%= f.password_field :password, required: true, autocomplete: "current-password", class: "w-full rounded-lg border-slate-300" %>
+        <% if resource.errors[:password].any? %><p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:password).join("、") %></p><% end %>
+        <% if flash[:alert].present? %><p class="mt-1 text-sm text-rose-600"><%= flash[:alert] %></p><% end %>
+      </div>
+      <% if devise_mapping.rememberable? %><div class="flex items-center gap-2"><%= f.check_box :remember_me, class: "rounded border-slate-300 text-cyan-500" %><%= f.label :remember_me, "ログイン状態を保持する", class: "text-sm" %></div><% end %>
+      <%= f.submit "ログイン", class: "w-full rounded-lg bg-cyan-500 px-4 py-3 font-bold text-slate-950 hover:bg-cyan-400" %>
+    <% end %>
   </div>
 <% end %>
-
-<%= render "devise/shared/links" %>
