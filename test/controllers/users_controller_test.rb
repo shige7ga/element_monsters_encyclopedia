@@ -48,7 +48,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_select "turbo-frame#login_modal"
-    assert_select "#user_login + p.text-rose-600", minimum: 1
+    assert_select "p[role=alert]", /Invalid login or password./
+  end
+
+  test "ログインの空欄エラーは各入力欄の下に表示される" do
+    post user_session_url, params: { user: { login: "", password: "" } }, headers: { "Turbo-Frame" => "login_modal" }
+
+    assert_response :unprocessable_entity
+    assert_select "p.text-rose-600", /Login can.t be blank/
+    assert_select "p.text-rose-600", /Password can.t be blank/
+    assert_select "p[role=alert]", count: 0
   end
 
   test "メールアドレスとユーザーIDの重複エラーは各欄に表示される" do
