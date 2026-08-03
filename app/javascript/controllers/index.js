@@ -9,3 +9,6 @@ application.register("hello", HelloController)
 
 import ModalController from "./modal_controller"
 application.register("modal", ModalController)
+
+import NavigationController from "./navigation_controller"
+application.register("navigation", NavigationController)

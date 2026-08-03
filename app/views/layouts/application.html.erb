@@ -11,19 +11,74 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%# アプリケーション用アセット %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="min-h-screen bg-slate-950 text-slate-900 antialiased">
+  <body data-controller="modal navigation" class="min-h-screen bg-slate-950 text-slate-900 antialiased">
+    <div class="flex min-h-screen flex-col bg-slate-950">
+      <%# 共通ヘッダー: サービス名とログイン状態別ナビゲーション %>
+      <header class="border-b border-white/10 bg-slate-950/90 px-5 py-4 backdrop-blur sm:px-8">
+        <div class="mx-auto flex max-w-6xl items-center justify-between gap-4">
+          <%# サービスロゴ・タイトル %>
+          <%= link_to root_path, class: "flex items-center gap-2 text-lg font-bold tracking-tight text-white sm:text-xl" do %>
+            <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-400 font-black text-slate-950">E</span>
+            <span>元素モンスターズ図鑑</span>
+          <% end %>
+
+          <%# PC用ナビゲーション %>
+          <nav aria-label="メインナビゲーション" class="hidden items-center gap-2 text-sm font-semibold sm:flex">
+            <% if user_signed_in? %>
+              <%= link_to "図鑑を見る", root_path(anchor: "encyclopedia"), class: "rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10" %>
+              <%= link_to "周期表", root_path(anchor: "periodic-table"), class: "rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10" %>
+              <%= link_to "マイページ", mypage_path, class: "rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10" %>
+              <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "rounded-lg border border-slate-500 px-3 py-2 text-white transition hover:border-cyan-300 hover:bg-white/10" %>
+            <% else %>
+              <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10">ユーザー登録</button>
+              <button type="button" data-action="modal#open" data-modal-dialog-param="login" class="rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10">ログイン</button>
+              <%= link_to "図鑑を見る", root_path(anchor: "encyclopedia"), class: "rounded-lg bg-cyan-400 px-3 py-2 text-slate-950 transition hover:bg-cyan-300" %>
+            <% end %>
+          </nav>
+
+          <%# モバイル用ハンバーガーボタン %>
+          <button type="button" data-navigation-target="button" data-action="navigation#toggle" aria-label="メニューを開く" aria-expanded="false" class="rounded-lg p-2 text-white transition hover:bg-white/10 sm:hidden">
+            <span class="block h-0.5 w-6 bg-current"></span>
+            <span class="mt-1.5 block h-0.5 w-6 bg-current"></span>
+            <span class="mt-1.5 block h-0.5 w-6 bg-current"></span>
+          </button>
+        </div>
+      </header>
+
+      <%# モバイル用ナビゲーション %>
+      <nav data-navigation-target="menu" aria-label="モバイルメインナビゲーション" class="hidden border-b border-white/10 bg-slate-900 px-5 py-3 sm:hidden">
+        <div class="mx-auto flex max-w-6xl flex-col gap-2 text-sm font-semibold">
+          <% if user_signed_in? %>
+            <%= link_to "図鑑を見る", root_path(anchor: "encyclopedia"), class: "rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10" %>
+            <%= link_to "周期表", root_path(anchor: "periodic-table"), class: "rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10" %>
+            <%= link_to "マイページ", mypage_path, class: "rounded-lg px-3 py-2 text-slate-200 transition hover:bg-white/10" %>
+            <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "w-full rounded-lg border border-slate-500 px-3 py-2 text-left text-white transition hover:border-cyan-300 hover:bg-white/10" %>
+          <% else %>
+            <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="rounded-lg px-3 py-2 text-left text-slate-200 transition hover:bg-white/10">ユーザー登録</button>
+            <button type="button" data-action="modal#open" data-modal-dialog-param="login" class="rounded-lg px-3 py-2 text-left text-slate-200 transition hover:bg-white/10">ログイン</button>
+            <%= link_to "図鑑を見る", root_path(anchor: "encyclopedia"), class: "rounded-lg bg-cyan-400 px-3 py-2 text-slate-950 transition hover:bg-cyan-300" %>
+          <% end %>
+        </div>
+      </nav>
+
+      <%# ページ固有コンテンツ %>
       <%= yield %>
+
+      <%# 共通フッター: 規約への導線 %>
+      <footer class="border-t border-white/10 px-5 py-6 sm:px-8">
+        <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-slate-400 sm:flex-row">
+          <p>&copy; <%= Time.current.year %> 元素モンスターズ図鑑</p>
+          <nav aria-label="フッターナビゲーション" class="flex gap-5">
+            <a href="#" class="transition hover:text-cyan-300">利用規約</a>
+            <a href="#" class="transition hover:text-cyan-300">プライバシーポリシー</a>
+          </nav>
+        </div>
+      </footer>
+    </div>
   </body>
 </html>
