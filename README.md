@@ -336,3 +336,7 @@ SNSへイラストを投稿している、または投稿したいと考えて�
 ## 11. 画面遷移図
 
 [画面遷移図をFigmaで開く](https://www.figma.com/board/QbMuQJt8ysCW3TbTuESNRj/%E5%85%83%E7%B4%A0%E3%83%A2%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%BA%E5%9B%B3%E9%91%91%EF%BC%88%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3%EF%BC%89?node-id=0-1&t=z6dkleNiJJkBGQWk-1)
+
+## 12.ER図
+
+[![Image from Gyazo](https://i.gyazo.com/a63c543d9ef3b8879d90f9c0a67c5b3d.png)](https://gyazo.com/a63c543d9ef3b8879d90f9c0a67c5b3d)
