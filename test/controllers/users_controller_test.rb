@@ -38,7 +38,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select "h1", "マイページ"
     assert_select 'nav[aria-label="メインナビゲーション"]' do
       assert_select "a", "図鑑を見る"
-      assert_select "a", "周期表"
+      assert_select "a", { text: "周期表", count: 0 }
       assert_select "a", "マイページ"
       assert_select "form button", "ログアウト"
     end
