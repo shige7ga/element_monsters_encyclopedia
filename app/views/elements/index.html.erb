@@ -8,8 +8,8 @@
       <p class="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-1.5 text-sm font-semibold text-cyan-200">PERIODIC TABLE</p>
       <%# 図鑑内の表示切替: 画面上部中央で周期表を選択状態にする %>
       <nav aria-label="図鑑表示切替" class="mx-auto mt-5 flex w-fit rounded-xl border border-white/15 bg-slate-900 p-1 text-sm font-bold">
-        <%= link_to "イラスト一覧", elements_path(anchor: "illustrations"), class: "rounded-lg px-4 py-2 text-slate-300 transition hover:bg-white/10" %>
         <span aria-current="page" class="rounded-lg bg-cyan-400 px-4 py-2 text-slate-950">周期表</span>
+        <%= link_to "イラスト集", elements_path(anchor: "illustrations"), data: { turbo: false }, class: "rounded-lg px-4 py-2 text-slate-300 transition hover:bg-white/10" %>
       </nav>
       <h1 class="mt-5 text-4xl font-black text-white sm:text-5xl">周期表</h1>
       <p class="mt-3 text-lg text-slate-300">気になる元素記号を選んで、詳細を調べてみよう。</p>

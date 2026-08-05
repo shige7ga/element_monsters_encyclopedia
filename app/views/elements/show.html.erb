@@ -1,7 +1,48 @@
 <%# 元素詳細: 基本データと常温での状態を提示 %>
 <% content_for :title, "#{@element.name} | 元素モンスターズ図鑑" %>
-<div class="flex flex-1 flex-col bg-slate-950"><main class="flex-1 px-5 py-12 sm:px-8 sm:py-16"><section class="mx-auto w-full max-w-4xl">
-  <%# 戻る導線と元素識別情報 %><%= link_to "← 周期表へ戻る", elements_path, class: "text-sm font-bold text-cyan-300" %><div class="mt-6 rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-950 p-6 shadow-2xl shadow-cyan-950/40 sm:p-10"><div class="flex flex-col gap-5 sm:flex-row sm:items-center"><div class="flex h-28 w-28 items-center justify-center rounded-3xl border border-cyan-300/40 bg-cyan-300/10 text-5xl font-black text-cyan-200"><%= @element.symbol %></div><div><p class="text-sm font-semibold tracking-[0.2em] text-cyan-300">ELEMENT <%= @element.atomic_number %></p><h1 class="mt-2 text-4xl font-black text-white"><%= @element.name %></h1><p class="mt-1 text-lg text-slate-300"><%= @element.english_name %></p></div></div>
-  <%# 元素データ: 周期・族・状態・原子番号 %><dl class="mt-10 grid gap-4 sm:grid-cols-3"><div class="rounded-2xl border border-white/10 bg-white/5 p-4"><dt class="text-sm text-slate-400">周期・族</dt><dd class="mt-2 text-xl font-bold text-white"><%= @element.period %>周期 <%= @element.group_number %>族</dd></div><div class="rounded-2xl border border-white/10 bg-white/5 p-4"><dt class="text-sm text-slate-400">常温での状態</dt><dd class="mt-2 text-xl font-bold text-cyan-200"><%= @element.common_state %></dd></div><div class="rounded-2xl border border-white/10 bg-white/5 p-4"><dt class="text-sm text-slate-400">原子番号</dt><dd class="mt-2 text-xl font-bold text-white"><%= @element.atomic_number %></dd></div></dl>
-  <%# 元素の説明 %><section class="mt-8 border-t border-white/10 pt-8"><h2 class="text-xl font-bold text-white">この元素について</h2><p class="mt-3 leading-8 text-slate-300"><%= @element.description %></p></section></div>
-</section></main></div>
+
+<div class="flex flex-1 flex-col bg-slate-950">
+  <%# メイン: 元素の識別情報と詳細データ %>
+  <main class="flex-1 px-5 py-12 sm:px-8 sm:py-16">
+    <section class="mx-auto w-full max-w-4xl">
+      <%# 戻る導線: ヘッダーと同様に通常遷移で戻る %>
+      <%= link_to "← 周期表へ戻る", elements_path, data: { turbo: false }, class: "text-sm font-bold text-cyan-300 transition hover:text-cyan-100" %>
+
+      <%# 元素の識別情報: 記号・名称・英語名を表示 %>
+      <div class="mt-6 rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-950 p-6 shadow-2xl shadow-cyan-950/40 sm:p-10">
+        <div class="flex flex-col gap-5 sm:flex-row sm:items-center">
+          <div class="flex h-28 w-28 items-center justify-center rounded-3xl border border-cyan-300/40 bg-cyan-300/10 text-5xl font-black text-cyan-200">
+            <%= @element.symbol %>
+          </div>
+          <div>
+            <p class="text-sm font-semibold tracking-[0.2em] text-cyan-300">ELEMENT <%= @element.atomic_number %></p>
+            <h1 class="mt-2 text-4xl font-black text-white"><%= @element.name %></h1>
+            <p class="mt-1 text-lg text-slate-300"><%= @element.english_name %></p>
+          </div>
+        </div>
+
+        <%# 元素データ: 周期・族・常温状態・原子番号 %>
+        <dl class="mt-10 grid gap-4 sm:grid-cols-3">
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <dt class="text-sm text-slate-400">周期・族</dt>
+            <dd class="mt-2 text-xl font-bold text-white"><%= @element.period %>周期 <%= @element.group_number %>族</dd>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <dt class="text-sm text-slate-400">常温での状態</dt>
+            <dd class="mt-2 text-xl font-bold text-cyan-200"><%= @element.common_state %></dd>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <dt class="text-sm text-slate-400">原子番号</dt>
+            <dd class="mt-2 text-xl font-bold text-white"><%= @element.atomic_number %></dd>
+          </div>
+        </dl>
+
+        <%# 元素の解説 %>
+        <section class="mt-8 border-t border-white/10 pt-8">
+          <h2 class="text-xl font-bold text-white">この元素について</h2>
+          <p class="mt-3 leading-8 text-slate-300"><%= @element.description %></p>
+        </section>
+      </div>
+    </section>
+  </main>
+</div>
