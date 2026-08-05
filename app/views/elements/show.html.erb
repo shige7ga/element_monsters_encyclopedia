@@ -6,7 +6,7 @@
   <main class="flex-1 px-5 py-12 sm:px-8 sm:py-16">
     <section class="mx-auto w-full max-w-4xl">
       <%# 戻る導線: ヘッダーと同様に通常遷移で戻る %>
-      <%= link_to "← 周期表へ戻る", elements_path, data: { turbo: false }, class: "text-sm font-bold text-cyan-300 transition hover:text-cyan-100" %>
+      <%= button_to "← 周期表へ戻る", elements_path, method: :get, form: { data: { turbo: false } }, class: "border-0 bg-transparent p-0 text-sm font-bold text-cyan-300 transition hover:text-cyan-100" %>
 
       <%# 元素の識別情報: 記号・名称・英語名を表示 %>
       <div class="mt-6 rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-950 p-6 shadow-2xl shadow-cyan-950/40 sm:p-10">

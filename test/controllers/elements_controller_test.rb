@@ -16,5 +16,6 @@ class ElementsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h1", "水素"
     assert_select "dd", /気体/
+    assert_select "form[action=\"/elements\"][data-turbo=\"false\"]"
   end
 end
