@@ -12,3 +12,6 @@ application.register("modal", ModalController)
 
 import NavigationController from "./navigation_controller"
 application.register("navigation", NavigationController)
+
+import PeriodicTableController from "./periodic_table_controller"
+application.register("periodic-table", PeriodicTableController)

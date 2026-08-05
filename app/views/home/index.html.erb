@@ -27,12 +27,12 @@
           見つけよう、推し元素。<br>「覚える」から「好きになる」へ。
         </p>
         <p class="mx-auto mt-5 max-w-xl leading-8 text-slate-300">
-          個性豊かなモンスターたちと出会いながら、元素の名前や記号を楽しく学べる図鑑です。あなたの作品も、誰かの学びのきっかけになります。
+          個性豊かなモンスターたちと出会いながら、元素記号や元素名を楽しく学べる図鑑です。あなたが作った一枚が、未来の科学者を生み出すキッカケになる。
         </p>
 
         <%# 図鑑を見る・ユーザー登録・ログインの主要導線 %>
         <div id="start" class="mt-9 flex flex-col items-center gap-3">
-          <%= link_to "図鑑を見る", "#encyclopedia", class: "rounded-xl bg-cyan-400 px-8 py-3.5 font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5 hover:bg-cyan-300" %>
+          <%= link_to "図鑑を見る", elements_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-8 py-3.5 font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5 hover:bg-cyan-300" %>
           <div class="flex flex-col justify-center gap-3 sm:flex-row">
             <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="rounded-xl border border-slate-500 px-6 py-3.5 text-center font-bold text-white transition hover:border-cyan-300 hover:bg-white/10">
               ユーザー登録
@@ -66,17 +66,5 @@
     </section>
   </main>
 
-  <%# 認証モーダル: Turbo Frameでフォームを読み込み、閉じても入力DOMを保持 %>
-  <dialog data-modal-target="dialog" data-modal-dialog="registration" data-modal-source="<%= new_user_registration_path %>" data-action="click->modal#closeOnBackdrop" class="m-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/70">
-    <%= turbo_frame_tag "registration_modal" do %>
-      <div class="p-6 text-slate-600">読み込み中...</div>
-    <% end %>
-  </dialog>
-
-  <dialog data-modal-target="dialog" data-modal-dialog="login" data-modal-source="<%= new_user_session_path %>" data-action="click->modal#closeOnBackdrop" class="m-auto w-full max-w-md rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl backdrop:bg-slate-950/70">
-    <%= turbo_frame_tag "login_modal" do %>
-      <div class="p-6 text-slate-600">読み込み中...</div>
-    <% end %>
-  </dialog>
 
 </div>
