@@ -70,3 +70,6 @@ end
 gem "tailwindcss-rails", "~> 4.6"
 
 gem "devise", "~> 5.0"
+
+gem "rspec-rails", "~> 8.0", group: :test
+gem "factory_bot_rails", "~> 6.5", group: :test

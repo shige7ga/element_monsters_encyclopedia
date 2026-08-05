@@ -340,3 +340,19 @@ SNSへイラストを投稿している、または投稿したいと考えて�
 ## 12.ER図
 
 [![Image from Gyazo](https://i.gyazo.com/a63c543d9ef3b8879d90f9c0a67c5b3d.png)](https://gyazo.com/a63c543d9ef3b8879d90f9c0a67c5b3d)
+
+
+## テスト
+
+テストはRSpecで実行します。
+
+```bash
+bundle exec rspec
+```
+
+特定ファイルまたは行を実行する場合は次のとおりです。
+
+```bash
+bundle exec rspec spec/models/user_spec.rb
+bundle exec rspec spec/models/user_spec.rb:10
+```
