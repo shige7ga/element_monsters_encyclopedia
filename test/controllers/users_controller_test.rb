@@ -12,6 +12,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "未ログイン時は共通ヘッダーに認証用ナビゲーションを表示する" do
     get root_url
 
+    assert_select 'header[data-turbo="false"]'
     assert_select 'nav[aria-label="メインナビゲーション"]' do
       assert_select "button", "ユーザー登録"
       assert_select "button", "ログイン"
@@ -36,6 +37,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to mypage_url
     follow_redirect!
     assert_select "h1", "マイページ"
+    assert_select 'header[data-turbo="false"]'
     assert_select 'nav[aria-label="メインナビゲーション"]' do
       assert_select "a", "図鑑を見る"
       assert_select "a", { text: "周期表", count: 0 }
