@@ -33,9 +33,9 @@
                 <span class="flex items-center justify-center text-xs font-bold text-slate-500"><%= period %></span>
                 <% (1..18).each do |group_number| %>
                   <% if period == 6 && group_number == 3 %>
-                    <div class="flex aspect-square items-center justify-center rounded-lg border border-rose-300 bg-rose-500/25 px-1 text-center text-[0.6rem] font-black text-rose-100"><span class="sm:hidden">ラ</span><span class="hidden sm:inline">ランタノイド</span></div>
+                    <div class="flex h-[clamp(1.9rem,3.2vw,3.5rem)] min-w-0 items-center justify-center overflow-hidden rounded-lg border border-rose-300 bg-rose-500/25 px-1 text-center text-[0.6rem] font-black text-rose-100"><span class="lg:hidden">ラ</span><span class="hidden lg:inline">ランタノイド</span></div>
                   <% elsif period == 7 && group_number == 3 %>
-                    <div class="flex aspect-square items-center justify-center rounded-lg border border-emerald-300 bg-emerald-500/25 px-1 text-center text-[0.6rem] font-black text-emerald-100"><span class="sm:hidden">ア</span><span class="hidden sm:inline">アクチノイド</span></div>
+                    <div class="flex h-[clamp(1.9rem,3.2vw,3.5rem)] min-w-0 items-center justify-center overflow-hidden rounded-lg border border-emerald-300 bg-emerald-500/25 px-1 text-center text-[0.6rem] font-black text-emerald-100"><span class="lg:hidden">ア</span><span class="hidden lg:inline">アクチノイド</span></div>
                   <% elsif (element = @elements_by_position[[period, group_number]]) %>
                     <%= render "element_cell", element: element %>
                   <% else %>
