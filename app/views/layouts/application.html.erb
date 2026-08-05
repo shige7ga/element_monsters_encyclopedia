@@ -30,7 +30,7 @@
           <%# PC用ナビゲーション %>
           <nav aria-label="メインナビゲーション" class="hidden items-center gap-2 text-sm font-semibold sm:flex">
             <% if user_signed_in? %>
-              <%= link_to "図鑑を見る", elements_path, class: "rounded-lg bg-cyan-400 px-3 py-2 text-slate-950 transition hover:bg-cyan-300" %>
+              <%= link_to "図鑑を見る", elements_path, data: { turbo: false }, class: "rounded-lg bg-cyan-400 px-3 py-2 text-slate-950 transition hover:bg-cyan-300" %>
               <%= link_to "周期表", elements_path, class: "rounded-lg bg-cyan-400 px-3 py-2 text-slate-950 transition hover:bg-cyan-300" %>
               <%= link_to "マイページ", mypage_path, class: "rounded-lg border border-white px-3 py-2 text-white transition hover:border-cyan-300 hover:bg-white/10" %>
               <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "rounded-lg border border-white px-3 py-2 text-white transition hover:border-cyan-300 hover:bg-white/10" %>

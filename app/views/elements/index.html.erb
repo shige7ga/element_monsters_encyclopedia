@@ -13,7 +13,7 @@
       <div class="mt-10 overflow-x-auto pb-5">
         <div data-controller="periodic-table" class="min-w-[970px] rounded-3xl border border-white/15 bg-slate-900/80 p-4 shadow-2xl shadow-cyan-950/40 sm:p-6">
           <div class="mb-3 grid grid-cols-[2rem_repeat(18,minmax(0,1fr))] gap-1.5 text-center text-xs font-bold text-slate-500">
-            <span>周期</span>
+            <span>周期<br>＼<br>族</span>
             <% (1..18).each do |group_number| %><span><%= group_number %></span><% end %>
           </div>
 
@@ -41,7 +41,7 @@
           <div class="mt-5 space-y-1.5 border-t border-white/10 pt-5">
             <% { "ランタノイド" => [@lanthanides, "border-rose-300 bg-rose-500/25 text-rose-100"], "アクチノイド" => [@actinides, "border-emerald-300 bg-emerald-500/25 text-emerald-100"] }.each do |label, (elements, color_class)| %>
               <div class="grid grid-cols-[2rem_repeat(18,minmax(0,1fr))] gap-1.5" aria-label="<%= label %>">
-                <span class="flex items-center justify-center text-xs font-bold text-slate-500"><%= label == "ランタノイド" ? 6 : 7 %></span>
+                <span aria-hidden="true"></span>
                 <div aria-hidden="true"></div>
                 <div aria-hidden="true"></div>
                 <% elements.each do |element| %><%= render "element_cell", element: element %><% end %>
