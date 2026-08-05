@@ -6,8 +6,12 @@
   <main class="flex-1 px-5 py-12 sm:px-8 sm:py-16">
     <section class="mx-auto w-full max-w-7xl">
       <p class="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-1.5 text-sm font-semibold text-cyan-200">PERIODIC TABLE</p>
-      <h1 class="mt-5 text-4xl font-black text-white sm:text-5xl">元素の周期表</h1>
-      <p class="mt-3 text-lg text-slate-300">気になる元素記号を選ぶと、名前と次のアクションを確認できます。</p>
+      <%# 図鑑内の表示切替: 周期表を選択状態にする %>
+      <nav aria-label="図鑑表示切替" class="mt-5 inline-flex rounded-xl border border-white/15 bg-slate-900 p-1 text-sm font-bold">
+        <%= link_to "イラスト一覧", elements_path(anchor: "illustrations"), class: "rounded-lg px-4 py-2 text-slate-300 transition hover:bg-white/10" %>
+        <span aria-current="page" class="rounded-lg bg-cyan-400 px-4 py-2 text-slate-950">周期表</span>
+      </nav>
+      <h1 class="mt-5 text-4xl font-black text-white sm:text-5xl">周期表</h1>
 
       <%# 周期表本体: 左端に周期番号を置き、小画面では横スクロール %>
       <div class="mt-10 overflow-x-auto pb-5">
@@ -44,9 +48,16 @@
                 <span aria-hidden="true"></span>
                 <div aria-hidden="true"></div>
                 <div aria-hidden="true"></div>
-                <% elements.each do |element| %><%= render "element_cell", element: element %><% end %>
+                <% elements.each do |element| %><%= render "element_cell", element: element, series_class: color_class %><% end %>
               </div>
             <% end %>
+          </div>
+          <%# 共通ポップアップ: 118個のセルに重複DOMを作らない %>
+          <div data-periodic-table-target="popup" class="fixed inset-x-0 bottom-6 z-20 mx-auto hidden w-56 rounded-xl border border-cyan-200/30 bg-slate-950 p-4 text-left shadow-2xl">
+            <button type="button" data-action="periodic-table#close" class="absolute right-3 top-2 text-slate-400" aria-label="閉じる">×</button>
+            <p data-periodic-table-target="symbol" class="text-xs font-semibold text-cyan-300"></p>
+            <p data-periodic-table-target="name" class="mt-1 text-sm font-bold text-white"></p>
+            <div class="mt-3 grid grid-cols-2 gap-2 text-xs font-bold"><a data-periodic-table-target="detailLink" data-turbo="false" class="rounded-lg bg-cyan-400 px-2 py-2 text-center text-slate-950">詳細</a><button type="button" disabled class="cursor-not-allowed rounded-lg border border-slate-600 px-2 py-2 text-slate-500">投稿</button></div>
           </div>
         </div>
       </div>

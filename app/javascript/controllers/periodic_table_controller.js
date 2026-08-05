@@ -1,14 +1,18 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["popup"]
+  static targets = ["popup", "symbol", "name", "detailLink"]
 
-  toggle(event) {
-    const cell = event.currentTarget.closest("[data-periodic-table-cell]")
-    const popup = cell.querySelector("[data-periodic-table-target='popup']")
-    const isOpening = popup.classList.contains("hidden")
+  open(event) {
+    const { elementName, elementSymbol, elementUrl } = event.currentTarget.dataset
 
-    this.popupTargets.forEach((target) => target.classList.add("hidden"))
-    if (isOpening) popup.classList.remove("hidden")
+    this.symbolTarget.textContent = elementSymbol
+    this.nameTarget.textContent = elementName
+    this.detailLinkTarget.href = elementUrl
+    this.popupTarget.classList.remove("hidden")
+  }
+
+  close() {
+    this.popupTarget.classList.add("hidden")
   }
 }
