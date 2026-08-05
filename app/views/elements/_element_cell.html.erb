@@ -2,7 +2,7 @@
 <% state_class = local_assigns[:series_class] || { "気体" => "border-cyan-300 bg-cyan-300/15 text-cyan-100", "液体" => "border-violet-300 bg-violet-300/15 text-violet-100", "不明" => "border-amber-300 bg-amber-300/15 text-amber-100" }.fetch(element.common_state, "border-slate-300/70 bg-slate-100/10 text-white") %>
 <div class="relative min-w-0">
   <button type="button" data-action="periodic-table#open" data-element-name="<%= element.name %>" data-element-symbol="<%= element.symbol %>" data-element-url="<%= element_path(element) %>" aria-label="<%= element.name %>の情報を表示" class="flex aspect-square w-full flex-col items-center justify-center rounded-lg border <%= state_class %> transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-cyan-300">
-    <span class="text-[0.6rem] opacity-75"><%= element.atomic_number %></span>
-    <span class="text-sm font-black sm:text-base"><%= element.symbol %></span>
+    <span class="text-[0.5rem] opacity-75"><%= element.atomic_number %></span>
+    <span class="text-[0.6rem] font-black sm:text-xs"><%= element.symbol %></span>
   </button>
 </div>

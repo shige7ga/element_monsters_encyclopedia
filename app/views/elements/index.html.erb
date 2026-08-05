@@ -5,13 +5,12 @@
   <%# ページ見出しと操作案内 %>
   <main class="flex-1 px-3 py-1 sm:px-5 sm:py-2">
     <section class="mx-auto w-full max-w-7xl">
-      <%# 図鑑内の表示切替: ページ最上部中央で周期表を選択状態にする %>
-      <nav aria-label="図鑑表示切替" class="mx-auto flex w-fit rounded-lg border border-white/15 bg-slate-900 p-0.5 text-xs font-bold">
-        <span aria-current="page" class="rounded-md bg-cyan-400 px-3 py-1 text-slate-950">周期表</span>
-        <%= link_to "イラスト集", elements_path(anchor: "illustrations"), data: { turbo: false }, class: "rounded-md px-3 py-1 text-slate-300 transition hover:bg-white/10" %>
-      </nav>
-      <%# ページ見出し: 英語ラベルを周期表タイトルの右側に配置 %>
-      <div class="mt-1 flex items-center gap-3">
+      <%# 見出し: 切替ボタン・タイトル・英語ラベルを同じ行に配置 %>
+      <div class="flex flex-wrap items-center gap-2">
+        <nav aria-label="図鑑表示切替" class="flex w-fit rounded-lg border border-white/15 bg-slate-900 p-0.5 text-xs font-bold">
+          <span aria-current="page" class="rounded-md bg-cyan-400 px-3 py-1 text-slate-950">周期表</span>
+          <%= link_to "イラスト集", elements_path(anchor: "illustrations"), data: { turbo: false }, class: "rounded-md px-3 py-1 text-slate-300 transition hover:bg-white/10" %>
+        </nav>
         <h1 class="text-3xl font-black text-white sm:text-4xl">周期表</h1>
         <p class="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-xs font-semibold text-cyan-200">PERIODIC TABLE</p>
       </div>
@@ -19,8 +18,8 @@
 
       <%# 周期表本体: 左端に周期番号を置き、小画面では横スクロール %>
       <div class="mt-2 overflow-x-auto pb-0">
-        <div data-controller="periodic-table" class="min-w-[640px] rounded-2xl border border-white/15 bg-slate-900/80 p-1.5 shadow-2xl shadow-cyan-950/40 sm:p-3">
-          <div class="mb-1 grid grid-cols-[1.5rem_repeat(18,minmax(0,1fr))] gap-0.5 text-center text-xs font-bold text-slate-500">
+        <div data-controller="periodic-table" class="min-w-[540px] rounded-2xl border border-white/15 bg-slate-900/80 p-1.5 shadow-2xl shadow-cyan-950/40 sm:p-3">
+          <div class="mb-1 grid grid-cols-[1.25rem_repeat(18,minmax(0,1fr))] gap-px text-center text-xs font-bold text-slate-500">
             <span aria-hidden="true"></span>
             <% (1..18).each do |group_number| %><span><%= group_number %></span><% end %>
           </div>
@@ -28,7 +27,7 @@
           <%# 主周期表: 6・7周期3族は下段系列への案内セル %>
           <div class="space-y-1">
             <% (1..7).each do |period| %>
-              <div class="grid grid-cols-[1.5rem_repeat(18,minmax(0,1fr))] gap-0.5" aria-label="第<%= period %>周期">
+              <div class="grid grid-cols-[1.25rem_repeat(18,minmax(0,1fr))] gap-px" aria-label="第<%= period %>周期">
                 <span class="flex items-center justify-center text-xs font-bold text-slate-500"><%= period %></span>
                 <% (1..18).each do |group_number| %>
                   <% if period == 6 && group_number == 3 %>
@@ -46,9 +45,9 @@
           </div>
 
           <%# 下段系列: 左端の周期番号の次、すなわち第3族の直下から表示 %>
-          <div class="mt-2 space-y-1 border-t border-white/10 pt-2">
+          <div class="mt-1 space-y-px border-t border-white/10 pt-2">
             <% { "ランタノイド" => [@lanthanides, "border-rose-300 bg-rose-500/25 text-rose-100"], "アクチノイド" => [@actinides, "border-emerald-300 bg-emerald-500/25 text-emerald-100"] }.each do |label, (elements, color_class)| %>
-              <div class="grid grid-cols-[1.5rem_repeat(18,minmax(0,1fr))] gap-0.5" aria-label="<%= label %>">
+              <div class="grid grid-cols-[1.25rem_repeat(18,minmax(0,1fr))] gap-px" aria-label="<%= label %>">
                 <span aria-hidden="true"></span>
                 <div aria-hidden="true"></div>
                 <div aria-hidden="true"></div>
