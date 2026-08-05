@@ -9,7 +9,7 @@
 
 - Ruby 3.4系、Rails 8.1系、PostgreSQL、Tailwind CSS、Deviseを使用する。
 - 画像アップロードはActive Storageを窓口とし、Cloudinaryをストレージバックエンドとして使用する。
-- テストは現在のMinitestとfixtures構成に合わせる。RSpec／FactoryBotを導入した後は、それらを使用してテストを統一する。
+- テストはRSpecとFactoryBotを使用して統一する。
 
 ## 画像管理
 
