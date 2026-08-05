@@ -1,0 +1,11 @@
+<%# 元素マス: 選択時に元素名とアクションを表示するポップアップを内包 %>
+<% state_class = { "気体" => "border-cyan-300 bg-cyan-300/15 text-cyan-100", "液体" => "border-violet-300 bg-violet-300/15 text-violet-100", "不明" => "border-amber-300 bg-amber-300/15 text-amber-100" }.fetch(element.common_state, "border-slate-300/70 bg-slate-100/10 text-white") %>
+<div data-periodic-table-cell class="relative min-w-0">
+  <button type="button" data-action="periodic-table#toggle" aria-label="<%= element.name %>の情報を表示" class="flex aspect-square w-full flex-col items-center justify-center rounded-lg border <%= state_class %> transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-cyan-300">
+    <span class="text-[0.6rem] opacity-75"><%= element.atomic_number %></span><span class="text-sm font-black sm:text-base"><%= element.symbol %></span>
+  </button>
+  <div data-periodic-table-target="popup" class="absolute z-10 mt-2 hidden w-48 rounded-xl border border-cyan-200/30 bg-slate-950 p-3 text-left shadow-2xl">
+    <p class="text-xs font-semibold text-cyan-300"><%= element.symbol %></p><p class="mt-1 text-sm font-bold text-white"><%= element.name %></p>
+    <div class="mt-3 grid grid-cols-2 gap-2 text-xs font-bold"><%= link_to "詳細", element_path(element), class: "rounded-lg bg-cyan-400 px-2 py-2 text-center text-slate-950" %><button type="button" disabled class="cursor-not-allowed rounded-lg border border-slate-600 px-2 py-2 text-slate-500">投稿</button></div>
+  </div>
+</div>

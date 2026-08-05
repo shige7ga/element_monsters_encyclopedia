@@ -10,9 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_03_102632) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_05_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "elements", force: :cascade do |t|
+    t.integer "atomic_number", null: false
+    t.string "common_state", null: false
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "english_name", null: false
+    t.integer "group_number"
+    t.string "name", null: false
+    t.integer "period", null: false
+    t.string "symbol", null: false
+    t.datetime "updated_at", null: false
+    t.index ["atomic_number"], name: "index_elements_on_atomic_number", unique: true
+    t.index ["symbol"], name: "index_elements_on_symbol", unique: true
+  end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   get "mypage", to: "users#show", as: :mypage
+  resources :elements, only: %i[index show]
 
   # Defines the root path route ("/")
   root "home#index"
