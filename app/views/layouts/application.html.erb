@@ -11,8 +11,8 @@
 
     <%= yield :head %>
 
-    <%# アプリケーション用アセット %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%# cssbundling-railsでビルド済みのアプリケーションCSSのみを読み込む %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 

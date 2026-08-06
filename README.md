@@ -356,3 +356,15 @@ bundle exec rspec
 bundle exec rspec spec/models/user_spec.rb
 bundle exec rspec spec/models/user_spec.rb:10
 ```
+
+## CSSビルド
+
+Tailwind CSSはNode.js版のTailwind CSS v4と`cssbundling-rails`で管理しています。
+
+```bash
+yarn build:css
+yarn build:css --watch
+bin/dev
+```
+
+入力ファイルは`app/assets/stylesheets/application.tailwind.css`、出力ファイルは`app/assets/builds/application.css`です。
