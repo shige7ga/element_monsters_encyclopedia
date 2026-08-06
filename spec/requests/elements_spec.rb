@@ -4,7 +4,9 @@ RSpec.describe "Elements", type: :request do
   it "周期表と元素詳細を表示し、投稿はログイン時だけ表示する" do
     get elements_path
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include("周期表", "水素の情報を表示")
+    expect(response.body).to include("周期表", "イラスト集", "水素の情報を表示")
+    expect(response.body).to include('class="mt-1 flex justify-center"')
+    expect(response.body).not_to include("absolute left-1/2")
     expect(response.body).not_to include(">投稿</button>")
     sign_in(create(:user))
     get elements_path
