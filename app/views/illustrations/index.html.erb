@@ -1,0 +1,41 @@
+<%# イラスト集: 公開作品と本人の非公開作品を画像中心のグリッドで表示 %>
+<% content_for :title, "イラスト集 | 元素モンスターズ図鑑" %>
+
+<div class="flex flex-1 flex-col bg-slate-950">
+  <%# メイン: 切替ナビと投稿作品一覧 %>
+  <main class="flex-1 px-5 py-6 sm:px-8 sm:py-8">
+    <section class="mx-auto w-full max-w-7xl">
+      <%# 図鑑表示切替: 周期表とイラスト集を相互に移動 %>
+      <div class="flex justify-center">
+        <nav aria-label="図鑑表示切替" class="flex rounded-lg border border-white/15 bg-slate-900 p-0.5 text-xs font-bold">
+          <%= link_to "周期表", elements_path, data: { turbo: false }, class: "rounded-md px-3 py-1 text-slate-300 transition hover:bg-white/10" %>
+          <span aria-current="page" class="rounded-md bg-cyan-400 px-3 py-1 text-slate-950">イラスト集</span>
+        </nav>
+      </div>
+
+      <%# 見出しと投稿導線 %>
+      <div class="mt-5 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <%= render "shared/section_label", label: "ILLUSTRATION GALLERY" %>
+          <h1 class="mt-2 text-3xl font-black text-white sm:text-4xl">イラスト集</h1>
+          <p class="mt-2 text-sm text-slate-300">元素モンスターを見て、あなたの推し元素を探そう</p>
+        </div>
+        <% if user_signed_in? %>
+          <%= link_to "イラストを投稿", new_illustration_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300" %>
+        <% end %>
+      </div>
+
+      <%# 作品グリッド %>
+      <% if @illustrations.any? %>
+        <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <%= render partial: "card", collection: @illustrations, as: :illustration %>
+        </div>
+      <% else %>
+        <div class="mt-8 rounded-2xl border border-dashed border-slate-600 bg-slate-900/60 p-10 text-center">
+          <p class="text-lg font-bold text-white">まだイラストはありません。</p>
+          <p class="mt-2 text-sm text-slate-400">最初の元素モンスターを投稿してみましょう。</p>
+        </div>
+      <% end %>
+    </section>
+  </main>
+</div>

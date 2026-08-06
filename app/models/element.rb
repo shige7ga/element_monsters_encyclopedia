@@ -1,4 +1,6 @@
 class Element < ApplicationRecord
+  has_many :illustrations, dependent: :destroy
+
   validates :atomic_number, presence: true, uniqueness: true, numericality: { only_integer: true, greater_than: 0 }
   validates :symbol, presence: true, uniqueness: true
   validates :name, :english_name, :common_state, :period, presence: true
