@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_many :illustrations, dependent: :destroy
+
   validates :user_id, presence: true, uniqueness: { case_sensitive: false }
 
   def self.find_for_database_authentication(warden_conditions)

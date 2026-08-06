@@ -1,0 +1,19 @@
+<%# イラスト投稿: 新しい元素モンスターの作品を登録 %>
+<% content_for :title, "イラスト投稿 | 元素モンスターズ図鑑" %>
+
+<div class="flex flex-1 flex-col bg-slate-950">
+  <%# メイン: 投稿フォーム %>
+  <main class="flex-1 px-5 py-10 sm:px-8 sm:py-14">
+    <section class="mx-auto w-full max-w-2xl">
+      <%# ページ見出し %>
+      <p class="text-sm font-semibold tracking-[0.2em] text-cyan-300">NEW ILLUSTRATION</p>
+      <h1 class="mt-2 text-3xl font-black text-white">イラスト投稿</h1>
+      <p class="mt-2 text-sm text-slate-300">作品と覚え方のヒントを図鑑に追加しましょう。</p>
+
+      <%# 投稿フォーム本体 %>
+      <div class="mt-8 rounded-3xl border border-white/15 bg-slate-900 p-6 shadow-2xl shadow-cyan-950/40 sm:p-8">
+        <%= render "form", illustration: @illustration %>
+      </div>
+    </section>
+  </main>
+</div>

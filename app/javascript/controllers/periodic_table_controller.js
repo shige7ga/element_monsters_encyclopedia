@@ -3,6 +3,14 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["popup", "symbol", "name", "detailLink"]
 
+  post(event) {
+    event.preventDefault()
+
+    if (this.activeButton?.dataset.elementPostUrl) {
+      window.location.assign(this.activeButton.dataset.elementPostUrl)
+    }
+  }
+
   open(event) {
     this.close()
 
@@ -13,6 +21,7 @@ export default class extends Controller {
     this.symbolTarget.textContent = elementSymbol
     this.nameTarget.textContent = elementName
     this.detailLinkTarget.href = elementUrl
+
     this.popupTarget.style.left = `${Math.min(rect.left, window.innerWidth - 240)}px`
     this.popupTarget.style.top = `${Math.min(rect.bottom + 10, window.innerHeight - 170)}px`
     this.popupTarget.classList.remove("hidden")

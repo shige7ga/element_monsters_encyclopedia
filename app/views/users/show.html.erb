@@ -3,56 +3,51 @@
   <meta name="turbo-visit-control" content="reload">
 <% end %>
 
-<% content_for :title, "マイページ | 元素モンスターズ図鑑" %>
+<%# ユーザーページ: 投稿者情報と閲覧可能なイラストを表示 %>
+<% content_for :title, "#{@profile_owner ? "マイページ" : "#{@user.name.presence || @user.user_id}さん"} | 元素モンスターズ図鑑" %>
 
 <div class="flex flex-1 flex-col bg-slate-950">
-  <%# メイン: ユーザー情報と次の行動への導線 %>
-  <main class="flex flex-1 items-center px-5 py-16 sm:px-8 sm:py-24">
-    <section class="mx-auto w-full max-w-4xl">
-      <%# ページタイトル・歓迎メッセージ %>
-      <p class="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-1.5 text-sm font-semibold text-cyan-200">
-        MY ELEMENTS
-      </p>
-      <h1 class="mt-5 text-4xl font-black tracking-tight text-white sm:text-5xl">
-        マイページ
-      </h1>
-      <p class="mt-3 text-lg leading-8 text-slate-300">
-        ようこそ、<span class="font-bold text-cyan-200"><%= current_user.name.presence || current_user.user_id %></span>さん。あなたの「推し元素」を見つけにいきましょう。
-      </p>
+  <%# メイン: プロフィールと作品一覧 %>
+  <main class="flex-1 px-5 py-10 sm:px-8 sm:py-14">
+    <section class="mx-auto w-full max-w-6xl">
+      <%# プロフィール見出し %>
+      <p class="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-1.5 text-sm font-semibold text-cyan-200">MY ELEMENTS</p>
+      <h1 class="mt-5 text-4xl font-black tracking-tight text-white sm:text-5xl"><%= @profile_owner ? "マイページ" : "#{@user.name.presence || @user.user_id}さんのページ" %></h1>
+      <% if @profile_owner %>
+        <p class="mt-3 text-lg leading-8 text-slate-300">ようこそ、<span class="font-bold text-cyan-200"><%= @user.name.presence || @user.user_id %></span>さん。あなたの作品を図鑑に追加しましょう。</p>
+      <% end %>
 
-      <%# ユーザープロフィールと図鑑への導線 %>
-      <div class="mt-10 grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
-        <%# プロフィールカード %>
-        <section class="rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-900 p-6 shadow-2xl shadow-cyan-950/50 sm:p-8">
-          <p class="text-sm font-semibold tracking-[0.2em] text-cyan-300">PROFILE</p>
-          <div class="mt-6 flex items-center gap-4">
-            <%# ユーザー名の頭文字アイコン %>
-            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-400 text-2xl font-black text-slate-950">
-              <%= (current_user.name.presence || current_user.user_id).first.upcase %>
-            </div>
-            <div>
-              <p class="text-2xl font-bold text-white"><%= current_user.name.presence || "名前未設定" %></p>
-              <p class="mt-1 text-slate-400">ユーザーID: <%= current_user.user_id %></p>
-            </div>
+      <%# プロフィールカード %>
+      <section class="mt-8 rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-900 p-6 shadow-2xl shadow-cyan-950/50 sm:p-8">
+        <div class="flex items-center gap-4">
+          <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-400 text-2xl font-black text-slate-950"><%= (@user.name.presence || @user.user_id).first.upcase %></div>
+          <div>
+            <p class="text-2xl font-bold text-white"><%= @user.name.presence || @user.user_id %></p>
+            <p class="mt-1 text-sm text-slate-400">ユーザーID: <%= @user.user_id %></p>
           </div>
-          <%# アカウント情報 %>
-          <dl class="mt-8 space-y-4 border-t border-white/10 pt-6 text-sm">
-            <div class="flex justify-between gap-4">
-              <dt class="text-slate-400">ステータス</dt>
-              <dd class="font-medium text-cyan-300">図鑑をはじめよう</dd>
-            </div>
-          </dl>
-        </section>
+        </div>
+      </section>
 
-        <%# 図鑑ページへの案内カード %>
-        <section class="rounded-3xl border border-cyan-300/20 bg-cyan-300/10 p-6 sm:p-8">
-          <p class="text-sm font-semibold tracking-[0.2em] text-cyan-200">NEXT STEP</p>
-          <h2 class="mt-4 text-2xl font-bold text-white">最初の元素に出会おう</h2>
-          <p class="mt-3 leading-7 text-slate-300">元素モンスターを眺めて、気になる元素から学びをはじめましょう。</p>
-          <%= link_to "図鑑を見る", elements_path, data: { turbo: false }, class: "mt-7 inline-flex rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:-translate-y-0.5 hover:bg-cyan-300" %>
-        </section>
-      </div>
+      <%# 投稿作品 %>
+      <section class="mt-10">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold tracking-[0.2em] text-cyan-300">ILLUSTRATIONS</p>
+            <h2 class="mt-1 text-2xl font-black text-white"><%= @profile_owner ? "あなたの投稿" : "投稿作品" %></h2>
+          </div>
+          <% if @profile_owner %>
+            <%= link_to "イラストを投稿", new_illustration_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300" %>
+          <% end %>
+        </div>
+
+        <% if @illustrations.any? %>
+          <div class="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            <%= render partial: "illustrations/card", collection: @illustrations, as: :illustration %>
+          </div>
+        <% else %>
+          <div class="mt-5 rounded-2xl border border-dashed border-slate-600 bg-slate-900/60 p-8 text-center text-sm text-slate-400">まだイラストはありません。</div>
+        <% end %>
+      </section>
     </section>
   </main>
-
 </div>
