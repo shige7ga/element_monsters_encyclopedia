@@ -24,8 +24,10 @@ RSpec.describe "Users", type: :request do
       'alt="水素くん"',
       'alt="ヘリウムウィッチ"',
       'alt="リチウムゴーレム"',
-      "元素モンスターズ"
+      "元素モンスターズ",
+      'href="/assets/application-'
     )
+    expect(response.body).not_to include("application.tailwind.css", "/assets/tailwindcss")
   end
 
   it "ログイン時のトップ画面はマイページへリダイレクトする" do
