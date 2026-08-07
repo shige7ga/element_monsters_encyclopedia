@@ -69,6 +69,17 @@ RSpec.describe "Illustrations", type: :request do
     expect(response).to have_http_status(:not_found)
   end
 
+  it "投稿者が作品を削除すると添付画像も削除する" do
+    sign_in(owner)
+    blob = published_illustration.image.blob
+
+    delete illustration_path(published_illustration)
+
+    expect(response).to redirect_to(illustrations_path)
+    expect(Illustration).not_to exist(published_illustration.id)
+    expect(ActiveStorage::Blob).not_to exist(blob.id)
+  end
+
   it "投稿者以外の削除用URLへのアクセスを拒否する" do
     sign_in(other_user)
 

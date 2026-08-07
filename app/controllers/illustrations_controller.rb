@@ -37,7 +37,10 @@ class IllustrationsController < ApplicationController
   end
 
   def destroy
+    # 作品レコードより先にActive Storage経由で保存先の画像を削除する
+    @illustration.image.purge if @illustration.image.attached?
     @illustration.destroy!
+
     redirect_to illustrations_path, notice: "イラストを削除しました。"
   end
 
