@@ -105,10 +105,32 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Prepare test database and run RSpec
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install JavaScript dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build JavaScript assets
+        run: yarn build
+
+      - name: Build CSS assets
+        run: yarn build:css
+
+      - name: Prepare test database
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
-        run: |
-          bin/rails db:prepare
-          bundle exec rspec
+        run: bin/rails db:prepare
+
+      - name: Run RSpec
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432
+        run: bundle exec rspec
