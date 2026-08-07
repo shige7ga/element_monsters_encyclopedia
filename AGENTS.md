@@ -10,6 +10,7 @@
 - Ruby 3.4系、Rails 8.1系、PostgreSQL、Tailwind CSS、Deviseを使用する。
 - 画像アップロードはActive Storageを窓口とし、Cloudinaryをストレージバックエンドとして使用する。
 - テストはRSpecとFactoryBotを使用して統一する。
+- Solid Queueはprimary DBを使用し、必要なテーブルは通常のdb:migrateで管理する。
 
 ## Tailwind CSS・アセット管理
 
