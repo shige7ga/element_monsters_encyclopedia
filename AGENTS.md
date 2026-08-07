@@ -24,13 +24,13 @@
 - 画像のアップロード、添付、バリデーションはActive Storageで管理し、`has_one_attached`、`has_many_attached`、Active Storageのヘルパーやvariantを使用する。
 - Cloudinaryは保存先、画像変換、CDN配信に使用し、アプリケーションコードからCloudinary APIを直接呼び出さない。
 - `config/storage.yml`には接続情報を環境変数経由で設定し、APIキーなどの秘密情報を直接記載しない。
+- 本番環境は`config.active_storage.service = :cloudinary`を使用し、Cloudinary gemがRenderの`CLOUDINARY_URL`から認証情報を取得する。開発・テスト環境はDiskサービスを維持する。
+- 添付画像を持つ投稿を削除する場合は、レコード削除前にActive Storageの`purge`を実行し、保存先の画像も同期的に削除する。
 
 ## 認証情報と環境変数
 
-- CloudinaryのCloud Name、API Key、API Secretなどの認証情報は、`.env`で管理し、Rails credentialsは使用しない。
 - Docker Composeによる開発環境では`.env`をComposeが読み込むため、アプリで必要な値は`compose.yml`で`web`サービスへ明示的に渡す。Dockerを介さずRailsを起動する場合は、`dotenv-rails`を導入して`.env`を読み込む。
 - `.env`はGit管理せず、`.env.example`には変数名のみを記載して実値を含めない。本番環境では`.env`と同じ変数をデプロイ基盤の環境変数として設定する。
-- 開発・テスト環境と本番環境でCloudinaryの認証情報・アカウントを分離する。
 - 秘密情報をアプリケーションコード、Git管理対象の設定、ログ、エラー画面、コミット、プルリクエスト、Issue、テストコード、スクリーンショットに記載しない。漏えい時は無効化・ローテーション・再設定・動作確認を行う。
 
 ## アップロードの安全性
