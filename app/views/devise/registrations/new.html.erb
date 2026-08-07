@@ -40,11 +40,17 @@
 
       <%# パスワード入力欄と文字数の注意書き %>
       <div>
-        <%= f.label :password, "パスワード", class: "mb-1 block text-sm font-semibold" %>
+        <div class="mb-1 flex items-center gap-2">
+          <%= f.label :password, "パスワード", class: "text-sm font-semibold" %>
+
+          <% if @minimum_password_length %>
+            <p class="text-sm text-slate-500">
+              ※<%= @minimum_password_length %>文字以上で入力してください。
+            </p>
+          <% end %>
+        </div>
         <%= f.password_field :password, autocomplete: "new-password", class: "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-slate-950 focus:ring-1 focus:ring-slate-950" %>
-        <% if @minimum_password_length %>
-          <p class="mt-1 text-sm text-slate-500">パスワードは<%= @minimum_password_length %>文字以上で入力してください。</p>
-        <% end %>
+
         <% if resource.errors[:password].any? %>
           <p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:password).join("、") %></p>
         <% end %>
