@@ -185,6 +185,9 @@ RSpec.describe "Illustrations", type: :request do
     get popular_illustrations_path
 
     expect(response).to have_http_status(:ok)
+    expect(response.body).to include("イラスト集", "元素モンスターを見て、あなたの推し元素を探そう")
+    expect(response.body).not_to include("人気イラスト", "たくさんのいいねを集めた元素モンスターを見てみよう", "いいねした作品")
+    expect(response.body).to include('aria-current="page"', "border-cyan-300 text-cyan-200")
     expect(response.body.index("人気作品")).to be < response.body.index("公開作品")
   end
 

@@ -11,8 +11,6 @@ class IllustrationsController < ApplicationController
   end
 
   def popular
-    @gallery_title = "人気イラスト"
-    @gallery_description = "たくさんのいいねを集めた元素モンスターを見てみよう"
     @illustrations = Illustration.published.popular.includes(:user, :element, :likes).with_attached_image
     render :index
   end

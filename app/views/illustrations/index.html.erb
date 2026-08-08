@@ -3,35 +3,18 @@
 
 <div class="flex flex-1 flex-col bg-slate-950">
   <%# メイン: 切替ナビと投稿作品一覧 %>
-  <main class="flex-1 px-5 py-6 sm:px-8 sm:py-8">
+  <main class="flex-1 px-3 py-1 sm:px-5 sm:py-2">
     <section class="mx-auto w-full max-w-7xl">
-      <%# 図鑑表示切替: 周期表とイラスト集を相互に移動 %>
-      <div class="flex justify-center">
-        <nav aria-label="図鑑表示切替" class="flex rounded-lg border border-white/15 bg-slate-900 p-0.5 text-xs font-bold">
-          <%= link_to "周期表", elements_path, data: { turbo: false }, class: "rounded-md px-3 py-1 text-slate-300 transition hover:bg-white/10" %>
-          <span aria-current="page" class="rounded-md bg-cyan-400 px-3 py-1 text-slate-950">イラスト集</span>
-        </nav>
-      </div>
+      <%# 図鑑表示切替: 両図鑑ページで同じ位置に表示する %>
+      <%= render "shared/catalog_switcher", active: :illustrations %>
 
-      <%# 見出しと投稿導線 %>
-      <div class="mt-5 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <%= render "shared/section_label", label: "ILLUSTRATION GALLERY" %>
-          <h1 class="mt-2 text-3xl font-black text-white sm:text-4xl"><%= @gallery_title || "イラスト集" %></h1>
-          <p class="mt-2 text-sm text-slate-300"><%= @gallery_description || "元素モンスターを見て、あなたの推し元素を探そう" %></p>
-        </div>
-        <% if user_signed_in? %>
-          <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300" %>
-        <% end %>
-      </div>
+      <%# 見出しと投稿導線: 両図鑑ページで同じ余白・高さに揃える %>
+      <%= render "shared/catalog_header", label: "ILLUSTRATION GALLERY", title: (@gallery_title || "イラスト集"), description: (@gallery_description || "元素モンスターを見て、あなたの推し元素を探そう"), header_action: (user_signed_in? ? link_to("イラスト投稿", new_illustration_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300") : nil) %>
 
-      <%# 一覧切替: 新着・人気・自分がいいねした作品を表示する %>
+      <%# 一覧切替: 新着順と人気順を切り替え、選択中の並び順を強調する %>
       <nav aria-label="イラスト一覧切替" class="mt-6 flex flex-wrap gap-2 text-sm font-bold">
-        <%= link_to "新着", illustrations_path, data: { turbo: false }, class: "rounded-lg border border-white/15 px-3 py-2 text-slate-300 transition hover:border-cyan-300 hover:text-cyan-200" %>
-        <%= link_to "人気", popular_illustrations_path, data: { turbo: false }, class: "rounded-lg border border-white/15 px-3 py-2 text-slate-300 transition hover:border-cyan-300 hover:text-cyan-200" %>
-        <% if user_signed_in? %>
-          <%= link_to "いいねした作品", liked_illustrations_path, data: { turbo: false }, class: "rounded-lg border border-white/15 px-3 py-2 text-slate-300 transition hover:border-cyan-300 hover:text-cyan-200" %>
-        <% end %>
+        <%= link_to "新着", illustrations_path, data: { turbo: false }, aria: { current: action_name == "index" ? "page" : nil }, class: "rounded-lg border px-3 py-2 transition #{action_name == "index" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
+        <%= link_to "人気", popular_illustrations_path, data: { turbo: false }, aria: { current: action_name == "popular" ? "page" : nil }, class: "rounded-lg border px-3 py-2 transition #{action_name == "popular" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
       </nav>
 
       <%# 作品グリッド %>
