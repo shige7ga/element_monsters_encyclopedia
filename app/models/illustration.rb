@@ -5,7 +5,8 @@ class Illustration < ApplicationRecord
   belongs_to :user
   belongs_to :element
   has_one_attached :image
-  has_many :likes
+  has_many :likes, dependent: :destroy
+  has_many :liked_by_users, through: :likes, source: :user
   has_many :encyclopedia_entries
 
   validates :user_id, :element_id, :monster_name, presence: true
@@ -16,6 +17,13 @@ class Illustration < ApplicationRecord
 
   scope :published, -> { where(published: true) }
   scope :visible_to, ->(viewer) { viewer ? published.or(where(user: viewer)) : published }
+  scope :popular, -> { left_joins(:likes).group(:id).order(Arel.sql("COUNT(likes.id) DESC"), created_at: :desc) }
+
+  def liked_by?(viewer)
+    return false unless viewer
+
+    likes.loaded? ? likes.any? { |like| like.user_id == viewer.id } : likes.exists?(user: viewer)
+  end
 
   def viewable_by?(viewer)
     published? || user == viewer

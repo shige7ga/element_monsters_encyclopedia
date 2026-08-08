@@ -18,6 +18,6 @@ class UsersController < ApplicationController
 
   def load_illustrations
     viewer = @profile_owner ? current_user : nil
-    @illustrations = @user.illustrations.visible_to(viewer).includes(:element).with_attached_image.order(created_at: :desc)
+    @illustrations = @user.illustrations.visible_to(viewer).includes(:element, :likes).with_attached_image.order(created_at: :desc)
   end
 end

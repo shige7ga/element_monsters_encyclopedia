@@ -47,4 +47,13 @@ RSpec.describe Illustration, type: :model do
     expect(described_class.visible_to(user)).to contain_exactly(published, private_illustration)
     expect(described_class.visible_to(other_private.user)).to contain_exactly(published, other_private)
   end
+
+  it "人気順ではいいね数が多い作品を先に返す" do
+    popular_illustration = create(:illustration, user: user, element: element)
+    less_popular_illustration = create(:illustration, user: user, element: element)
+    create_list(:like, 2, illustration: popular_illustration)
+    create(:like, illustration: less_popular_illustration)
+
+    expect(described_class.popular).to start_with(popular_illustration)
+  end
 end

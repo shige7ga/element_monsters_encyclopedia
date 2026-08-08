@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :illustrations, dependent: :destroy
+  has_many :likes, dependent: :destroy
+  has_many :liked_illustrations, through: :likes, source: :illustration
 
   validates :user_id, presence: true, uniqueness: { case_sensitive: false }
 

@@ -17,13 +17,22 @@
       <div class="mt-5 flex flex-wrap items-end justify-between gap-4">
         <div>
           <%= render "shared/section_label", label: "ILLUSTRATION GALLERY" %>
-          <h1 class="mt-2 text-3xl font-black text-white sm:text-4xl">イラスト集</h1>
-          <p class="mt-2 text-sm text-slate-300">元素モンスターを見て、あなたの推し元素を探そう</p>
+          <h1 class="mt-2 text-3xl font-black text-white sm:text-4xl"><%= @gallery_title || "イラスト集" %></h1>
+          <p class="mt-2 text-sm text-slate-300"><%= @gallery_description || "元素モンスターを見て、あなたの推し元素を探そう" %></p>
         </div>
         <% if user_signed_in? %>
           <%= link_to "イラストを投稿", new_illustration_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300" %>
         <% end %>
       </div>
+
+      <%# 一覧切替: 新着・人気・自分がいいねした作品を表示する %>
+      <nav aria-label="イラスト一覧切替" class="mt-6 flex flex-wrap gap-2 text-sm font-bold">
+        <%= link_to "新着", illustrations_path, data: { turbo: false }, class: "rounded-lg border border-white/15 px-3 py-2 text-slate-300 transition hover:border-cyan-300 hover:text-cyan-200" %>
+        <%= link_to "人気", popular_illustrations_path, data: { turbo: false }, class: "rounded-lg border border-white/15 px-3 py-2 text-slate-300 transition hover:border-cyan-300 hover:text-cyan-200" %>
+        <% if user_signed_in? %>
+          <%= link_to "いいねした作品", liked_illustrations_path, data: { turbo: false }, class: "rounded-lg border border-white/15 px-3 py-2 text-slate-300 transition hover:border-cyan-300 hover:text-cyan-200" %>
+        <% end %>
+      </nav>
 
       <%# 作品グリッド %>
       <% if @illustrations.any? %>
