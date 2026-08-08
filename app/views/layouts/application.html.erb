@@ -6,6 +6,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="元素モンスターズ図鑑">
     <meta name="mobile-web-app-capable" content="yes">
+    <%# ブラウザタブ用: public配下のロゴ画像を直接参照する %>
+    <%= favicon_link_tag "/favicon.png", type: "image/png" %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -24,7 +26,7 @@
         <div class="mx-auto flex max-w-6xl items-center justify-between gap-4">
           <%# サービスロゴ・タイトル %>
           <%= link_to root_path, class: "flex items-center gap-2 text-lg font-bold tracking-tight text-white sm:text-xl" do %>
-            <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-400 font-black text-slate-950">E</span>
+            <%= image_tag "logo.png", alt: "元素モンスターズ図鑑LOGO", class: "h-9 w-9 shrink-0 object-contain sm:h-10 sm:w-10" %>
             <span>元素モンスターズ図鑑</span>
           <% end %>
 
