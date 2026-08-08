@@ -125,4 +125,75 @@ RSpec.describe "Illustrations", type: :request do
     get mypage_path
     expect(response.body).to include("公開作品", "非公開作品")
   end
+
+  it "ログインユーザーはいいねと解除ができ、一覧と詳細に件数を表示する" do
+    sign_in(other_user)
+
+    post illustration_like_path(published_illustration)
+    expect(response).to redirect_to(illustration_path(published_illustration))
+    expect(published_illustration.likes.count).to eq(1)
+
+    get illustrations_path
+    expect(response.body).to include("♥1")
+    expect(response.body).not_to include("♥ いいね済み")
+
+    get illustration_path(published_illustration)
+    expect(response.body).to include("♥1")
+    expect(response.body).not_to include("♥ いいね済み")
+
+    delete illustration_like_path(published_illustration)
+    expect(response).to redirect_to(illustration_path(published_illustration))
+    expect(published_illustration.likes.count).to eq(0)
+
+    get illustration_path(published_illustration)
+    expect(response.body).to include("♡0")
+    expect(response.body).not_to include("♥0")
+  end
+
+  it "同じユーザーが同じイラストへ繰り返しいいねしても1件だけ作成する" do
+    sign_in(other_user)
+
+    2.times { post illustration_like_path(published_illustration) }
+
+    expect(other_user.likes.where(illustration: published_illustration).count).to eq(1)
+  end
+
+  it "未ログインユーザーはいいねできず、ログイン画面へ遷移する" do
+    post illustration_like_path(published_illustration)
+
+    expect(response).to redirect_to(new_user_session_path)
+    expect(Like.count).to eq(0)
+  end
+
+  it "いいねしたイラスト一覧では自分がいいねした作品だけを表示する" do
+    liked_illustration = create(:illustration, element: element, monster_name: "いいね済み作品")
+    create(:like, user: other_user, illustration: liked_illustration)
+    sign_in(other_user)
+
+    get liked_illustrations_path
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("いいねしたイラスト", "いいね済み作品")
+    expect(response.body).not_to include("公開作品")
+  end
+
+  it "人気一覧ではいいね数が多い公開作品を先に表示する" do
+    popular_illustration = create(:illustration, element: element, monster_name: "人気作品")
+    create_list(:like, 2, illustration: popular_illustration)
+    create(:like, illustration: published_illustration)
+
+    get popular_illustrations_path
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body.index("人気作品")).to be < response.body.index("公開作品")
+  end
+
+  it "他人の非公開作品にはいいねできない" do
+    sign_in(other_user)
+
+    post illustration_like_path(private_illustration)
+
+    expect(response).to have_http_status(:not_found)
+    expect(Like.count).to eq(0)
+  end
 end

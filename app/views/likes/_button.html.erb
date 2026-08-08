@@ -1,0 +1,12 @@
+<%# いいね操作: アイコンと件数を一つの操作要素として表示する %>
+<% likes_count = illustration.likes.count %>
+
+<div class="flex justify-end">
+  <% if user_signed_in? && illustration.liked_by?(current_user) %>
+    <%= button_to "♥#{likes_count}", illustration_like_path(illustration), method: :delete, form: { class: "inline", data: { turbo: false } }, aria: { label: "#{illustration.monster_name}のいいねを解除" }, class: "cursor-pointer bg-transparent p-0 text-sm font-bold text-cyan-200 transition hover:text-cyan-100 focus:outline-none focus:text-cyan-100" %>
+  <% elsif user_signed_in? %>
+    <%= button_to "♡#{likes_count}", illustration_like_path(illustration), form: { class: "inline", data: { turbo: false } }, aria: { label: "#{illustration.monster_name}にいいねする" }, class: "cursor-pointer bg-transparent p-0 text-sm font-bold text-cyan-200 transition hover:text-cyan-100 focus:outline-none focus:text-cyan-100" %>
+  <% else %>
+    <%= link_to "♡#{likes_count}", new_user_session_path, data: { turbo: false }, aria: { label: "ログインして#{illustration.monster_name}にいいねする" }, class: "text-sm font-bold text-cyan-200 transition hover:text-cyan-100 focus:outline-none focus:text-cyan-100" %>
+  <% end %>
+</div>

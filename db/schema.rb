@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_07_141748) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_08_053154) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -68,6 +68,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_141748) do
     t.index ["element_id"], name: "index_illustrations_on_element_id"
     t.index ["published"], name: "index_illustrations_on_published"
     t.index ["user_id"], name: "index_illustrations_on_user_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "illustration_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["illustration_id"], name: "index_likes_on_illustration_id"
+    t.index ["user_id", "illustration_id"], name: "index_likes_on_user_id_and_illustration_id", unique: true
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "solid_queue_blocked_executions", force: :cascade do |t|
@@ -210,6 +220,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_141748) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "illustrations", "elements"
   add_foreign_key "illustrations", "users"
+  add_foreign_key "likes", "illustrations"
+  add_foreign_key "likes", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

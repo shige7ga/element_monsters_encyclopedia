@@ -35,6 +35,11 @@
             </div>
           </dl>
 
+          <%# いいね操作: 作品情報とともに件数・作成・解除を表示する %>
+          <div class="mt-6 border-t border-white/10 pt-5">
+            <%= render "likes/button", illustration: @illustration %>
+          </div>
+
           <%# 投稿者本人のみの管理操作 %>
           <% if current_user == @illustration.user %>
             <div class="mt-8 flex flex-wrap gap-4 border-t border-white/10 pt-5 text-sm font-bold">

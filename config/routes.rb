@@ -13,7 +13,14 @@ Rails.application.routes.draw do
   get "mypage", to: "users#mypage", as: :mypage
   resources :users, only: :show
   resources :elements, only: %i[index show]
-  resources :illustrations
+  resources :illustrations do
+    collection do
+      get :liked
+      get :popular
+    end
+
+    resource :like, only: %i[create destroy]
+  end
 
   # Defines the root path route ("/")
   root "home#index"

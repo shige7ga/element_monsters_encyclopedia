@@ -8,6 +8,6 @@ class ElementsController < ApplicationController
 
   def show
     @element = Element.find(params[:id])
-    @illustrations = @element.illustrations.visible_to(current_user).includes(:user).with_attached_image.order(created_at: :desc)
+    @illustrations = @element.illustrations.visible_to(current_user).includes(:user, :likes).with_attached_image.order(created_at: :desc)
   end
 end

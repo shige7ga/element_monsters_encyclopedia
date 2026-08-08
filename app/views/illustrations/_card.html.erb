@@ -18,4 +18,9 @@
       <p class="mt-1 text-xs text-slate-400">投稿者: <%= illustration.user.name.presence || illustration.user.user_id %></p>
     </div>
   <% end %>
+
+  <%# いいね操作: 詳細リンクとネストしない位置に配置する %>
+  <div class="border-t border-white/10 px-4 py-3">
+    <%= render "likes/button", illustration: illustration %>
+  </div>
 </article>

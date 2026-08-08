@@ -3,7 +3,7 @@
   <meta name="turbo-visit-control" content="reload">
 <% end %>
 
-<%# ユーザーページ: 投稿者情報と閲覧可能なイラストを表示 %>
+<%# ユーザーページ: 投稿者情報と、選択した一覧のイラストを表示 %>
 <% content_for :title, "#{@profile_owner ? "マイページ" : "#{@user.name.presence || @user.user_id}さん"} | 元素モンスターズ図鑑" %>
 
 <div class="flex flex-1 flex-col bg-slate-950">
@@ -28,18 +28,31 @@
         </div>
       </section>
 
-      <%# 投稿作品 %>
+      <%# イラスト一覧: 投稿といいね済み作品を切り替える %>
       <section class="mt-10">
+        <% profile_path = @profile_owner ? mypage_path : user_path(@user) %>
+        <% likes_profile_path = @profile_owner ? mypage_path(tab: "likes") : user_path(@user, tab: "likes") %>
+        <% profile_name = @user.name.presence || @user.user_id %>
+        <% posts_title = @profile_owner ? "あなたの投稿" : "#{profile_name}さんの投稿" %>
+        <% likes_title = @profile_owner ? "あなたのいいね一覧" : "#{profile_name}さんのいいね一覧" %>
+
         <div class="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p class="text-sm font-semibold tracking-[0.2em] text-cyan-300">ILLUSTRATIONS</p>
-            <h2 class="mt-1 text-2xl font-black text-white"><%= @profile_owner ? "あなたの投稿" : "投稿作品" %></h2>
+            <h2 class="mt-1 text-2xl font-black text-white"><%= @active_tab == "likes" ? likes_title : posts_title %></h2>
           </div>
           <% if @profile_owner %>
-            <%= link_to "イラストを投稿", new_illustration_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300" %>
+            <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300" %>
           <% end %>
         </div>
 
+        <%# 一覧切替: 選択中のタブを色で示す %>
+        <nav aria-label="ユーザーのイラスト一覧切替" class="mt-5 inline-flex rounded-lg border border-white/15 bg-slate-900 p-0.5 text-sm font-bold">
+          <%= link_to "投稿一覧", profile_path, data: { turbo: false }, aria: { current: @active_tab == "posts" ? "page" : nil }, class: "rounded-md px-4 py-2 transition #{@active_tab == "posts" ? "bg-cyan-400 text-slate-950" : "text-slate-300 hover:bg-white/10"}" %>
+          <%= link_to "いいね一覧", likes_profile_path, data: { turbo: false }, aria: { current: @active_tab == "likes" ? "page" : nil }, class: "rounded-md px-4 py-2 transition #{@active_tab == "likes" ? "bg-cyan-400 text-slate-950" : "text-slate-300 hover:bg-white/10"}" %>
+        </nav>
+
+        <%# 選択中のイラスト一覧: 共通カードを再利用する %>
         <% if @illustrations.any? %>
           <div class="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             <%= render partial: "illustrations/card", collection: @illustrations, as: :illustration %>
