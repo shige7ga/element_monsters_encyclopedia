@@ -21,7 +21,7 @@
           <p class="mt-2 text-sm text-slate-300"><%= @gallery_description || "元素モンスターを見て、あなたの推し元素を探そう" %></p>
         </div>
         <% if user_signed_in? %>
-          <%= link_to "イラストを投稿", new_illustration_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300" %>
+          <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300" %>
         <% end %>
       </div>
 

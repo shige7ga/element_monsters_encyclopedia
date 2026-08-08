@@ -61,7 +61,7 @@ RSpec.describe "Users", type: :request do
     get new_user_registration_path, headers: { "Turbo-Frame" => "registration_modal" }
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('turbo-frame id="registration_modal"', "パスワードは")
+    expect(response.body).to include('turbo-frame id="registration_modal"', "パスワード", "文字以上で入力してください")
   end
 
   it "登録エラーをモーダル内の各入力欄に表示する" do
@@ -111,5 +111,38 @@ RSpec.describe "Users", type: :request do
     expect(response).to have_http_status(:unprocessable_content)
     expect(response.body).to include('turbo-frame id="registration_modal"')
     expect(response.body.scan("text-rose-600").length).to be >= 2
+  end
+
+  it "マイページでは投稿一覧といいね一覧を切り替えられる" do
+    user = create(:user, name: "マイページユーザー")
+    element = create(:element)
+    posted_illustration = create(:illustration, user: user, element: element, monster_name: "自分の投稿")
+    liked_illustration = create(:illustration, element: element, monster_name: "自分がいいねした投稿")
+    create(:like, user: user, illustration: liked_illustration)
+    sign_in(user)
+
+    get mypage_path
+    expect(response.body).to include("あなたの投稿", posted_illustration.monster_name, "投稿一覧", "いいね一覧", "イラスト投稿")
+    expect(response.body).not_to include(liked_illustration.monster_name)
+
+    get mypage_path(tab: "likes")
+    expect(response.body).to include("あなたのいいね一覧", liked_illustration.monster_name)
+    expect(response.body).not_to include(posted_illustration.monster_name)
+  end
+
+  it "他ユーザーのページでも投稿一覧と公開いいね一覧を切り替えられる" do
+    user = create(:user, name: "投稿者")
+    element = create(:element)
+    posted_illustration = create(:illustration, user: user, element: element, monster_name: "投稿者の投稿")
+    liked_illustration = create(:illustration, element: element, monster_name: "投稿者がいいねした投稿")
+    create(:like, user: user, illustration: liked_illustration)
+
+    get user_path(user)
+    expect(response.body).to include("投稿者さんの投稿", posted_illustration.monster_name)
+    expect(response.body).not_to include(liked_illustration.monster_name)
+
+    get user_path(user, tab: "likes")
+    expect(response.body).to include("投稿者さんのいいね一覧", liked_illustration.monster_name)
+    expect(response.body).not_to include(posted_illustration.monster_name)
   end
 end

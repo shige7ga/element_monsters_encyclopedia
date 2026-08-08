@@ -134,14 +134,20 @@ RSpec.describe "Illustrations", type: :request do
     expect(published_illustration.likes.count).to eq(1)
 
     get illustrations_path
-    expect(response.body).to include("♡ 1 いいね", "♥ いいね済み")
+    expect(response.body).to include("♥1")
+    expect(response.body).not_to include("♥ いいね済み")
 
     get illustration_path(published_illustration)
-    expect(response.body).to include("♡ 1 いいね", "♥ いいね済み")
+    expect(response.body).to include("♥1")
+    expect(response.body).not_to include("♥ いいね済み")
 
     delete illustration_like_path(published_illustration)
     expect(response).to redirect_to(illustration_path(published_illustration))
     expect(published_illustration.likes.count).to eq(0)
+
+    get illustration_path(published_illustration)
+    expect(response.body).to include("♡0")
+    expect(response.body).not_to include("♥0")
   end
 
   it "同じユーザーが同じイラストへ繰り返しいいねしても1件だけ作成する" do

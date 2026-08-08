@@ -1,14 +1,12 @@
-<%# いいね操作: 件数を表示し、ログイン状態に応じて作成・解除・ログイン導線を切り替える %>
-<div class="flex items-center justify-between gap-3">
-  <span class="text-xs font-semibold text-slate-400">♡ <%= illustration.likes.size %> いいね</span>
+<%# いいね操作: アイコンと件数を一つの操作要素として表示する %>
+<% likes_count = illustration.likes.count %>
 
-  <% if user_signed_in? %>
-    <% if illustration.liked_by?(current_user) %>
-      <%= button_to "♥ いいね済み", illustration_like_path(illustration), method: :delete, form: { class: "inline", data: { turbo: false } }, class: "rounded-lg border border-rose-300/50 px-3 py-1.5 text-xs font-bold text-rose-200 transition hover:bg-rose-300/10" %>
-    <% else %>
-      <%= button_to "♡ いいね", illustration_like_path(illustration), form: { class: "inline", data: { turbo: false } }, class: "rounded-lg border border-cyan-300/50 px-3 py-1.5 text-xs font-bold text-cyan-200 transition hover:bg-cyan-300/10" %>
-    <% end %>
+<div class="flex justify-end">
+  <% if user_signed_in? && illustration.liked_by?(current_user) %>
+    <%= button_to "♥#{likes_count}", illustration_like_path(illustration), method: :delete, form: { class: "inline", data: { turbo: false } }, aria: { label: "#{illustration.monster_name}のいいねを解除" }, class: "cursor-pointer bg-transparent p-0 text-sm font-bold text-cyan-200 transition hover:text-cyan-100 focus:outline-none focus:text-cyan-100" %>
+  <% elsif user_signed_in? %>
+    <%= button_to "♡#{likes_count}", illustration_like_path(illustration), form: { class: "inline", data: { turbo: false } }, aria: { label: "#{illustration.monster_name}にいいねする" }, class: "cursor-pointer bg-transparent p-0 text-sm font-bold text-cyan-200 transition hover:text-cyan-100 focus:outline-none focus:text-cyan-100" %>
   <% else %>
-    <%= link_to "♡ いいね", new_user_session_path, data: { turbo: false }, class: "rounded-lg border border-slate-600 px-3 py-1.5 text-xs font-bold text-slate-300 transition hover:border-cyan-300 hover:text-cyan-200" %>
+    <%= link_to "♡#{likes_count}", new_user_session_path, data: { turbo: false }, aria: { label: "ログインして#{illustration.monster_name}にいいねする" }, class: "text-sm font-bold text-cyan-200 transition hover:text-cyan-100 focus:outline-none focus:text-cyan-100" %>
   <% end %>
 </div>
