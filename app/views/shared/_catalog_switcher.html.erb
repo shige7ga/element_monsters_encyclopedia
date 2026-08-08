@@ -1,0 +1,16 @@
+<%# 図鑑表示切替: 周期表とイラスト集で同じ位置・高さに揃える %>
+<div class="mt-1 flex justify-center">
+  <nav aria-label="図鑑表示切替" class="flex rounded-lg border border-white/15 bg-slate-900 p-0.5 text-xs font-bold">
+    <% if active == :elements %>
+      <span aria-current="page" class="rounded-md bg-cyan-400 px-3 py-1 text-slate-950">周期表</span>
+    <% else %>
+      <%= link_to "周期表", elements_path, data: { turbo: false }, class: "rounded-md px-3 py-1 text-slate-300 transition hover:bg-white/10" %>
+    <% end %>
+
+    <% if active == :illustrations %>
+      <span aria-current="page" class="rounded-md bg-cyan-400 px-3 py-1 text-slate-950">イラスト集</span>
+    <% else %>
+      <%= link_to "イラスト集", illustrations_path, data: { turbo: false }, class: "rounded-md px-3 py-1 text-slate-300 transition hover:bg-white/10" %>
+    <% end %>
+  </nav>
+</div>
