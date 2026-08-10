@@ -20,26 +20,27 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body data-controller="modal navigation" class="min-h-screen bg-slate-950 text-slate-900 antialiased">
+  <body data-controller="modal navigation" data-action="resize@window->navigation#closeOnDesktop" class="min-h-screen bg-slate-950 text-slate-900 antialiased">
     <div class="flex min-h-screen flex-col bg-slate-950">
       <%# 共通ヘッダー: サービス名とログイン状態別ナビゲーション %>
       <%# ヘッダー操作は通常遷移に統一し、連続操作時のTurbo fetch競合を防ぐ %>
       <header data-turbo="false" class="border-b border-white/10 bg-slate-950/90 px-5 py-4 backdrop-blur sm:px-8">
-        <div class="navbar mx-auto min-h-0 max-w-6xl justify-between gap-4 p-0">
+        <div class="navbar mx-auto min-h-0 max-w-6xl flex-nowrap justify-between gap-4 p-0">
           <%# サービスロゴ・タイトル %>
-          <%= link_to root_path, class: "flex items-center gap-2 text-lg font-bold tracking-tight text-white sm:text-xl" do %>
+          <%= link_to root_path, class: "flex min-w-0 items-center gap-2 text-lg font-bold tracking-tight text-white sm:text-xl" do %>
             <%= image_tag "logo.png", alt: "元素モンスターズ図鑑LOGO", class: "h-9 w-9 shrink-0 object-contain sm:h-10 sm:w-10" %>
-            <span>元素モンスターズ図鑑</span>
+            <span class="truncate">元素モンスターズ図鑑</span>
           <% end %>
 
           <%# PC用ナビゲーション %>
-          <nav aria-label="メインナビゲーション" class="hidden items-center gap-2 text-sm font-semibold sm:flex">
+          <nav aria-label="メインナビゲーション" class="hidden shrink-0 flex-nowrap items-center gap-2 text-sm font-semibold lg:flex">
             <%# 図鑑導線: 認証状態にかかわらず共通で表示 %>
-            <%= link_to "図鑑を見る", elements_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 border-0 bg-cyan-400 px-3 py-2 text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+            <%= link_to "図鑑を見る", elements_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 border-0 bg-cyan-400 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+            <%= link_to "学習する", learning_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 border-0 bg-cyan-400 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
             <% if user_signed_in? %>
-              <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-cyan-300/50 bg-transparent px-3 py-2 text-cyan-200 shadow-none transition hover:bg-cyan-300/10" %>
+              <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 border-0 bg-cyan-400 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
               <%= link_to "マイページ", mypage_path, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-cyan-300 hover:bg-white/10" %>
-              <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-cyan-300 hover:bg-white/10" %>
+              <%= button_to "ログアウト", destroy_user_session_path, method: :delete, form: { class: "shrink-0" }, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-cyan-300 hover:bg-white/10" %>
             <% else %>
               <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-cyan-300 hover:bg-white/10">ユーザー登録</button>
               <button type="button" data-action="modal#open" data-modal-dialog-param="login" class="btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-cyan-300 hover:bg-white/10">ログイン</button>
@@ -47,23 +48,24 @@
           </nav>
 
           <%# モバイル用ハンバーガーボタン %>
-          <button type="button" data-navigation-target="button" data-action="navigation#toggle" aria-label="メニューを開く" aria-expanded="false" class="btn btn-ghost btn-square btn-sm rounded-lg p-2 text-white transition hover:bg-white/10 sm:hidden">
+          <button type="button" data-navigation-target="button" data-action="navigation#toggle" aria-label="メニューを開く" aria-controls="mobile-navigation" aria-expanded="false" class="btn btn-ghost btn-square btn-sm flex flex-col justify-center gap-1.5 rounded-lg p-2 text-white transition hover:bg-white/10 lg:hidden">
             <span class="block h-0.5 w-6 bg-current"></span>
-            <span class="mt-1.5 block h-0.5 w-6 bg-current"></span>
-            <span class="mt-1.5 block h-0.5 w-6 bg-current"></span>
+            <span class="block h-0.5 w-6 bg-current"></span>
+            <span class="block h-0.5 w-6 bg-current"></span>
           </button>
         </div>
       </header>
 
       <%# モバイル用ナビゲーション: 枠線を付けない %>
-      <nav data-turbo="false" data-navigation-target="menu" aria-label="モバイルメインナビゲーション" class="hidden border-b border-white/10 bg-slate-900 px-5 py-3 sm:hidden">
+      <nav id="mobile-navigation" data-turbo="false" data-navigation-target="menu" aria-label="モバイルメインナビゲーション" class="hidden border-b border-white/10 bg-slate-900 px-5 py-3 lg:hidden">
         <div class="mx-auto flex max-w-6xl flex-col gap-2 text-sm font-semibold">
           <%# 図鑑導線: モバイルでも認証状態にかかわらず共通で表示 %>
-          <%= link_to "図鑑を見る", elements_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 border-0 bg-cyan-400 px-3 py-2 text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+          <%= link_to "図鑑を見る", elements_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 w-full justify-start border-0 bg-cyan-400 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+          <%= link_to "学習する", learning_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 w-full justify-start border-0 bg-cyan-400 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
           <% if user_signed_in? %>
-            <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-cyan-200 shadow-none transition hover:bg-white/10" %>
+            <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 w-full justify-start border-0 bg-cyan-400 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
             <%= link_to "マイページ", mypage_path, class: "btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-slate-200 shadow-none transition hover:bg-white/10" %>
-            <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-ghost h-auto min-h-0 w-full justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-left text-white shadow-none transition hover:bg-white/10" %>
+            <%= button_to "ログアウト", destroy_user_session_path, method: :delete, form: { class: "w-full" }, class: "btn btn-ghost h-auto min-h-0 w-full justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-left text-white shadow-none transition hover:bg-white/10" %>
           <% else %>
             <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-left text-slate-200 shadow-none transition hover:bg-white/10">ユーザー登録</button>
             <button type="button" data-action="modal#open" data-modal-dialog-param="login" class="btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-left text-slate-200 shadow-none transition hover:bg-white/10">ログイン</button>

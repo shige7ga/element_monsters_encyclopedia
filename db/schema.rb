@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_08_053154) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_11_010000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -55,6 +55,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_08_053154) do
     t.datetime "updated_at", null: false
     t.index ["atomic_number"], name: "index_elements_on_atomic_number", unique: true
     t.index ["symbol"], name: "index_elements_on_symbol", unique: true
+  end
+
+  create_table "game_sessions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "score", null: false
+    t.integer "total_questions", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_game_sessions_on_user_id"
   end
 
   create_table "illustrations", force: :cascade do |t|
@@ -218,6 +227,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_08_053154) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "game_sessions", "users"
   add_foreign_key "illustrations", "elements"
   add_foreign_key "illustrations", "users"
   add_foreign_key "likes", "illustrations"

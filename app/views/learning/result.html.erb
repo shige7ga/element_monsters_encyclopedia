@@ -1,0 +1,33 @@
+<%# 学習結果画面: 画面内で結果確認と再挑戦・周期表への遷移を完結させる %>
+<% content_for :title, "学習結果 | 元素モンスターズ図鑑" %>
+
+<div class="flex flex-1 flex-col bg-slate-950">
+  <main class="flex flex-1 items-center px-5 py-5 sm:px-8 sm:py-6">
+    <section class="card mx-auto w-full max-w-xl rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-950 p-5 text-center shadow-2xl shadow-cyan-950/40 sm:p-7">
+      <%# 結果の要約 %>
+      <%= render "shared/section_label", label: "RESULT" %>
+      <h1 class="mt-2 text-3xl font-black text-white sm:text-4xl">学習結果</h1>
+      <p class="mt-1 text-sm text-slate-300">10問のクイズを完了しました。</p>
+
+      <%# 正解数と正答率 %>
+      <div class="mt-5 rounded-2xl border border-cyan-300/30 bg-cyan-300/10 p-5">
+        <p class="text-sm font-bold tracking-[0.2em] text-cyan-200">SCORE</p>
+        <p class="mt-1 text-5xl font-black text-white"><%= @quiz["score"] %> / <%= @quiz["element_ids"].length %></p>
+        <p class="mt-2 text-lg font-bold text-cyan-100">正答率 <%= @accuracy_percentage %>%</p>
+      </div>
+
+      <%# ログイン時の保存案内 %>
+      <% if user_signed_in? && @game_session %>
+        <p class="mt-4 text-sm text-slate-200">今回の結果を学習履歴に保存しました。</p>
+      <% elsif !user_signed_in? %>
+        <p class="mt-4 text-sm text-slate-300">ログインすると結果を学習履歴へ保存できます。</p>
+      <% end %>
+
+      <%# 再挑戦・周期表への導線 %>
+      <div class="mt-6 grid gap-3 sm:grid-cols-2">
+        <%= button_to "もう一度挑戦", learning_restart_path, method: :post, form: { data: { turbo: false } }, class: "btn h-auto min-h-0 w-full rounded-xl border-0 bg-cyan-400 px-5 py-3 font-bold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+        <%= link_to "周期表へ戻る", elements_path, data: { turbo: false }, class: "btn h-auto min-h-0 w-full rounded-xl border border-white bg-transparent px-5 py-3 font-bold text-white shadow-none transition hover:border-cyan-300 hover:bg-white/10" %>
+      </div>
+    </section>
+  </main>
+</div>
