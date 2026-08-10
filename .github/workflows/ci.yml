@@ -16,14 +16,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 20
-          cache: yarn
+          node-version: 20.20.2
 
       - name: Enable Corepack
         run: corepack enable
 
       - name: Install JavaScript dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Build JavaScript and CSS assets
         run: |
@@ -108,14 +107,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 20
-          cache: yarn
+          node-version: 20.20.2
 
       - name: Enable Corepack
         run: corepack enable
 
       - name: Install JavaScript dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Build JavaScript assets
         run: yarn build

@@ -38,3 +38,6 @@
 !/app/assets/builds/.keep
 
 /node_modules
+
+# Modern Yarnがローカルに生成するインストール状態。依存関係はyarn.lockで管理する。
+/.yarn/install-state.gz

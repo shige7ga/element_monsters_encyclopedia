@@ -1,25 +1,18 @@
 # ベースイメージを指定（Ruby 3.4.10）
 FROM ruby:3.4.10
 
+# 開発・本番で同じNode.jsを使用する
+ARG NODE_VERSION=20.20.2
+
 # 日本語対応の環境変数設定
 ENV LANG C.UTF-8
 # タイムゾーンを日本に設定
 ENV TZ Asia/Tokyo
 
-# Node.js 20をインストールできるように公式リポジトリを登録
+# Rails開発に必要なパッケージと固定バージョンのNode.jsをインストール
 RUN apt-get update -qq \
-&& apt-get install -y ca-certificates curl gnupg \
-&& mkdir -p /etc/apt/keyrings \
-&& curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
-&& NODE_MAJOR=20 \
-&& echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
-
-# Rails開発に必要なパッケージをインストール
-# corepack有効化(yarnやpnpmを利用可に設定)
-# aptのパッケージ一覧キャッシュを削除
-RUN apt-get update -qq \
-&& apt-get install -y build-essential libpq-dev nodejs vim \
-&& corepack enable \
+&& apt-get install -y build-essential ca-certificates curl libpq-dev vim xz-utils \
+&& curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" | tar -xJ -C /usr/local --strip-components=1 \
 && rm -rf /var/lib/apt/lists/*
 
 # アプリケーションディレクトリをコンテナ内に作成
@@ -29,5 +22,10 @@ WORKDIR /myapp
 
 # Bundlerをインストール（Rubyのパッケージ管理ツール）
 RUN gem install bundler
+
+# packageManagerで固定したYarnをCorepack経由でビルド時に準備する
+COPY package.json yarn.lock .yarnrc.yml ./
+RUN corepack enable && corepack install
+
 # ホスト側のアプリケーションのコードをコンテナ内にコピー
 COPY . /myapp
