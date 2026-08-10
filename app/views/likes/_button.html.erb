@@ -1,5 +1,5 @@
 <%# いいね操作: アイコンと件数を一つの操作要素として表示する %>
-<% likes_count = illustration.likes.count %>
+<% likes_count = illustration.likes.size %>
 
 <div class="flex justify-end">
   <% if user_signed_in? && illustration.liked_by?(current_user) %>
