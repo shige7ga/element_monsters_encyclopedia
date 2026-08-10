@@ -13,6 +13,12 @@ Rails.application.routes.draw do
   get "mypage", to: "users#mypage", as: :mypage
   resources :users, only: :show
   resources :elements, only: %i[index show]
+  # 元素名4択クイズ。問題セットはブラウザセッションに保持する。
+  get "learning", to: "learning#show"
+  post "learning/answer", to: "learning#answer", as: :learning_answer
+  post "learning/next", to: "learning#next_question", as: :learning_next
+  get "learning/result", to: "learning#result", as: :learning_result
+  post "learning/restart", to: "learning#restart", as: :learning_restart
   resources :illustrations do
     collection do
       get :liked

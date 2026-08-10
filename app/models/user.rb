@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :illustrations, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :liked_illustrations, through: :likes, source: :illustration
+  has_many :game_sessions, dependent: :destroy
 
   validates :user_id, presence: true, uniqueness: { case_sensitive: false }
 

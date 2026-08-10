@@ -36,6 +36,7 @@
           <nav aria-label="メインナビゲーション" class="hidden items-center gap-2 text-sm font-semibold sm:flex">
             <%# 図鑑導線: 認証状態にかかわらず共通で表示 %>
             <%= link_to "図鑑を見る", elements_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 border-0 bg-cyan-400 px-3 py-2 text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+          <%= link_to "学習する", learning_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-cyan-300/50 bg-transparent px-3 py-2 text-cyan-200 shadow-none transition hover:bg-cyan-300/10" %>
             <% if user_signed_in? %>
               <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-cyan-300/50 bg-transparent px-3 py-2 text-cyan-200 shadow-none transition hover:bg-cyan-300/10" %>
               <%= link_to "マイページ", mypage_path, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-cyan-300 hover:bg-white/10" %>
@@ -60,6 +61,7 @@
         <div class="mx-auto flex max-w-6xl flex-col gap-2 text-sm font-semibold">
           <%# 図鑑導線: モバイルでも認証状態にかかわらず共通で表示 %>
           <%= link_to "図鑑を見る", elements_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 border-0 bg-cyan-400 px-3 py-2 text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+          <%= link_to "学習する", learning_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-cyan-300/50 bg-transparent px-3 py-2 text-cyan-200 shadow-none transition hover:bg-cyan-300/10" %>
           <% if user_signed_in? %>
             <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-cyan-200 shadow-none transition hover:bg-white/10" %>
             <%= link_to "マイページ", mypage_path, class: "btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-slate-200 shadow-none transition hover:bg-white/10" %>
