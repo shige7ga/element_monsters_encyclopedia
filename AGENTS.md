@@ -19,6 +19,9 @@
 - 開発時のCSS監視には`yarn build:css --watch`を使用し、通常の開発サーバー起動には`bin/dev`を使用する。
 - レイアウトではビルド済みの`application.css`のみを読み込む。`@import "tailwindcss";`を入力ファイル以外へ書かず、未処理のままブラウザへ配信しない。
 - Tailwind CSSの別方式を追加せず、Node.js版Tailwindと`cssbundling-rails`の構成を維持する。
+- UIは原則daisyUIコンポーネントを優先し、daisyUIで不足する場合のみTailwind Utilityを併用する。
+- daisyUIを利用する場合も、既存のブランドカラー・デザイン方針を維持する。
+- 新規UIで独自CSSを増やす前にdaisyUIコンポーネントを検討し、不要な全面リデザインは行わない。
 
 ## 画像管理
 

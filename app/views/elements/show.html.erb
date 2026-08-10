@@ -9,7 +9,7 @@
       <%= button_to "← 周期表へ戻る", elements_path, method: :get, form: { data: { turbo: false } }, class: "border-0 bg-transparent p-0 text-sm font-bold text-cyan-300 transition hover:text-cyan-100" %>
 
       <%# 元素情報カード: 原子番号から説明までを一つのカードに集約 %>
-      <section class="mt-5 rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-950 p-5 shadow-2xl shadow-cyan-950/40 sm:p-8">
+      <section class="card mt-5 rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-950 p-5 shadow-2xl shadow-cyan-950/40 sm:p-8">
         <div class="flex flex-col gap-5 sm:flex-row sm:items-center">
           <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/40 bg-cyan-300/10 text-3xl font-black text-cyan-200 sm:h-24 sm:w-24 sm:text-4xl"><%= @element.symbol %></div>
           <div>
@@ -38,7 +38,7 @@
         <div class="flex flex-wrap items-center justify-between gap-3">
           <%= render "shared/section_label", label: "ILLUSTRATIONS" %>
           <% if user_signed_in? %>
-            <%= link_to "この元素を投稿する", new_illustration_path(element_id: @element.id), data: { turbo: false }, class: "rounded-xl border border-cyan-300/50 px-4 py-2 text-sm font-bold text-cyan-200 transition hover:bg-cyan-300/10" %>
+            <%= link_to "この元素を投稿する", new_illustration_path(element_id: @element.id), data: { turbo: false }, class: "btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-sm font-bold text-cyan-200 transition hover:bg-cyan-300/10" %>
           <% end %>
         </div>
 
@@ -47,7 +47,7 @@
             <%= render partial: "illustrations/card", collection: @illustrations, as: :illustration %>
           </div>
         <% else %>
-          <div class="mt-5 rounded-2xl border border-dashed border-slate-600 bg-slate-900/60 p-8 text-center text-sm text-slate-400">この元素のイラストはまだありません。</div>
+          <div class="alert mt-5 rounded-2xl border border-dashed border-slate-600 bg-slate-900/60 p-8 text-center text-sm text-slate-400">この元素のイラストはまだありません。</div>
         <% end %>
       </section>
     </section>
