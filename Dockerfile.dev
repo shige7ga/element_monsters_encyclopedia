@@ -10,11 +10,9 @@ ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
 
 # Rails開発に必要なパッケージと固定バージョンのNode.jsをインストール
-# Corepackを有効化し、package.jsonで固定したModern Yarnを利用する
 RUN apt-get update -qq \
 && apt-get install -y build-essential ca-certificates curl libpq-dev vim xz-utils \
 && curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" | tar -xJ -C /usr/local --strip-components=1 \
-&& corepack enable \
 && rm -rf /var/lib/apt/lists/*
 
 # アプリケーションディレクトリをコンテナ内に作成
@@ -24,5 +22,10 @@ WORKDIR /myapp
 
 # Bundlerをインストール（Rubyのパッケージ管理ツール）
 RUN gem install bundler
+
+# packageManagerで固定したYarnをCorepack経由でビルド時に準備する
+COPY package.json yarn.lock .yarnrc.yml ./
+RUN corepack enable && corepack install
+
 # ホスト側のアプリケーションのコードをコンテナ内にコピー
 COPY . /myapp
