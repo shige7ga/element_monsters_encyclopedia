@@ -18,7 +18,7 @@
       <% end %>
 
       <%# プロフィールカード %>
-      <section class="mt-8 rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-900 p-6 shadow-2xl shadow-cyan-950/50 sm:p-8">
+      <section class="card mt-8 rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-900 p-6 shadow-2xl shadow-cyan-950/50 sm:p-8">
         <div class="flex items-center gap-4">
           <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-400 text-2xl font-black text-slate-950"><%= (@user.name.presence || @user.user_id).first.upcase %></div>
           <div>
@@ -58,7 +58,7 @@
             <%= render partial: "illustrations/card", collection: @illustrations, as: :illustration %>
           </div>
         <% else %>
-          <div class="mt-5 rounded-2xl border border-dashed border-slate-600 bg-slate-900/60 p-8 text-center text-sm text-slate-400">まだイラストはありません。</div>
+          <div class="alert mt-5 rounded-2xl border border-dashed border-slate-600 bg-slate-900/60 p-8 text-center text-sm text-slate-400">まだイラストはありません。</div>
         <% end %>
       </section>
     </section>

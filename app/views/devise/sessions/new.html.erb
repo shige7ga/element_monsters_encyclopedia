@@ -1,17 +1,17 @@
 <%# ログインモーダル用Turbo Frame %>
-<%= turbo_frame_tag "login_modal" do %>
+<%= turbo_frame_tag "login_modal", class: "modal-box w-full max-w-md rounded-2xl border border-slate-200 bg-white p-0 text-slate-900 shadow-2xl" do %>
   <div class="p-6 sm:p-8">
     <%# モーダルタイトル・閉じるボタン %>
     <div class="flex items-center justify-between">
       <h2 class="text-2xl font-bold">ログイン</h2>
-      <button type="button" data-action="modal#close" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100" aria-label="閉じる">
+      <button type="button" data-action="modal#close" class="btn btn-ghost btn-square btn-sm rounded-lg p-2 text-slate-500 hover:bg-slate-100" aria-label="閉じる">
         ✕
       </button>
     </div>
 
     <%# 認証情報が一致しない場合のエラー %>
     <% if flash[:alert].present? %>
-      <p role="alert" class="mt-4 text-sm text-rose-600"><%= flash[:alert] %></p>
+      <p role="alert" class="alert alert-error mt-4 text-sm text-rose-600"><%= flash[:alert] %></p>
     <% end %>
 
     <%# ログインフォーム %>
@@ -19,7 +19,7 @@
       <%# メールアドレスまたはユーザーID入力欄 %>
       <div>
         <%= f.label :login, "メールアドレスまたはユーザーID", class: "mb-1 block text-sm font-semibold" %>
-        <%= f.text_field :login, autofocus: true, autocomplete: "username", class: "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-slate-950 focus:ring-1 focus:ring-slate-950" %>
+        <%= f.text_field :login, autofocus: true, autocomplete: "username", class: "input input-bordered w-full rounded-lg border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-slate-950 focus:ring-1 focus:ring-slate-950" %>
         <% if resource.errors[:login].any? %>
           <p class="mt-1 text-sm text-rose-600"><%= resource.errors.messages_for(:login).join("、") %></p>
         <% end %>
@@ -28,7 +28,7 @@
       <%# パスワード入力欄 %>
       <div>
         <%= f.label :password, "パスワード", class: "mb-1 block text-sm font-semibold" %>
-        <%= f.password_field :password, autocomplete: "current-password", class: "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-slate-950 focus:ring-1 focus:ring-slate-950" %>
+        <%= f.password_field :password, autocomplete: "current-password", class: "input input-bordered w-full rounded-lg border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-slate-950 focus:ring-1 focus:ring-slate-950" %>
         <% if resource.errors[:password].any? %>
           <p class="mt-1 text-sm text-rose-600"><%= resource.errors.full_messages_for(:password).join("、") %></p>
         <% end %>
@@ -37,13 +37,13 @@
       <%# ログイン状態保持チェックボックス %>
       <% if devise_mapping.rememberable? %>
         <div class="flex items-center gap-2">
-          <%= f.check_box :remember_me, class: "rounded border-slate-300 text-cyan-500" %>
+          <%= f.check_box :remember_me, class: "checkbox checkbox-sm rounded border-slate-300 text-cyan-500" %>
           <%= f.label :remember_me, "ログイン状態を保持する", class: "text-sm" %>
         </div>
       <% end %>
 
       <%# ログインボタン %>
-      <%= f.submit "ログイン", class: "w-full rounded-lg bg-cyan-500 px-4 py-3 font-bold text-slate-950 hover:bg-cyan-400" %>
+      <%= f.submit "ログイン", class: "btn h-auto min-h-0 w-full rounded-lg bg-cyan-500 px-4 py-3 font-bold text-slate-950 hover:bg-cyan-400" %>
     <% end %>
   </div>
 <% end %>

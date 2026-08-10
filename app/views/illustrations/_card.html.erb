@@ -1,5 +1,5 @@
 <%# イラストカード: 正方形の背景内に画像全体を表示し、詳細ページへ導く %>
-<article class="group overflow-hidden rounded-2xl border border-white/15 bg-slate-900 shadow-lg shadow-cyan-950/30 transition hover:-translate-y-1 hover:border-cyan-300/50">
+<article class="card group overflow-hidden rounded-2xl border border-white/15 bg-slate-900 shadow-lg shadow-cyan-950/30 transition hover:-translate-y-1 hover:border-cyan-300/50">
   <%= link_to illustration_path(illustration), data: { turbo: false }, class: "block" do %>
     <%# 投稿画像: 正方形枠を維持し、縦横比を変えずに中央表示 %>
     <div class="flex aspect-square w-full items-center justify-center overflow-hidden bg-slate-950 p-2" style="aspect-ratio: 1 / 1;">
@@ -11,7 +11,7 @@
       <div class="flex items-start justify-between gap-2">
         <h3 class="font-bold text-white"><%= illustration.monster_name %></h3>
         <% unless illustration.published? %>
-          <span class="shrink-0 rounded-full border border-amber-300/40 bg-amber-300/15 px-2 py-0.5 text-[0.65rem] font-bold text-amber-100">非公開</span>
+          <span class="badge shrink-0 rounded-full border border-amber-300/40 bg-amber-300/15 px-2 py-0.5 text-[0.65rem] font-bold text-amber-100">非公開</span>
         <% end %>
       </div>
       <p class="mt-2 text-sm text-cyan-200"><%= illustration.element.symbol %> · <%= illustration.element.name %></p>

@@ -61,14 +61,14 @@ RSpec.describe "Users", type: :request do
     get new_user_registration_path, headers: { "Turbo-Frame" => "registration_modal" }
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('turbo-frame id="registration_modal"', "パスワード", "文字以上で入力してください")
+    expect(response.body).to include('<turbo-frame', 'id="registration_modal"', "パスワード", "文字以上で入力してください")
   end
 
   it "登録エラーをモーダル内の各入力欄に表示する" do
     post user_registration_path, params: { user: {} }, headers: { "Turbo-Frame" => "registration_modal" }
 
     expect(response).to have_http_status(:unprocessable_content)
-    expect(response.body).to include('turbo-frame id="registration_modal"')
+    expect(response.body).to include('<turbo-frame', 'id="registration_modal"')
     expect(response.body.scan("text-rose-600").length).to be >= 3
   end
 
@@ -109,7 +109,7 @@ RSpec.describe "Users", type: :request do
          headers: { "Turbo-Frame" => "registration_modal" }
 
     expect(response).to have_http_status(:unprocessable_content)
-    expect(response.body).to include('turbo-frame id="registration_modal"')
+    expect(response.body).to include('<turbo-frame', 'id="registration_modal"')
     expect(response.body.scan("text-rose-600").length).to be >= 2
   end
 
