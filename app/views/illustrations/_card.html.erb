@@ -3,7 +3,10 @@
   <%= link_to illustration_path(illustration), data: { turbo: false }, class: "block" do %>
     <%# 投稿画像: 正方形枠を維持し、縦横比を変えずに中央表示 %>
     <div class="flex aspect-square w-full items-center justify-center overflow-hidden bg-slate-950 p-2" style="aspect-ratio: 1 / 1;">
-      <%= image_tag illustration.image, alt: illustration.monster_name, class: "block max-h-full max-w-full object-contain", style: "width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; object-position: center;" %>
+      <%# 一時的に検証のために無効化 %>
+      <% if false  %>
+        <%= image_tag illustration.image, alt: illustration.monster_name, class: "block max-h-full max-w-full object-contain", style: "width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; object-position: center;" %>
+      <% end %>
     </div>
 
     <%# モンスター名と元素情報 %>
