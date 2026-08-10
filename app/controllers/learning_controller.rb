@@ -1,6 +1,11 @@
 class LearningController < ApplicationController
   QUESTION_COUNT = 10
 
+  # 学習機能を追加しやすいよう、クイズ開始前の入口を分離する。
+  def index
+    @game_session_count = current_user&.game_sessions&.count || 0
+  end
+
   def show
     @quiz = quiz_state || start_quiz
     return unless @quiz
@@ -10,8 +15,8 @@ class LearningController < ApplicationController
 
   def answer
     quiz = quiz_state || start_quiz
-    return redirect_to learning_path unless quiz
-    return redirect_to learning_path if quiz["answered"]
+    return redirect_to learning_quiz_path unless quiz
+    return redirect_to learning_quiz_path if quiz["answered"]
 
     element = current_element(quiz)
     selected_element_id = params[:element_id].to_i
@@ -23,12 +28,12 @@ class LearningController < ApplicationController
     quiz["score"] += 1 if correct
     save_quiz(quiz)
 
-    redirect_to learning_path
+    redirect_to learning_quiz_path
   end
 
   def next_question
     quiz = quiz_state
-    return redirect_to learning_path unless quiz&.fetch("answered", false)
+    return redirect_to learning_quiz_path unless quiz&.fetch("answered", false)
 
     if quiz["current_index"] + 1 >= quiz["element_ids"].length
       quiz["completed"] = true
@@ -41,7 +46,7 @@ class LearningController < ApplicationController
       quiz.delete("selected_element_id")
       quiz.delete("correct")
       save_quiz(quiz)
-      redirect_to learning_path
+      redirect_to learning_quiz_path
     end
   end
 
@@ -55,7 +60,7 @@ class LearningController < ApplicationController
 
   def restart
     session.delete(:learning_quiz)
-    redirect_to learning_path
+    redirect_to learning_quiz_path
   end
 
   private

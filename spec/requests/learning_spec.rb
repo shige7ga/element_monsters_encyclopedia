@@ -7,6 +7,17 @@ RSpec.describe "Learning", type: :request do
     allow_any_instance_of(LearningController).to receive(:random_question_ids).and_return(elements.map(&:id))
   end
 
+  it "学習ダッシュボードにクイズ開始導線とログインユーザーの実施回数を表示する" do
+    user = create(:user)
+    create_list(:game_session, 2, user: user)
+    sign_in(user)
+
+    get learning_path
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("クイズを始める", "これまでのクイズ実施回数", '>2<span', 'href="/learning/quiz"')
+  end
+
   it "重複なしで10問出題し、正しい元素名を選ぶと正解になる" do
     question_symbols = answer_all_questions_correctly
 
@@ -19,7 +30,7 @@ RSpec.describe "Learning", type: :request do
   end
 
   it "誤った元素名を選ぶと不正解と正しい元素記号・元素名を表示する" do
-    get learning_path
+    get learning_quiz_path
     question = displayed_question
     incorrect_choice = elements.find { |element| element != question }
 
@@ -32,7 +43,7 @@ RSpec.describe "Learning", type: :request do
   it "公開済みイラストがある元素では紐付くイラストを表示する" do
     illustration = create(:illustration, element: elements.first, published: true, monster_name: "水素モンスター")
 
-    get learning_path
+    get learning_quiz_path
 
     expect(response.body).to include("水素モンスター")
     expect(response.body).not_to include("イラスト未投稿")
@@ -40,7 +51,7 @@ RSpec.describe "Learning", type: :request do
   end
 
   it "公開済みイラストがない元素では未投稿メッセージを表示する" do
-    get learning_path
+    get learning_quiz_path
 
     expect(response.body).to include("イラスト未投稿")
   end
@@ -62,7 +73,7 @@ RSpec.describe "Learning", type: :request do
     question_symbols = []
 
     10.times do |index|
-      get learning_path
+      get learning_quiz_path
       question = displayed_question
       question_symbols << question.symbol
 
