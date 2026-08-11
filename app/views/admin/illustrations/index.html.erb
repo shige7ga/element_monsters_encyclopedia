@@ -1,0 +1,49 @@
+<%# 管理用イラスト一覧: 公開状態を含む投稿情報を一覧で確認する %>
+<% content_for :title, "イラスト一覧 | 管理画面 | 元素モンスターズ図鑑" %>
+
+<div class="flex flex-1 flex-col bg-slate-950">
+  <main class="flex-1 px-5 py-8 sm:px-8 sm:py-12">
+    <section class="mx-auto w-full max-w-6xl">
+      <%# 見出しと管理画面への戻り導線 %>
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="text-sm font-semibold tracking-[0.16em] text-amber-200">ADMIN / ILLUSTRATIONS</p>
+          <h1 class="mt-2 text-3xl font-black text-white sm:text-4xl">イラスト一覧</h1>
+        </div>
+        <%= link_to "管理画面へ戻る", admin_root_path, class: "btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-cyan-200 shadow-none transition hover:bg-cyan-300/10" %>
+      </div>
+
+      <%# 投稿一覧テーブル %>
+      <div class="mt-8 overflow-x-auto rounded-2xl border border-white/15 bg-slate-900">
+        <table class="table">
+          <thead>
+            <tr class="border-white/10 text-slate-400">
+              <th>モンスター名</th>
+              <th>元素</th>
+              <th>投稿者</th>
+              <th>公開状態</th>
+              <th>登録日</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @illustrations.each do |illustration| %>
+              <tr class="border-white/10 text-slate-200">
+                <td class="font-bold text-white"><%= illustration.monster_name %></td>
+                <td><%= illustration.element.symbol %> · <%= illustration.element.name %></td>
+                <td><%= illustration.user.name.presence || illustration.user.user_id %></td>
+                <td>
+                  <% if illustration.published? %>
+                    <span class="badge border border-emerald-300/40 bg-emerald-300/15 text-emerald-100">公開</span>
+                  <% else %>
+                    <span class="badge border border-amber-300/40 bg-amber-300/15 text-amber-100">非公開</span>
+                  <% end %>
+                </td>
+                <td><%= l(illustration.created_at, format: :short) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
