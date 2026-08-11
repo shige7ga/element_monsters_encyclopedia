@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe "Encyclopedia entries", type: :request do
   let(:user) { create(:user) }
-  let(:element) { create(:element, atomic_number: 1, symbol: "H", name: "水素") }
-  let(:next_element) { create(:element, atomic_number: 2, symbol: "He", name: "ヘリウム") }
+  let(:element) { create(:element) }
+  let(:next_element) { create(:element) }
   let(:illustration) { create(:illustration, element: element, published: true, monster_name: "水素モンスター") }
 
   it "未ログイン時は推し元素図鑑を閲覧できない" do
@@ -48,10 +48,13 @@ RSpec.describe "Encyclopedia entries", type: :request do
     get encyclopedia_entries_path
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include("推し元素図鑑", "あなたの一推しの元素を登録しよう", "No. 1", "No. 2", "水素モンスター", "未登録")
+    element_number_label = "No. #{element.atomic_number}"
+    next_element_number_label = "No. #{next_element.atomic_number}"
+
+    expect(response.body).to include("推し元素図鑑", "あなたの一推しの元素を登録しよう", element_number_label, next_element_number_label, "水素モンスター", "未登録")
     expect(response.body).to include('href="/illustrations/' + illustration.id.to_s + '"')
     expect(response.body).to include('href="/elements/' + next_element.id.to_s + '"')
-    expect(response.body.index("No. 1")).to be < response.body.index("No. 2")
+    expect(response.body.index(element_number_label)).to be < response.body.index(next_element_number_label)
   end
 
   it "登録済みの推しイラストは解除できる" do
