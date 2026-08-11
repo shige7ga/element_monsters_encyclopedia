@@ -55,10 +55,10 @@ RSpec.describe "Users", type: :request do
     sign_in(user)
 
     get mypage_path
-    expect(response.body).to include('href="/users/edit"', 'aria-label="ユーザー情報を編集"', "sr-only")
+    expect(response.body).to include('href="/users/edit"', "ユーザー設定", "border-white")
 
     get user_path(other_user)
-    expect(response.body).not_to include('aria-label="ユーザー情報を編集"')
+    expect(response.body).not_to include("ユーザー設定")
 
     get edit_user_registration_path
     expect(response).to have_http_status(:ok)
@@ -80,9 +80,36 @@ RSpec.describe "Users", type: :request do
             }
           }
 
-    expect(response).to have_http_status(:see_other)
+    expect(response).to redirect_to(mypage_path)
     expect(user.reload).to have_attributes(name: "変更後", user_id: "updated_user")
     expect(other_user.reload.name).to eq("他ユーザー")
+
+    follow_redirect!
+    expect(response.body).to include('role="status"', "ユーザー情報を更新しました。")
+  end
+
+  it "ユーザー情報の更新に失敗した場合は複数の原因を表示する" do
+    user = create(:user)
+    duplicate_user = create(:user)
+    sign_in(user)
+
+    patch user_registration_path,
+          params: {
+            user: {
+              name: "更新失敗",
+              user_id: duplicate_user.user_id,
+              email: "invalid-email",
+              current_password: "password123"
+            }
+          }
+
+    expect(response).to have_http_status(:unprocessable_content)
+    expect(CGI.unescapeHTML(response.body)).to include(
+      'id="error_explanation"',
+      "入力内容を確認してください。",
+      "User has already been taken",
+      "Email is invalid"
+    )
   end
 
   it "未ログイン時はユーザー情報編集ページへアクセスできない" do

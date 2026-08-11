@@ -1,0 +1,16 @@
+<%# 共通フラッシュ: 画面遷移後の成功・エラー情報を既存配色で表示する %>
+<% if flash[:notice].present? || flash[:alert].present? %>
+  <div class="mx-auto w-full max-w-6xl px-5 pt-5 sm:px-8">
+    <% if flash[:notice].present? %>
+      <div role="status" class="alert alert-success rounded-2xl border border-emerald-300/50 bg-emerald-500/15 p-4 text-emerald-100">
+        <span><%= flash[:notice] %></span>
+      </div>
+    <% end %>
+
+    <% if flash[:alert].present? %>
+      <div role="alert" class="alert alert-error rounded-2xl border border-rose-300/50 bg-rose-500/15 p-4 text-rose-100">
+        <span><%= flash[:alert] %></span>
+      </div>
+    <% end %>
+  </div>
+<% end %>
