@@ -1,43 +1,87 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<%# ユーザー情報編集: Deviseの現在ユーザー更新を利用してプロフィール情報を変更する %>
+<% content_for :title, "ユーザー情報を編集 | 元素モンスターズ図鑑" %>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+<div class="flex flex-1 flex-col bg-slate-950">
+  <main class="flex-1 px-5 py-8 sm:px-8 sm:py-12">
+    <section class="mx-auto w-full max-w-2xl">
+      <%# マイページへの戻り導線 %>
+      <%= link_to "← マイページへ戻る", mypage_path, data: { turbo: false }, class: "text-sm font-bold text-cyan-300 transition hover:text-cyan-100" %>
 
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
+      <%# ページ見出し %>
+      <div class="mt-6">
+        <p class="text-sm font-semibold tracking-[0.16em] text-cyan-200">ACCOUNT SETTINGS</p>
+        <h1 class="mt-2 text-3xl font-black text-white sm:text-4xl">ユーザー情報を編集</h1>
+        <p class="mt-2 text-sm leading-6 text-slate-300">表示名、ユーザーID、メールアドレスを変更できます。</p>
+      </div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+      <%# ユーザー情報の編集フォーム %>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "card mt-8 rounded-3xl border border-white/15 bg-slate-900 p-6 shadow-2xl shadow-cyan-950/40 sm:p-8" }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <p><%= f.label :password %> <i>(leave blank if you don't want to change it)</i></p>
-    <p><%= f.password_field :password, autocomplete: "new-password" %></p>
-    <% if @minimum_password_length %>
-      <p><em><%= @minimum_password_length %> characters minimum</em></p>
-    <% end %>
-  </div>
+        <%# 基本情報 %>
+        <div class="space-y-5">
+          <div>
+            <%= f.label :name, "表示名", class: "mb-2 block text-sm font-bold text-slate-200" %>
+            <%= f.text_field :name, autocomplete: "name", class: "input input-bordered w-full rounded-xl border-white/15 bg-slate-950 text-white outline-none transition focus:border-cyan-300" %>
+          </div>
 
-  <div class="field">
-    <p><%= f.label :password_confirmation %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
-  </div>
+          <div>
+            <%= f.label :user_id, "ユーザーID", class: "mb-2 block text-sm font-bold text-slate-200" %>
+            <%= f.text_field :user_id, autocomplete: "username", class: "input input-bordered w-full rounded-xl border-white/15 bg-slate-950 text-white outline-none transition focus:border-cyan-300" %>
+            <% if resource.errors[:user_id].any? %>
+              <p class="mt-2 text-sm text-rose-300"><%= resource.errors.full_messages_for(:user_id).join("、") %></p>
+            <% end %>
+          </div>
 
-  <div class="field">
-    <p><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i></p>
-    <p><%= f.password_field :current_password, autocomplete: "current-password" %></p>
-  </div>
+          <div>
+            <%= f.label :email, "メールアドレス", class: "mb-2 block text-sm font-bold text-slate-200" %>
+            <%= f.email_field :email, autocomplete: "email", class: "input input-bordered w-full rounded-xl border-white/15 bg-slate-950 text-white outline-none transition focus:border-cyan-300" %>
+          </div>
+        </div>
 
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
+        <%# パスワード変更: 未入力なら現在のパスワードを維持する %>
+        <div class="mt-8 border-t border-white/10 pt-6">
+          <h2 class="text-lg font-bold text-white">パスワード変更</h2>
+          <p class="mt-2 text-sm text-slate-400">変更しない場合は、新しいパスワード欄を空欄にしてください。</p>
 
-<%# アカウント削除: 全画面共通の削除確認ダイアログを使用する %>
-<h3>Cancel my account</h3>
+          <div class="mt-5 space-y-5">
+            <div>
+              <%= f.label :password, "新しいパスワード", class: "mb-2 block text-sm font-bold text-slate-200" %>
+              <%= f.password_field :password, autocomplete: "new-password", class: "input input-bordered w-full rounded-xl border-white/15 bg-slate-950 text-white outline-none transition focus:border-cyan-300" %>
+              <% if @minimum_password_length %>
+                <p class="mt-2 text-sm text-slate-400"><%= @minimum_password_length %>文字以上で入力してください。</p>
+              <% end %>
+            </div>
 
-<div>Unhappy? <%= delete_confirmation_button "Cancel my account", registration_path(resource_name), class_name: "btn btn-error btn-sm" %></div>
+            <div>
+              <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "mb-2 block text-sm font-bold text-slate-200" %>
+              <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input input-bordered w-full rounded-xl border-white/15 bg-slate-950 text-white outline-none transition focus:border-cyan-300" %>
+            </div>
+          </div>
+        </div>
 
-<%= link_to "Back", :back %>
+        <%# 更新確認: Devise標準どおり現在のパスワードを求める %>
+        <div class="mt-8 border-t border-white/10 pt-6">
+          <%= f.label :current_password, "現在のパスワード", class: "mb-2 block text-sm font-bold text-slate-200" %>
+          <%= f.password_field :current_password, autocomplete: "current-password", class: "input input-bordered w-full rounded-xl border-white/15 bg-slate-950 text-white outline-none transition focus:border-cyan-300" %>
+          <p class="mt-2 text-sm text-slate-400">変更を保存するために入力してください。</p>
+        </div>
+
+        <%# 保存操作 %>
+        <div class="mt-8 flex flex-wrap justify-end gap-3">
+          <%= link_to "キャンセル", mypage_path, data: { turbo: false }, class: "btn btn-ghost h-auto min-h-0 rounded-xl border-0 px-4 py-2 text-slate-200 shadow-none transition hover:bg-white/10" %>
+          <%= f.submit "保存する", class: "btn h-auto min-h-0 border-0 bg-cyan-400 px-5 py-2 font-bold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+        </div>
+      <% end %>
+
+      <%# アカウント削除: 全画面共通の削除確認ダイアログを使用する %>
+      <section class="card mt-6 rounded-3xl border border-rose-300/25 bg-slate-900 p-6 sm:p-8">
+        <h2 class="text-lg font-bold text-white">アカウント削除</h2>
+        <p class="mt-2 text-sm leading-6 text-slate-400">アカウントを削除すると、関連する投稿や履歴も削除されます。</p>
+        <div class="mt-5">
+          <%= delete_confirmation_button "アカウントを削除", registration_path(resource_name), class_name: "btn btn-sm h-auto min-h-0 border-0 bg-rose-400 px-4 py-2 text-slate-950 shadow-none transition hover:bg-rose-300" %>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>

@@ -23,7 +23,19 @@
           <div class="flex items-center gap-4">
             <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-400 text-2xl font-black text-slate-950"><%= (@user.name.presence || @user.user_id).first.upcase %></div>
             <div>
-              <p class="text-2xl font-bold text-white"><%= @user.name.presence || @user.user_id %></p>
+              <%# ユーザー名と設定導線: マイページだけで現在のユーザー情報を編集できる %>
+              <div class="flex items-center gap-2">
+                <p class="text-2xl font-bold text-white"><%= @user.name.presence || @user.user_id %></p>
+                <% if @profile_owner %>
+                  <%= link_to edit_user_registration_path, data: { turbo: false }, aria: { label: "ユーザー情報を編集" }, class: "btn btn-ghost btn-square btn-sm rounded-lg text-slate-300 transition hover:bg-white/10 hover:text-cyan-200" do %>
+                    <svg aria-hidden="true" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="3"></circle>
+                      <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.12 2.12-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20.3h-3v-.08A1.7 1.7 0 0 0 10.68 18.66a1.7 1.7 0 0 0-1.88.34l-.06.06-2.12-2.12.06-.06A1.7 1.7 0 0 0 7.02 15a1.7 1.7 0 0 0-1.56-1.03H5.38v-3h.08A1.7 1.7 0 0 0 7.02 9.94a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.12-2.12.06.06a1.7 1.7 0 0 0 1.88.34 1.7 1.7 0 0 0 1.03-1.56V4.64h3v.08a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06L19.8 8l-.06.06a1.7 1.7 0 0 0-.34 1.88 1.7 1.7 0 0 0 1.56 1.03h.08v3h-.08A1.7 1.7 0 0 0 19.4 15Z"></path>
+                    </svg>
+                    <span class="sr-only">ユーザー情報を編集</span>
+                  <% end %>
+                <% end %>
+              </div>
               <p class="mt-1 text-sm text-slate-400">ユーザーID: <%= @user.user_id %></p>
             </div>
           </div>
