@@ -1,0 +1,50 @@
+<%# 管理用イラスト詳細: 画像、投稿情報、公開状態の操作を表示する %>
+<% content_for :title, "#{@illustration.monster_name} | イラスト管理 | 元素モンスターズ図鑑" %>
+
+<div class="flex flex-1 flex-col bg-slate-950">
+  <main class="flex-1 px-5 py-8 sm:px-8 sm:py-12">
+    <section class="mx-auto w-full max-w-6xl">
+      <%# 戻り導線 %>
+      <%= link_to "← イラスト一覧へ戻る", admin_illustrations_path, class: "text-sm font-bold text-cyan-300 transition hover:text-cyan-100" %>
+
+      <%# 画像と投稿情報 %>
+      <div class="mt-6 grid gap-6 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+        <div class="mx-auto flex aspect-square w-full max-w-[32rem] items-center justify-center overflow-hidden rounded-3xl border border-white/15 bg-slate-950 p-3 shadow-2xl shadow-cyan-950/40 md:mx-0 md:max-w-none">
+          <%= image_tag @illustration.image, alt: @illustration.monster_name, class: "max-h-full max-w-full object-contain" %>
+        </div>
+
+        <%# 投稿情報と管理操作 %>
+        <section class="card min-w-0 rounded-3xl border border-white/15 bg-slate-900 p-6 shadow-2xl shadow-cyan-950/40 sm:p-8">
+          <h1 class="break-words text-3xl font-black text-white"><%= @illustration.monster_name %></h1>
+
+          <dl class="mt-6 space-y-5 text-sm">
+            <div>
+              <dt class="text-slate-400">対象元素</dt>
+              <dd class="mt-1 text-lg font-bold text-cyan-200"><%= @illustration.element.symbol %> · <%= @illustration.element.name %></dd>
+            </div>
+            <div class="border-t border-white/10 pt-5">
+              <dt class="text-slate-400">投稿者</dt>
+              <dd class="mt-1 font-bold text-white"><%= link_to @illustration.user.name.presence || @illustration.user.user_id, admin_user_path(@illustration.user), class: "hover:text-cyan-200" %></dd>
+            </div>
+            <div class="border-t border-white/10 pt-5">
+              <dt class="text-slate-400">説明</dt>
+              <dd class="mt-2 whitespace-pre-wrap leading-7 text-slate-300"><%= @illustration.description.presence || "説明はまだありません。" %></dd>
+            </div>
+          </dl>
+
+          <%# 公開状態の切替と削除操作 %>
+          <div class="mt-6 flex flex-wrap items-center gap-3 border-t border-white/10 pt-5">
+            <% if @illustration.published? %>
+              <span class="badge border border-emerald-300/40 bg-emerald-300/15 text-emerald-100">公開中</span>
+              <%= button_to "非公開にする", toggle_published_admin_illustration_path(@illustration), method: :patch, form: { data: { turbo: false } }, class: "btn btn-sm h-auto min-h-0 border border-amber-300/50 bg-amber-300/15 px-4 py-2 text-amber-100 shadow-none transition hover:bg-amber-300/25" %>
+            <% else %>
+              <span class="badge border border-amber-300/40 bg-amber-300/15 text-amber-100">非公開</span>
+              <%= button_to "公開する", toggle_published_admin_illustration_path(@illustration), method: :patch, form: { data: { turbo: false } }, class: "btn btn-sm h-auto min-h-0 border-0 bg-cyan-400 px-4 py-2 text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+            <% end %>
+            <%= delete_confirmation_button "削除", admin_illustration_path(@illustration), class_name: "btn btn-sm h-auto min-h-0 border-0 bg-rose-400 px-4 py-2 text-slate-950 shadow-none transition hover:bg-rose-300" %>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+</div>

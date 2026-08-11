@@ -1,0 +1,17 @@
+<%# 共通削除確認: 削除URLとper-form CSRF tokenをStimulusから受け取り、確認時だけDELETEを送信する %>
+<dialog data-delete-confirmation-target="dialog" data-action="click->delete-confirmation#closeOnBackdrop" class="modal bg-transparent p-0 backdrop:bg-slate-950/70">
+  <div class="modal-box max-w-md rounded-3xl border border-rose-300/30 bg-slate-900 p-6 text-slate-200 shadow-2xl shadow-rose-950/40 sm:p-8">
+    <%# 確認内容 %>
+    <h2 class="text-xl font-black text-white">削除の確認</h2>
+    <p class="mt-3 leading-7 text-slate-300">本当に削除しますか？削除したデータは元に戻せません。</p>
+
+    <%# 操作: キャンセルは閉じるだけ、削除は設定済みURLとtokenでDELETEを送信する %>
+    <div class="mt-6 flex flex-wrap justify-end gap-3">
+      <button type="button" data-action="delete-confirmation#close" class="btn btn-ghost btn-sm h-auto min-h-0 rounded-xl border-0 px-4 py-2 text-slate-200 shadow-none transition hover:bg-white/10">キャンセル</button>
+      <%= form_with url: root_path, method: :delete, authenticity_token: false, data: { delete_confirmation_target: "form", turbo: false }, class: "inline" do %>
+        <%= hidden_field_tag :authenticity_token, nil, data: { delete_confirmation_target: "csrfToken" } %>
+        <button type="submit" class="btn btn-sm h-auto min-h-0 border-0 bg-rose-400 px-4 py-2 text-slate-950 shadow-none transition hover:bg-rose-300">削除する</button>
+      <% end %>
+    </div>
+  </div>
+</dialog>

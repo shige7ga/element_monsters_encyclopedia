@@ -36,8 +36,12 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root "dashboard#show"
-    resources :users, only: :index
-    resources :illustrations, only: :index
+    resources :users, only: %i[index show destroy]
+    resources :illustrations, only: %i[index show destroy] do
+      member do
+        patch :toggle_published
+      end
+    end
   end
 
   # Defines the root path route ("/")

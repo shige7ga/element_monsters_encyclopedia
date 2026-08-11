@@ -1,4 +1,4 @@
-<%# 管理用ユーザー一覧: 読み取り専用でユーザー種別と登録日を確認する %>
+<%# 管理用ユーザー一覧: ユーザー種別と詳細・削除操作を表示する %>
 <% content_for :title, "ユーザー一覧 | 管理画面 | 元素モンスターズ図鑑" %>
 
 <div class="flex flex-1 flex-col bg-slate-950">
@@ -22,6 +22,7 @@
               <th>名前</th>
               <th>権限</th>
               <th>登録日</th>
+              <th>操作</th>
             </tr>
           </thead>
           <tbody>
@@ -37,6 +38,12 @@
                   <% end %>
                 </td>
                 <td><%= l(user.created_at, format: :short) %></td>
+                <td>
+                  <div class="flex flex-wrap gap-3 text-sm font-bold">
+                    <%= link_to "詳細", admin_user_path(user), class: "text-cyan-200 transition hover:text-cyan-100" %>
+                    <%= delete_confirmation_button "削除", admin_user_path(user), class_name: "border-0 bg-transparent p-0 text-rose-300 transition hover:text-rose-100" %>
+                  </div>
+                </td>
               </tr>
             <% end %>
           </tbody>

@@ -1,0 +1,60 @@
+<%# 管理用ユーザー詳細: ユーザー情報と投稿一覧を確認する %>
+<% content_for :title, "#{@user.user_id} | ユーザー管理 | 元素モンスターズ図鑑" %>
+
+<div class="flex flex-1 flex-col bg-slate-950">
+  <main class="flex-1 px-5 py-8 sm:px-8 sm:py-12">
+    <section class="mx-auto w-full max-w-6xl">
+      <%# 戻り導線 %>
+      <%= link_to "← ユーザー一覧へ戻る", admin_users_path, class: "text-sm font-bold text-cyan-300 transition hover:text-cyan-100" %>
+
+      <%# ユーザー情報と削除操作 %>
+      <section class="card mt-6 rounded-3xl border border-white/15 bg-slate-900 p-6 shadow-2xl shadow-cyan-950/40 sm:p-8">
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p class="text-sm font-semibold tracking-[0.16em] text-amber-200">ADMIN / USER</p>
+            <h1 class="mt-2 break-words text-3xl font-black text-white"><%= @user.name.presence || @user.user_id %></h1>
+            <p class="mt-2 text-sm text-slate-400">ユーザーID: <%= @user.user_id %></p>
+          </div>
+          <% if @user.admin? %>
+            <span class="badge border border-amber-300/40 bg-amber-300/15 text-amber-100">Admin</span>
+          <% end %>
+        </div>
+
+        <%# 登録情報と削除操作 %>
+        <dl class="mt-6 grid gap-5 border-t border-white/10 pt-5 text-sm sm:grid-cols-2">
+          <div>
+            <dt class="text-slate-400">投稿数</dt>
+            <dd class="mt-1 text-xl font-bold text-white"><%= @illustrations.size %></dd>
+          </div>
+          <div>
+            <dt class="text-slate-400">登録日</dt>
+            <dd class="mt-1 font-bold text-white"><%= l(@user.created_at, format: :short) %></dd>
+          </div>
+        </dl>
+
+        <div class="mt-6 border-t border-white/10 pt-5">
+          <%= delete_confirmation_button "ユーザーを削除", admin_user_path(@user), class_name: "btn btn-sm h-auto min-h-0 border-0 bg-rose-400 px-4 py-2 text-slate-950 shadow-none transition hover:bg-rose-300" %>
+        </div>
+      </section>
+
+      <%# ユーザーの投稿一覧 %>
+      <section class="mt-10">
+        <h2 class="text-2xl font-black text-white">投稿一覧</h2>
+        <% if @illustrations.any? %>
+          <div class="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            <% @illustrations.each do |illustration| %>
+              <%= link_to admin_illustration_path(illustration), class: "card overflow-hidden rounded-2xl border border-white/15 bg-slate-900 transition hover:border-cyan-300/50" do %>
+                <div class="flex aspect-square items-center justify-center bg-slate-950 p-2">
+                  <%= image_tag illustration.image, alt: illustration.monster_name, class: "max-h-full max-w-full object-contain" %>
+                </div>
+                <p class="truncate p-3 font-bold text-white"><%= illustration.monster_name %></p>
+              <% end %>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="mt-5 text-sm text-slate-400">投稿はありません。</p>
+        <% end %>
+      </section>
+    </section>
+  </main>
+</div>
