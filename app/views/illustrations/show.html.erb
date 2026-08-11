@@ -17,12 +17,15 @@
 
         <%# 詳細情報: 必要な情報を一つの枠に集約 %>
         <section class="card min-w-0 rounded-3xl border border-white/15 bg-slate-900 p-6 shadow-2xl shadow-cyan-950/40 sm:p-8">
-          <%# モンスター名とAI生成表示: AI生成作品だけに控えめなバッジを付ける %>
+          <%# モンスター名とAI生成表示: いいねはタイトルのすぐ下に配置する %>
           <div class="flex items-start justify-between gap-4">
-            <h1 class="break-words text-3xl font-black text-white"><%= @illustration.monster_name %></h1>
+            <h1 class="min-w-0 flex-1 break-words text-3xl font-black text-white"><%= @illustration.monster_name %></h1>
             <% if @illustration.ai_generated? %>
               <span class="badge badge-ghost shrink-0 border border-white/20 bg-white/5 px-2 py-2 text-xs font-medium text-slate-300">AI生成</span>
             <% end %>
+          </div>
+          <div class="mt-3">
+            <%= render "likes/button", illustration: @illustration, alignment: "justify-start" %>
           </div>
 
           <%# 対象元素と説明 %>
@@ -41,14 +44,18 @@
             </div>
           </dl>
 
-          <%# いいね操作: 作品情報とともに件数・作成・解除を表示する %>
-          <div class="mt-6 border-t border-white/10 pt-5">
-            <%= render "likes/button", illustration: @illustration, alignment: "justify-start" %>
-          </div>
+          <%# 推し登録: 共通ボタンと推し元素図鑑への導線を同じ行に配置する %>
+          <% if user_signed_in? && @illustration.published? %>
+            <div class="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 py-5">
+              <%= render "encyclopedia_entries/button", illustration: @illustration, entry: @encyclopedia_entry %>
+              <%= link_to "推し元素図鑑へ", encyclopedia_entries_path, data: { turbo: false }, class: "ml-auto text-sm font-bold text-cyan-200 transition hover:text-cyan-100" %>
+            </div>
+          <% end %>
 
-          <%# 投稿者本人のみの管理操作 %>
+          <%# 投稿者本人のみの管理操作: 推し登録欄がある場合は区切り線を連続させる %>
           <% if current_user == @illustration.user %>
-            <div class="mt-8 flex flex-wrap gap-4 border-t border-white/10 pt-5 text-sm font-bold">
+            <% management_margin_class = user_signed_in? && @illustration.published? ? "mt-0" : "mt-8" %>
+            <div class="<%= management_margin_class %> flex flex-wrap gap-4 border-t border-white/10 pt-5 text-sm font-bold">
               <%= link_to "編集", edit_illustration_path(@illustration), data: { turbo: false }, class: "text-cyan-200 hover:text-cyan-100" %>
               <%= button_to "削除", @illustration, method: :delete, form: { data: { turbo_confirm: "このイラストを削除しますか？", turbo: false } }, class: "border-0 bg-transparent p-0 text-rose-300 hover:text-rose-100" %>
             </div>

@@ -23,6 +23,7 @@ class IllustrationsController < ApplicationController
   end
 
   def show
+    @encyclopedia_entry = current_user&.encyclopedia_entries&.find_by(element_id: @illustration.element_id)
   end
 
   def new
