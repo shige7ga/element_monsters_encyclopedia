@@ -38,6 +38,13 @@ RSpec.describe Illustration, type: :model do
     expect(illustration.errors[:image]).to include("は5MB以下にしてください")
   end
 
+  it "作成方法は自作またはAI生成のみ許可する" do
+    expect(build(:illustration, user: user, element: element, creation_type: "self_made")).to be_valid
+    expect(build(:illustration, user: user, element: element, creation_type: "ai_generated")).to be_valid
+    expect(build(:illustration, user: user, element: element, creation_type: "unknown")).not_to be_valid
+    expect(build(:illustration, user: user, element: element, creation_type: nil)).not_to be_valid
+  end
+
   it "公開作品と閲覧者本人の非公開作品だけを返す" do
     published = create(:illustration, user: user, element: element, published: true)
     private_illustration = create(:illustration, user: user, element: element, published: false)

@@ -85,6 +85,6 @@ class IllustrationsController < ApplicationController
   end
 
   def illustration_params
-    params.require(:illustration).permit(:element_id, :image, :monster_name, :description, :published)
+    params.require(:illustration).permit(:element_id, :image, :monster_name, :description, :creation_type, :published)
   end
 end

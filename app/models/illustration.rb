@@ -9,7 +9,9 @@ class Illustration < ApplicationRecord
   has_many :liked_by_users, through: :likes, source: :user
   has_many :encyclopedia_entries
 
-  validates :user_id, :element_id, :monster_name, presence: true
+  enum :creation_type, { self_made: "self_made", ai_generated: "ai_generated" }, validate: true
+
+  validates :user_id, :element_id, :monster_name, :creation_type, presence: true
   validates :published, inclusion: { in: [ true, false ] }
   validate :image_is_attached
   validate :image_content_type
