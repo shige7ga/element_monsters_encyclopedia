@@ -44,7 +44,7 @@ RSpec.describe "Illustrations", type: :request do
   it "詳細と一覧でモンスター名・説明を表示し、画像をobject-containで収める" do
     get illustration_path(published_illustration)
 
-    expect(response.body).to include("公開作品", published_illustration.description, "object-contain", "md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]")
+    expect(response.body).to include("公開作品", published_illustration.description, "object-contain", "md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]", "mx-auto", "md:mx-0", "justify-start")
     expect(response.body).not_to include("ILLUSTRATION", ">公開<")
 
     get illustrations_path
@@ -149,11 +149,11 @@ RSpec.describe "Illustrations", type: :request do
     expect(published_illustration.likes.count).to eq(1)
 
     get illustrations_path
-    expect(response.body).to include("♥1")
+    expect(response.body).to include("♥", ">1<", "text-lg", "gap-1")
     expect(response.body).not_to include("♥ いいね済み")
 
     get illustration_path(published_illustration)
-    expect(response.body).to include("♥1")
+    expect(response.body).to include("♥", ">1<", "text-lg", "gap-1", "justify-start")
     expect(response.body).not_to include("♥ いいね済み")
 
     delete illustration_like_path(published_illustration)
@@ -161,7 +161,7 @@ RSpec.describe "Illustrations", type: :request do
     expect(published_illustration.likes.count).to eq(0)
 
     get illustration_path(published_illustration)
-    expect(response.body).to include("♡0")
+    expect(response.body).to include("♡", ">0<", "gap-1")
     expect(response.body).not_to include("♥0")
   end
 
@@ -173,9 +173,12 @@ RSpec.describe "Illustrations", type: :request do
     expect(other_user.likes.where(illustration: published_illustration).count).to eq(1)
   end
 
-  it "未ログインユーザーはいいねできず、ログイン画面へ遷移する" do
-    post illustration_like_path(published_illustration)
+  it "未ログイン時のいいねはログインモーダルを開き、直接のいいねはログイン画面へ遷移する" do
+    get illustration_path(published_illustration)
+    expect(response.body).to include('data-action="modal#open"', 'data-modal-dialog-param="login"')
+    expect(response.body).not_to include('href="/users/sign_in"')
 
+    post illustration_like_path(published_illustration)
     expect(response).to redirect_to(new_user_session_path)
     expect(Like.count).to eq(0)
   end
