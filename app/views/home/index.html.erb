@@ -17,15 +17,20 @@
 
       <%# 中央: サービスタイトル・キャッチコピー・主要導線 %>
       <div class="order-1 mx-auto max-w-2xl text-center lg:order-2">
-        <p class="mb-5 inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-1.5 text-sm font-semibold text-cyan-200">
+        <%# 主コピー: 元のタグ風デザインを維持し、画面幅に応じて控えめに拡大する %>
+        <p class="mb-3 inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-xs font-semibold text-cyan-200 sm:px-4 sm:py-1.5 sm:text-sm">
           学びと創造がつながる空間
         </p>
         <h1 class="text-4xl font-black tracking-tight text-white sm:text-6xl">
           元素モンスターズ<br>図鑑
         </h1>
+
+        <%# キャッチコピー: 既存の強さと余白を保つ2行構成 %>
         <p class="mt-6 text-lg font-bold leading-relaxed text-cyan-200 sm:text-xl">
-          見つけよう、推し元素。<br>「覚える」から「好きになる」へ。
+          見つかる、推し元素。<br>「覚える」から「好きになる」へ。
         </p>
+
+        <%# サービス紹介文 %>
         <p class="mx-auto mt-5 max-w-xl leading-8 text-slate-300">
           個性豊かなモンスターたちと出会いながら、元素記号や元素名を楽しく学べる図鑑です。あなたが作った一枚が、未来の科学者を生み出すキッカケになる。
         </p>
@@ -33,7 +38,7 @@
         <%# 図鑑を見る・ユーザー登録・ログインの主要導線 %>
         <div id="start" class="mt-9 flex flex-col items-center gap-3">
           <%= link_to "図鑑を見る", elements_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-8 py-3.5 font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5 hover:bg-cyan-300" %>
-          <div class="flex flex-col justify-center gap-3 sm:flex-row">
+          <div class="flex flex-row justify-center gap-3">
             <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="rounded-xl border border-slate-500 px-6 py-3.5 text-center font-bold text-white transition hover:border-cyan-300 hover:bg-white/10">
               ユーザー登録
             </button>
