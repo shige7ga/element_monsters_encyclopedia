@@ -8,7 +8,11 @@ module Admin
     def authorize_admin!
       return if current_user&.admin?
 
-      redirect_to root_path, alert: "管理画面へのアクセス権限がありません。"
+      if current_user
+        redirect_to root_path, alert: "管理画面へのアクセス権限がありません。"
+      else
+        redirect_to root_path
+      end
     end
   end
 end

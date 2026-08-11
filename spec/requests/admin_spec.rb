@@ -17,6 +17,7 @@ RSpec.describe "Admin", type: :request do
       get path
 
       expect(response).to redirect_to(root_path)
+      expect(flash[:alert]).to be_nil
     end
   end
 
@@ -33,16 +34,20 @@ RSpec.describe "Admin", type: :request do
       get path
 
       expect(response).to redirect_to(root_path)
+      expect(flash[:alert]).to eq("管理画面へのアクセス権限がありません。")
     end
 
     expect { delete admin_user_path(managed_user) }.not_to change(User, :count)
     expect(response).to redirect_to(root_path)
+    expect(flash[:alert]).to eq("管理画面へのアクセス権限がありません。")
 
     expect { patch toggle_published_admin_illustration_path(illustration) }.not_to change { illustration.reload.published? }
     expect(response).to redirect_to(root_path)
+    expect(flash[:alert]).to eq("管理画面へのアクセス権限がありません。")
 
     expect { delete admin_illustration_path(illustration) }.not_to change(Illustration, :count)
     expect(response).to redirect_to(root_path)
+    expect(flash[:alert]).to eq("管理画面へのアクセス権限がありません。")
   end
 
   it "Adminはダッシュボード、ユーザー詳細、イラスト詳細を閲覧できる" do

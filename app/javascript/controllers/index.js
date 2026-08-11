@@ -7,6 +7,9 @@ import { application } from "./application"
 import DeleteConfirmationController from "./delete_confirmation_controller"
 application.register("delete-confirmation", DeleteConfirmationController)
 
+import FlashMessageController from "./flash_message_controller"
+application.register("flash-message", FlashMessageController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 

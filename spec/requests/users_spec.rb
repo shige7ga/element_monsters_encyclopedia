@@ -85,7 +85,7 @@ RSpec.describe "Users", type: :request do
     expect(other_user.reload.name).to eq("他ユーザー")
 
     follow_redirect!
-    expect(response.body).to include('role="status"', "ユーザー情報を更新しました。")
+    expect(response.body).to include('role="status"', 'data-controller="flash-message"', "ユーザー情報を更新しました。")
   end
 
   it "ユーザー情報の更新に失敗した場合は複数の原因を表示する" do
