@@ -121,11 +121,11 @@ jobs:
       - name: Build CSS assets
         run: yarn build:css
 
-      - name: Prepare test database
+      - name: Prepare test database without seeds
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
-        run: bin/rails db:prepare
+        run: bin/rails db:create db:schema:load
 
       - name: Run RSpec
         env:
