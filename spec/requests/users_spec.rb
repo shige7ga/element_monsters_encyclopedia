@@ -38,7 +38,8 @@ RSpec.describe "Users", type: :request do
 
     expect(response).to redirect_to(mypage_path)
     follow_redirect!
-    expect(response.body).to include("マイページ", "図鑑を見る", "学習する", "イラスト投稿", "ログアウト")
+    expect(response.body).to include("マイページ", "図鑑を見る", "学習する", "イラスト投稿", "推し元素図鑑", "ログアウト")
+    expect(response.body).to include('href="/encyclopedia_entries"')
     expect(response.body).not_to include(">周期表</a>")
   end
 

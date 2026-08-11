@@ -7,7 +7,7 @@ class Illustration < ApplicationRecord
   has_one_attached :image
   has_many :likes, dependent: :destroy
   has_many :liked_by_users, through: :likes, source: :user
-  has_many :encyclopedia_entries
+  has_many :encyclopedia_entries, dependent: :destroy
 
   enum :creation_type, { self_made: "self_made", ai_generated: "ai_generated" }, validate: true
 

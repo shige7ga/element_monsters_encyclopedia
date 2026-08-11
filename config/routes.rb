@@ -30,7 +30,9 @@ Rails.application.routes.draw do
     end
 
     resource :like, only: %i[create destroy]
+    resource :encyclopedia_entry, only: %i[create destroy]
   end
+  resources :encyclopedia_entries, only: :index
 
   # Defines the root path route ("/")
   root "home#index"

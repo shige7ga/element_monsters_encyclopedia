@@ -44,11 +44,12 @@ RSpec.describe "Illustrations", type: :request do
   it "詳細と一覧でモンスター名・説明を表示し、画像をobject-containで収める" do
     get illustration_path(published_illustration)
 
-    expect(response.body).to include("公開作品", published_illustration.description, "object-contain", "md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]", "mx-auto", "md:mx-0", "justify-start")
+    expect(response.body).to include("公開作品", published_illustration.description, "object-contain", "md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]", "mx-auto", "md:mx-0")
+    expect(response.body).to include("min-w-0 flex-1", "mt-3", "justify-start")
     expect(response.body).not_to include("ILLUSTRATION", ">公開<")
 
     get illustrations_path
-    expect(response.body).to include("aspect-square", "aspect-ratio: 1 / 1;", "max-h-full", "max-w-full", "width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; object-position: center;")
+    expect(response.body).to include("aspect-square", "aspect-ratio: 1 / 1;", "max-h-full", "max-w-full", "width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; object-position: center;", "flex-1 truncate")
   end
 
   it "AI生成作品だけ詳細画面にAI生成バッジを表示する" do
@@ -141,6 +142,14 @@ RSpec.describe "Illustrations", type: :request do
     expect(response.body).to include("公開作品", "非公開作品")
   end
 
+  it "ログイン時の詳細画面では推し登録欄から推し元素図鑑へ移動できる" do
+    sign_in(other_user)
+
+    get illustration_path(published_illustration)
+
+    expect(response.body).to include("推し元素図鑑へ", 'href="/encyclopedia_entries"', "flex-wrap items-center justify-between")
+  end
+
   it "ログインユーザーはいいねと解除ができ、一覧と詳細に件数を表示する" do
     sign_in(other_user)
 
@@ -163,6 +172,19 @@ RSpec.describe "Illustrations", type: :request do
     get illustration_path(published_illustration)
     expect(response.body).to include("♡", ">0<", "gap-1")
     expect(response.body).not_to include("♥0")
+  end
+
+  it "いいねと解除はTurbo Streamで対象ボタンだけを更新できる" do
+    sign_in(other_user)
+    turbo_headers = { "ACCEPT" => "text/vnd.turbo-stream.html" }
+
+    post illustration_like_path(published_illustration), params: { alignment: "justify-start" }, headers: turbo_headers
+    expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+    expect(response.body).to include('target="like_button_illustration_' + published_illustration.id.to_s + '"', "♥", ">1<", "justify-start")
+
+    delete illustration_like_path(published_illustration), params: { alignment: "justify-start" }, headers: turbo_headers
+    expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+    expect(response.body).to include('target="like_button_illustration_' + published_illustration.id.to_s + '"', "♡", ">0<", "justify-start")
   end
 
   it "同じユーザーが同じイラストへ繰り返しいいねしても1件だけ作成する" do

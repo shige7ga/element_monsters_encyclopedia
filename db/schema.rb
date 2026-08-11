@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_11_030000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_11_040000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -55,6 +55,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_11_030000) do
     t.datetime "updated_at", null: false
     t.index ["atomic_number"], name: "index_elements_on_atomic_number", unique: true
     t.index ["symbol"], name: "index_elements_on_symbol", unique: true
+  end
+
+  create_table "encyclopedia_entries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "element_id", null: false
+    t.bigint "illustration_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["element_id"], name: "index_encyclopedia_entries_on_element_id"
+    t.index ["illustration_id"], name: "index_encyclopedia_entries_on_illustration_id"
+    t.index ["user_id", "element_id"], name: "index_encyclopedia_entries_on_user_id_and_element_id", unique: true
+    t.index ["user_id"], name: "index_encyclopedia_entries_on_user_id"
   end
 
   create_table "game_sessions", force: :cascade do |t|
@@ -228,6 +240,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_11_030000) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "encyclopedia_entries", "elements"
+  add_foreign_key "encyclopedia_entries", "illustrations"
+  add_foreign_key "encyclopedia_entries", "users"
   add_foreign_key "game_sessions", "users"
   add_foreign_key "illustrations", "elements"
   add_foreign_key "illustrations", "users"

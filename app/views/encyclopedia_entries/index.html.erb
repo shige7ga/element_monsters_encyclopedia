@@ -1,0 +1,46 @@
+<%# 推し元素図鑑: 元素番号順に、ユーザーが選んだ公開イラストを並べる %>
+<% content_for :title, "推し元素図鑑 | 元素モンスターズ図鑑" %>
+
+<div class="flex flex-1 flex-col bg-slate-950">
+  <main class="flex-1 px-5 py-8 sm:px-8 sm:py-12">
+    <section class="mx-auto w-full max-w-6xl">
+      <%# ページ見出しとマイページへの戻り導線 %>
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <%= render "shared/section_label", label: "FAVORITE ELEMENTS" %>
+          <h1 class="mt-3 text-3xl font-black text-white sm:text-4xl">推し元素図鑑</h1>
+          <p class="mt-2 text-sm text-slate-300">あなたの一推しの元素を登録しよう</p>
+        </div>
+        <%= link_to "マイページへ戻る", mypage_path, data: { turbo: false }, class: "btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-cyan-200 shadow-none transition hover:bg-cyan-300/10" %>
+      </div>
+
+      <%# 元素番号順の図鑑: 未登録元素にも同じ正方形枠を表示する %>
+      <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+        <% @elements.each do |element| %>
+          <% entry = @entries_by_element_id[element.id] %>
+          <article class="card overflow-hidden rounded-2xl border border-white/15 bg-slate-900 shadow-lg shadow-cyan-950/20">
+            <div class="flex items-center justify-between px-3 pt-3 text-xs font-bold text-slate-400">
+              <span>No. <%= element.atomic_number %></span>
+              <span class="text-cyan-200"><%= element.symbol %></span>
+            </div>
+
+            <%# 推しイラスト: 登録済みは全体表示、未登録は空のイラスト枠を維持する %>
+            <div class="m-3 mt-2 flex aspect-square items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-slate-950 p-2">
+              <% if entry %>
+                <%= link_to illustration_path(entry.illustration), data: { turbo: false }, class: "flex h-full w-full items-center justify-center" do %>
+                  <%= image_tag entry.illustration.image, alt: "#{element.name}の推しイラスト: #{entry.illustration.monster_name}", class: "h-full w-full object-contain" %>
+                <% end %>
+              <% else %>
+                <%= link_to element_path(element), data: { turbo: false }, class: "flex h-full w-full items-center justify-center" do %>
+                  <span class="text-xs font-semibold text-slate-600">未登録</span>
+                <% end %>
+              <% end %>
+            </div>
+
+            <p class="px-3 pb-3 text-center text-sm font-bold text-white"><%= element.name %></p>
+          </article>
+        <% end %>
+      </div>
+    </section>
+  </main>
+</div>
