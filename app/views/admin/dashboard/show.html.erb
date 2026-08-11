@@ -1,0 +1,28 @@
+<%# 管理画面トップ: 管理対象への導線と件数を表示する %>
+<% content_for :title, "管理画面 | 元素モンスターズ図鑑" %>
+
+<div class="flex flex-1 flex-col bg-slate-950">
+  <main class="flex-1 px-5 py-8 sm:px-8 sm:py-12">
+    <section class="mx-auto w-full max-w-6xl">
+      <%# ページ見出し %>
+      <p class="badge inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs font-semibold tracking-[0.16em] text-amber-200">ADMIN</p>
+      <h1 class="mt-3 text-3xl font-black text-white sm:text-4xl">管理画面</h1>
+      <p class="mt-2 text-sm text-slate-300">ユーザーとイラストの登録状況を確認できます。</p>
+
+      <%# 管理対象の概要 %>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2">
+        <%= link_to admin_users_path, class: "card rounded-2xl border border-white/15 bg-slate-900 p-6 transition hover:border-cyan-300/50" do %>
+          <p class="text-sm font-semibold text-slate-400">USERS</p>
+          <p class="mt-2 text-3xl font-black text-white"><%= @users_count %></p>
+          <p class="mt-2 text-sm font-bold text-cyan-200">ユーザー一覧を見る</p>
+        <% end %>
+
+        <%= link_to admin_illustrations_path, class: "card rounded-2xl border border-white/15 bg-slate-900 p-6 transition hover:border-cyan-300/50" do %>
+          <p class="text-sm font-semibold text-slate-400">ILLUSTRATIONS</p>
+          <p class="mt-2 text-3xl font-black text-white"><%= @illustrations_count %></p>
+          <p class="mt-2 text-sm font-bold text-cyan-200">イラスト一覧を見る</p>
+        <% end %>
+      </div>
+    </section>
+  </main>
+</div>
