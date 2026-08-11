@@ -23,7 +23,10 @@ RSpec.describe "Illustrations", type: :request do
     sign_in(owner)
 
     get new_illustration_path
-    expect(response.body).to include("モンスター名", "説明（モンスターの特徴・元素の覚え方など）", "投稿する")
+    expect(response.body).to include("モンスター名", "作成方法", "自作", "AI生成", "説明（モンスターの特徴・元素の覚え方など）", "投稿する", 'type="radio"', "ファイル選択", "画像を選択してください", 'class="sr-only"')
+    creation_type_inputs = response.body.scan(/<input[^>]*name="illustration\[creation_type\]"[^>]*>/)
+    expect(creation_type_inputs).to have_attributes(length: 2)
+    expect(creation_type_inputs).not_to include(a_string_matching(/checked/))
 
     get edit_illustration_path(published_illustration)
     expect(response.body).to include("更新する")
@@ -46,6 +49,16 @@ RSpec.describe "Illustrations", type: :request do
 
     get illustrations_path
     expect(response.body).to include("aspect-square", "aspect-ratio: 1 / 1;", "max-h-full", "max-w-full", "width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; object-position: center;")
+  end
+
+  it "AI生成作品だけ詳細画面にAI生成バッジを表示する" do
+    ai_illustration = create(:illustration, element: element, creation_type: "ai_generated")
+
+    get illustration_path(ai_illustration)
+    expect(response.body).to include("AI生成")
+
+    get illustration_path(published_illustration)
+    expect(response.body).not_to include(">AI生成<")
   end
 
   it "投稿者は自分の非公開作品を閲覧できるが、他人は閲覧できない" do
@@ -104,6 +117,7 @@ RSpec.describe "Illustrations", type: :request do
           image: upload,
           monster_name: "新しい投稿",
           description: "説明",
+          creation_type: "ai_generated",
           published: "1"
         }
       }
@@ -113,6 +127,7 @@ RSpec.describe "Illustrations", type: :request do
     expect(response).to redirect_to(illustration_path(illustration))
     expect(illustration.user).to eq(owner)
     expect(illustration.description).to eq("説明")
+    expect(illustration.creation_type).to eq("ai_generated")
     expect(illustration.image).to be_attached
   end
 

@@ -7,6 +7,7 @@ FactoryBot.define do
     sequence(:monster_name) { |number| "元素モンスター作品 #{number}" }
     description { "元素を楽しく学ぶためのイラストです。" }
     published { true }
+    creation_type { "self_made" }
 
     after(:build) do |illustration|
       illustration.image.attach(
