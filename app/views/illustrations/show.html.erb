@@ -57,7 +57,7 @@
             <% management_margin_class = user_signed_in? && @illustration.published? ? "mt-0" : "mt-8" %>
             <div class="<%= management_margin_class %> flex flex-wrap gap-4 border-t border-white/10 pt-5 text-sm font-bold">
               <%= link_to "編集", edit_illustration_path(@illustration), data: { turbo: false }, class: "text-cyan-200 hover:text-cyan-100" %>
-              <%= button_to "削除", @illustration, method: :delete, form: { data: { turbo_confirm: "このイラストを削除しますか？", turbo: false } }, class: "border-0 bg-transparent p-0 text-rose-300 hover:text-rose-100" %>
+              <%= delete_confirmation_button "削除", illustration_path(@illustration), class_name: "border-0 bg-transparent p-0 text-rose-300 hover:text-rose-100" %>
             </div>
           <% end %>
         </section>

@@ -20,7 +20,7 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body data-controller="modal navigation" data-action="resize@window->navigation#closeOnDesktop" class="min-h-screen bg-slate-950 text-slate-900 antialiased">
+  <body data-controller="modal navigation delete-confirmation" data-action="resize@window->navigation#closeOnDesktop" class="min-h-screen bg-slate-950 text-slate-900 antialiased">
     <div class="flex min-h-screen flex-col bg-slate-950">
       <%# 共通ヘッダー: サービス名とログイン状態別ナビゲーション %>
       <%# ヘッダー操作は通常遷移に統一し、連続操作時のTurbo fetch競合を防ぐ %>
@@ -86,6 +86,9 @@
 
       <%# 全ページ共通の認証モーダル %>
       <%= render "shared/auth_modals" unless user_signed_in? %>
+
+      <%# 全ページ共通の削除確認モーダル %>
+      <%= render "shared/delete_confirmation_modal" %>
 
       <%# 共通フッター: 規約への導線 %>
       <footer class="border-t border-white/10 px-5 py-6 sm:px-8">

@@ -35,8 +35,9 @@
   </div>
 <% end %>
 
+<%# アカウント削除: 全画面共通の削除確認ダイアログを使用する %>
 <h3>Cancel my account</h3>
 
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
+<div>Unhappy? <%= delete_confirmation_button "Cancel my account", registration_path(resource_name), class_name: "btn btn-error btn-sm" %></div>
 
 <%= link_to "Back", :back %>
