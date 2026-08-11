@@ -49,6 +49,75 @@ RSpec.describe "Users", type: :request do
     expect(response).to redirect_to(mypage_path)
   end
 
+  it "マイページからユーザー情報編集ページへ移動でき、他ユーザーのページには設定ボタンを表示しない" do
+    user = create(:user)
+    other_user = create(:user)
+    sign_in(user)
+
+    get mypage_path
+    expect(response.body).to include('href="/users/edit"', "ユーザー設定", "border-white")
+
+    get user_path(other_user)
+    expect(response.body).not_to include("ユーザー設定")
+
+    get edit_user_registration_path
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("ユーザー情報を編集", "表示名", "ユーザーID", "メールアドレス", "現在のパスワード", "保存する")
+  end
+
+  it "ユーザー情報はログイン中の本人だけが更新できる" do
+    user = create(:user, name: "変更前")
+    other_user = create(:user, name: "他ユーザー")
+    sign_in(user)
+
+    patch user_registration_path,
+          params: {
+            user: {
+              name: "変更後",
+              user_id: "updated_user",
+              email: user.email,
+              current_password: "password123"
+            }
+          }
+
+    expect(response).to redirect_to(mypage_path)
+    expect(user.reload).to have_attributes(name: "変更後", user_id: "updated_user")
+    expect(other_user.reload.name).to eq("他ユーザー")
+
+    follow_redirect!
+    expect(response.body).to include('role="status"', 'data-controller="flash-message"', "ユーザー情報を更新しました。")
+  end
+
+  it "ユーザー情報の更新に失敗した場合は複数の原因を表示する" do
+    user = create(:user)
+    duplicate_user = create(:user)
+    sign_in(user)
+
+    patch user_registration_path,
+          params: {
+            user: {
+              name: "更新失敗",
+              user_id: duplicate_user.user_id,
+              email: "invalid-email",
+              current_password: "password123"
+            }
+          }
+
+    expect(response).to have_http_status(:unprocessable_content)
+    expect(CGI.unescapeHTML(response.body)).to include(
+      'id="error_explanation"',
+      "入力内容を確認してください。",
+      "User has already been taken",
+      "Email is invalid"
+    )
+  end
+
+  it "未ログイン時はユーザー情報編集ページへアクセスできない" do
+    get edit_user_registration_path
+
+    expect(response).to redirect_to(new_user_session_path)
+  end
+
   it "ユーザーIDでログイン後にマイページを表示する" do
     user = create(:user, user_id: "login_user")
 

@@ -81,6 +81,9 @@
         </div>
       </nav>
 
+      <%# 画面遷移後の成功・エラー表示 %>
+      <%= render "shared/flash_messages" %>
+
       <%# ページ固有コンテンツ %>
       <%= yield %>
 

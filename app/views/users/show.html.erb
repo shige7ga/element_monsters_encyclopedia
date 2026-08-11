@@ -23,7 +23,13 @@
           <div class="flex items-center gap-4">
             <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-400 text-2xl font-black text-slate-950"><%= (@user.name.presence || @user.user_id).first.upcase %></div>
             <div>
-              <p class="text-2xl font-bold text-white"><%= @user.name.presence || @user.user_id %></p>
+              <%# ユーザー名と設定導線: マイページだけで現在のユーザー情報を編集できる %>
+              <div class="flex flex-wrap items-center gap-3">
+                <p class="text-2xl font-bold text-white"><%= @user.name.presence || @user.user_id %></p>
+                <% if @profile_owner %>
+                  <%= link_to "ユーザー設定", edit_user_registration_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-cyan-300 hover:bg-white/10" %>
+                <% end %>
+              </div>
               <p class="mt-1 text-sm text-slate-400">ユーザーID: <%= @user.user_id %></p>
             </div>
           </div>
