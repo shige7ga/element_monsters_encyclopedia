@@ -26,10 +26,9 @@ RSpec.describe "Users", type: :request do
       'alt="ヘリウムウィッチ"',
       'alt="リチウムゴーレム"',
       "元素モンスターズ",
-      "創って、探して、楽しんで、学べる",
+      "学びと創造がつながる空間",
       "見つかる、推し元素。",
       "「覚える」から「好きになる」へ。",
-      "学びと創造がつながる空間です。",
       'href="/assets/application-'
     )
     expect(response.body).not_to include("application.tailwind.css", "/assets/tailwindcss")
