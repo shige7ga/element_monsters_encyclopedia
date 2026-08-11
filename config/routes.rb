@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
+  # 利用規約・プライバシーポリシーはDBを使用しない静的ページとして表示する。
+  get "terms", to: "legal#terms", as: :terms
+  get "privacy_policy", to: "legal#privacy_policy", as: :privacy_policy
   get "mypage", to: "users#mypage", as: :mypage
   resources :users, only: :show
   resources :elements, only: %i[index show]

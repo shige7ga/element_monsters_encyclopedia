@@ -83,9 +83,11 @@
       <footer class="border-t border-white/10 px-5 py-6 sm:px-8">
         <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-slate-400 sm:flex-row">
           <p>&copy; <%= Time.current.year %> 元素モンスターズ図鑑</p>
-          <nav aria-label="フッターナビゲーション" class="flex gap-5">
-            <a href="#" class="transition hover:text-cyan-300">利用規約</a>
-            <a href="#" class="transition hover:text-cyan-300">プライバシーポリシー</a>
+          <%# 規約・お問い合わせへの共通導線 %>
+          <nav aria-label="フッターナビゲーション" class="flex flex-wrap justify-center gap-x-5 gap-y-2">
+            <%= link_to "利用規約", terms_path, class: "transition hover:text-cyan-300" %>
+            <%= link_to "プライバシーポリシー", privacy_policy_path, class: "transition hover:text-cyan-300" %>
+            <%= link_to "お問い合わせ", "https://forms.gle/uwgDobjZ3MY72uiz7", target: "_blank", rel: "noopener noreferrer", class: "transition hover:text-cyan-300" %>
           </nav>
         </div>
       </footer>
