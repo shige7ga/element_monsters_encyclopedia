@@ -13,10 +13,6 @@
       <%# プロフィール見出し %>
       <p class="inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-1.5 text-sm font-semibold text-cyan-200">MY ELEMENTS</p>
       <h1 class="mt-5 text-4xl font-black tracking-tight text-white sm:text-5xl"><%= @profile_owner ? "マイページ" : "#{@user.name.presence || @user.user_id}さんのページ" %></h1>
-      <% if @profile_owner %>
-        <p class="mt-3 text-lg leading-8 text-slate-300">ようこそ、<span class="font-bold text-cyan-200"><%= @user.name.presence || @user.user_id %></span>さん。あなたの作品を図鑑に追加しましょう。</p>
-      <% end %>
-
       <%# プロフィールカード %>
       <section class="card mt-8 rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-900 p-6 shadow-2xl shadow-cyan-950/50 sm:p-8">
         <div class="flex flex-wrap items-center justify-between gap-4">
@@ -27,12 +23,12 @@
               <div class="flex flex-wrap items-center gap-3">
                 <p class="text-2xl font-bold text-white"><%= @user.name.presence || @user.user_id %></p>
                 <% if @profile_owner %>
-                  <%= link_to edit_user_registration_path, data: { turbo: false }, aria: { label: "ユーザー設定" }, class: "btn btn-ghost btn-square btn-sm rounded-lg border border-white text-white shadow-none transition hover:border-cyan-300 hover:bg-white/10 hover:text-white" do %>
-                    <%= image_tag "gear_icon.svg", alt: "", aria: { hidden: true }, class: "h-5 w-5" %>
+                  <%= link_to edit_user_registration_path, data: { turbo: false }, aria: { label: "ユーザー設定" }, class: "btn btn-ghost btn-square btn-sm rounded-lg border border-white text-white shadow-none transition hover:border-white hover:bg-white/10 hover:text-white" do %>
+                    <%= image_tag "gear_icon.svg", alt: "", aria: { hidden: true }, class: "h-7 w-7" %>
                   <% end %>
                 <% end %>
               </div>
-              <p class="mt-1 text-sm text-slate-400">ユーザーID: <%= @user.user_id %></p>
+              <p class="mt-1 text-sm text-slate-400">@<%= @user.user_id %></p>
             </div>
           </div>
 
@@ -41,6 +37,28 @@
             <%= link_to "推し元素図鑑", encyclopedia_entries_path, data: { turbo: false }, class: "btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-cyan-200 shadow-none transition hover:bg-cyan-300/10" %>
           <% end %>
         </div>
+
+        <%# ユーザーステータス: 学習履歴は本人のマイページだけで確認できる %>
+        <% if @profile_owner %>
+          <dl class="mt-5 grid grid-cols-2 gap-3 border-t border-white/10 pt-5 sm:grid-cols-4">
+            <div class="rounded-xl bg-slate-950/30 px-4 py-3">
+              <dt class="text-xs font-semibold text-slate-400">イラスト投稿数</dt>
+              <dd class="mt-1 text-xl font-black text-white"><%= @profile_stats[:illustrations_count] %></dd>
+            </div>
+            <div class="rounded-xl bg-slate-950/30 px-4 py-3">
+              <dt class="text-xs font-semibold text-slate-400">クイズ実施回数</dt>
+              <dd class="mt-1 text-xl font-black text-white"><%= @profile_stats[:game_sessions_count] %></dd>
+            </div>
+            <div class="rounded-xl bg-slate-950/30 px-4 py-3">
+              <dt class="text-xs font-semibold text-slate-400">クイズ最高点</dt>
+              <dd class="mt-1 text-xl font-black text-white"><%= @profile_stats[:highest_score]&.join("/") || "-" %></dd>
+            </div>
+            <div class="rounded-xl bg-slate-950/30 px-4 py-3">
+              <dt class="text-xs font-semibold text-slate-400">推し元素登録数</dt>
+              <dd class="mt-1 text-xl font-black text-white"><%= @profile_stats[:encyclopedia_entries_count] %></dd>
+            </div>
+          </dl>
+        <% end %>
       </section>
 
       <%# イラスト一覧: 投稿といいね済み作品を切り替える %>
@@ -57,7 +75,7 @@
             <h2 class="mt-1 text-2xl font-black text-white"><%= @active_tab == "likes" ? likes_title : posts_title %></h2>
           </div>
           <% if @profile_owner %>
-            <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300" %>
+            <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "button-interaction rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300" %>
           <% end %>
         </div>
 

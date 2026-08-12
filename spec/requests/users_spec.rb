@@ -47,7 +47,7 @@ RSpec.describe "Users", type: :request do
     catalog_link = header.css("a").find { |link| link.text.strip == "図鑑を見る" }
 
     expect(logo_link["href"]).to eq(root_path)
-    expect(catalog_link["class"]).to include("border-cyan-400", "bg-transparent", "text-cyan-400")
+    expect(catalog_link["class"]).to include("border-cyan-300", "bg-transparent", "text-cyan-300")
     expect(header.text).not_to include("推し元素図鑑")
   end
 
@@ -64,9 +64,9 @@ RSpec.describe "Users", type: :request do
     post_link = header.css("a").find { |link| link.text.strip == "投稿する" }
 
     expect(logo_link["href"]).to eq(illustrations_path)
-    expect(catalog_link["class"]).to include("bg-cyan-400", "text-slate-950")
-    expect(learning_link["class"]).to include("bg-transparent", "text-cyan-400")
-    expect(post_link["class"]).to include("bg-transparent", "text-cyan-400")
+    expect(catalog_link["class"]).to include("bg-cyan-300", "text-slate-950")
+    expect(learning_link["class"]).to include("bg-transparent", "text-cyan-300")
+    expect(post_link["class"]).to include("bg-transparent", "text-cyan-300")
     expect(header.text).not_to include("推し元素図鑑")
   end
 
@@ -77,12 +77,12 @@ RSpec.describe "Users", type: :request do
     get learning_path
     header = Nokogiri::HTML(response.body).at_css("header")
     learning_link = header.css("a").find { |link| link.text.strip == "学習する" }
-    expect(learning_link["class"]).to include("bg-cyan-400", "text-slate-950")
+    expect(learning_link["class"]).to include("bg-cyan-300", "text-slate-950")
 
     get new_illustration_path
     header = Nokogiri::HTML(response.body).at_css("header")
     post_link = header.css("a").find { |link| link.text.strip == "投稿する" }
-    expect(post_link["class"]).to include("bg-cyan-400", "text-slate-950")
+    expect(post_link["class"]).to include("bg-cyan-300", "text-slate-950")
   end
 
   it "ログイン時のトップ画面はマイページへリダイレクトする" do
@@ -118,6 +118,37 @@ RSpec.describe "Users", type: :request do
     get edit_user_registration_path
     expect(response).to have_http_status(:ok)
     expect(response.body).to include("ユーザー情報を編集", "表示名", "ユーザーID", "メールアドレス", "現在のパスワード", "保存する")
+  end
+
+  it "マイページに本人のステータスと更新後の設定導線を表示する" do
+    user = create(:user, user_id: "status_user")
+    illustration = create(:illustration, user: user)
+    create(:game_session, user: user, score: 6, total_questions: 10)
+    create(:game_session, user: user, score: 8, total_questions: 10)
+    create(:encyclopedia_entry, user: user, illustration: illustration, element: illustration.element)
+    sign_in(user)
+
+    get mypage_path
+
+    document = Nokogiri::HTML(response.body)
+    settings_link = document.at_css('a[aria-label="ユーザー設定"]')
+    post_link = document.css("a").find { |link| link.text.strip == "イラスト投稿" }
+
+    expect(settings_link["class"]).to include("border-white", "hover:border-white")
+    expect(settings_link["class"]).not_to include("hover:border-cyan-300")
+    expect(settings_link.at_css("img")["class"]).to include("h-7", "w-7")
+    expect(post_link["class"]).to include("button-interaction", "hover:bg-cyan-300")
+    expect(response.body).to include(
+      "@#{user.user_id}",
+      "イラスト投稿数",
+      "クイズ実施回数",
+      "クイズ最高点",
+      "推し元素登録数",
+      ">1</dd>",
+      ">2</dd>",
+      ">8/10</dd>"
+    )
+    expect(response.body).not_to include("ようこそ、")
   end
 
   it "ユーザー情報はログイン中の本人だけが更新できる" do
