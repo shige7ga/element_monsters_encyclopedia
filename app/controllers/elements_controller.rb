@@ -18,6 +18,6 @@ class ElementsController < ApplicationController
   def element_illustrations
     illustrations = @element.illustrations.visible_to(current_user).includes(:user, :likes).with_attached_image
 
-    @illustration_sort == "popular" ? illustrations.popular : illustrations.order(created_at: :desc)
+    (@illustration_sort == "popular" ? illustrations.popular : illustrations.order(created_at: :desc)).page(params[:page]).per(10)
   end
 end

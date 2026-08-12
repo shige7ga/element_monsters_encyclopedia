@@ -75,6 +75,19 @@ RSpec.describe "Admin", type: :request do
     expect(response.body).to include(illustration.monster_name, "公開中", "非公開にする", "削除")
   end
 
+  it "Adminはイラスト一覧とユーザー投稿一覧を10件ずつ表示できる" do
+    11.times do |index|
+      create(:illustration, user: managed_user, monster_name: "管理ページ作品#{index + 1}", created_at: (index + 1).minutes.ago)
+    end
+    sign_in(admin)
+
+    get admin_illustrations_path(page: 2)
+    expect(response.body).to include("2 / 2", "管理ページ作品1")
+
+    get admin_user_path(managed_user, page: 2)
+    expect(response.body).to include("投稿数", "11", "2 / 2", "管理ページ作品1")
+  end
+
   it "Adminはユーザーを削除できる" do
     managed_user
     sign_in(admin)

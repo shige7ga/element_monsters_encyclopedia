@@ -4,7 +4,7 @@ module Admin
     before_action :set_illustration, only: %i[show destroy toggle_published]
 
     def index
-      @illustrations = Illustration.includes(:user, :element).with_attached_image.order(created_at: :desc)
+      @illustrations = Illustration.includes(:user, :element).with_attached_image.order(created_at: :desc).page(params[:page]).per(10)
     end
 
     def show
