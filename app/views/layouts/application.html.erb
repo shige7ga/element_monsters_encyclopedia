@@ -30,8 +30,8 @@
       <% post_active = controller_path == "illustrations" && action_name.in?(%w[new create edit update]) %>
       <% desktop_nav_button_class = "btn btn-sm h-auto min-h-0 border px-3 py-2 text-sm font-semibold shadow-none transition" %>
       <% mobile_nav_button_class = "btn btn-sm h-auto min-h-0 w-full justify-start border px-3 py-2 text-sm font-semibold shadow-none transition" %>
-      <% active_nav_color_class = "border-cyan-400 bg-cyan-400 text-slate-950 hover:bg-cyan-300" %>
-      <% inactive_nav_color_class = "border-cyan-400 bg-transparent text-cyan-400 hover:bg-cyan-400/10 hover:text-cyan-300" %>
+      <% active_nav_color_class = "border-cyan-300 bg-cyan-300 text-slate-950 hover:bg-cyan-200" %>
+      <% inactive_nav_color_class = "border-cyan-300 bg-transparent text-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-200" %>
 
       <%# 共通ヘッダー: サービス名とログイン状態別ナビゲーション %>
       <%# ヘッダー操作は通常遷移に統一し、連続操作時のTurbo fetch競合を防ぐ %>
