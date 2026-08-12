@@ -13,6 +13,9 @@ RSpec.describe "Users", type: :request do
 
     expect(response.body).to include(
       'header data-turbo="false"',
+      'fixed inset-x-0 top-0 z-50',
+      'pt-[68px] sm:pt-[72px]',
+      'href="/illustrations"',
       'nav aria-label="メインナビゲーション"',
       "ユーザー登録",
       "ログイン",
@@ -29,6 +32,7 @@ RSpec.describe "Users", type: :request do
       "学びと創造がつながる空間",
       "見つかる、推し元素。",
       "「覚える」から「好きになる」へ。",
+      'href="/illustrations"',
       'href="/assets/application-'
     )
     expect(response.body).not_to include("application.tailwind.css", "/assets/tailwindcss")
@@ -58,10 +62,11 @@ RSpec.describe "Users", type: :request do
     sign_in(user)
 
     get mypage_path
-    expect(response.body).to include('href="/users/edit"', "ユーザー設定", "border-white")
+    expect(response.body).to include('href="/users/edit"', 'aria-label="ユーザー設定"', "gear_icon", "border-white")
+    expect(response.body).not_to include(">ユーザー設定</a>")
 
     get user_path(other_user)
-    expect(response.body).not_to include("ユーザー設定")
+    expect(response.body).not_to include('aria-label="ユーザー設定"')
 
     get edit_user_registration_path
     expect(response).to have_http_status(:ok)

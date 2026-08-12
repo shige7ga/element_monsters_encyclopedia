@@ -13,6 +13,7 @@ RSpec.describe "Illustrations", type: :request do
 
     expect(response).to have_http_status(:ok)
     expect(response.body).to include("公開作品", "イラスト集", "周期表", "ILLUSTRATION GALLERY", "元素モンスターを見て、あなたの推し元素を探そう")
+    expect(response.body.index("イラスト集")).to be < response.body.index("周期表")
     expect(response.body).not_to include("非公開作品")
 
     get new_illustration_path
