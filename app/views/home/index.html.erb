@@ -37,7 +37,7 @@
 
         <%# 図鑑を見る・ユーザー登録・ログインの主要導線 %>
         <div id="start" class="mt-9 flex flex-col items-center gap-3">
-          <%= link_to "図鑑を見る", elements_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-8 py-3.5 font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5 hover:bg-cyan-300" %>
+          <%= link_to "図鑑を見る", illustrations_path, data: { turbo: false }, class: "rounded-xl bg-cyan-400 px-8 py-3.5 font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:-translate-y-0.5 hover:bg-cyan-300" %>
           <div class="flex flex-row justify-center gap-3">
             <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="rounded-xl border border-slate-500 px-6 py-3.5 text-center font-bold text-white transition hover:border-cyan-300 hover:bg-white/10">
               ユーザー登録
