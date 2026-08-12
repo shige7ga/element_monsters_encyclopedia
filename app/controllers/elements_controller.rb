@@ -8,6 +8,16 @@ class ElementsController < ApplicationController
 
   def show
     @element = Element.find(params[:id])
-    @illustrations = @element.illustrations.visible_to(current_user).includes(:user, :likes).with_attached_image.order(created_at: :desc)
+    @illustration_sort = params[:sort] == "popular" ? "popular" : "newest"
+    @illustrations = element_illustrations
+  end
+
+  private
+
+  # 元素詳細では公開作品と閲覧中ユーザー自身の非公開作品だけを並び替える。
+  def element_illustrations
+    illustrations = @element.illustrations.visible_to(current_user).includes(:user, :likes).with_attached_image
+
+    @illustration_sort == "popular" ? illustrations.popular : illustrations.order(created_at: :desc)
   end
 end
