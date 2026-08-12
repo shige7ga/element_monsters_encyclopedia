@@ -155,6 +155,58 @@ RSpec.describe "Illustrations", type: :request do
     expect(illustration.image).to be_attached
   end
 
+  it "投稿時のエラーを各入力項目の直下に表示し、入力内容を保持する" do
+    sign_in(owner)
+
+    post illustrations_path,
+         params: {
+           illustration: {
+             element_id: "",
+             monster_name: "あ" * 41,
+             description: "あ" * 1001,
+             creation_type: "",
+             published: "invalid"
+           }
+         }
+
+    expect(response).to have_http_status(:unprocessable_content)
+    expect(response.body).to include(
+      "対象元素 を選択してください",
+      "イラスト画像 を添付してください",
+      "モンスター名 は40文字以内で入力してください",
+      "説明 は1000文字以内で入力してください",
+      "作成方法 を選択してください",
+      "公開設定 は公開または非公開の値を選択してください"
+    )
+    expect(response.body).to include('value="' + ("あ" * 41) + '"')
+    expect(response.body).to include("textarea", "あ" * 1001)
+    expect(response.body).not_to include("入力内容を確認してください。")
+  end
+
+  it "投稿者は画像を変更せずに有効な内容でイラストを編集できる" do
+    sign_in(owner)
+
+    patch illustration_path(published_illustration),
+          params: {
+            illustration: {
+              element_id: element.id,
+              monster_name: "  更新後モンスター  ",
+              description: "  更新後の説明  ",
+              creation_type: "self_made",
+              published: "0"
+            }
+          }
+
+    expect(response).to redirect_to(illustration_path(published_illustration))
+    expect(published_illustration.reload).to have_attributes(
+      monster_name: "更新後モンスター",
+      description: "更新後の説明",
+      creation_type: "self_made",
+      published: false
+    )
+    expect(published_illustration.image).to be_attached
+  end
+
   it "投稿者ページには公開作品だけを表示し、本人のページには非公開作品も表示する" do
     get user_path(owner)
     expect(response.body).to include("公開作品")
