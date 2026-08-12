@@ -1,5 +1,6 @@
 require "rails_helper"
 require "cgi"
+require "nokogiri"
 
 RSpec.describe "Users", type: :request do
   it "未ログイン時のマイページはログイン画面へリダイレクトする" do
@@ -36,6 +37,52 @@ RSpec.describe "Users", type: :request do
       'href="/assets/application-'
     )
     expect(response.body).not_to include("application.tailwind.css", "/assets/tailwindcss")
+  end
+
+  it "未ログイン時のヘッダーロゴはトップへ遷移し、通常ナビゲーションは透明背景で表示する" do
+    get root_path
+
+    header = Nokogiri::HTML(response.body).at_css("header")
+    logo_link = header.css("a").find { |link| link.at_css('img[alt="元素モンスターズ図鑑LOGO"]') }
+    catalog_link = header.css("a").find { |link| link.text.strip == "図鑑を見る" }
+
+    expect(logo_link["href"]).to eq(root_path)
+    expect(catalog_link["class"]).to include("border-cyan-400", "bg-transparent", "text-cyan-400")
+    expect(header.text).not_to include("推し元素図鑑")
+  end
+
+  it "ログイン時のヘッダーロゴはイラスト一覧へ遷移し、表示中の導線を強調する" do
+    user = create(:user)
+    sign_in(user)
+
+    get illustrations_path
+
+    header = Nokogiri::HTML(response.body).at_css("header")
+    logo_link = header.css("a").find { |link| link.at_css('img[alt="元素モンスターズ図鑑LOGO"]') }
+    catalog_link = header.css("a").find { |link| link.text.strip == "図鑑を見る" }
+    learning_link = header.css("a").find { |link| link.text.strip == "学習する" }
+    post_link = header.css("a").find { |link| link.text.strip == "投稿する" }
+
+    expect(logo_link["href"]).to eq(illustrations_path)
+    expect(catalog_link["class"]).to include("bg-cyan-400", "text-slate-950")
+    expect(learning_link["class"]).to include("bg-transparent", "text-cyan-400")
+    expect(post_link["class"]).to include("bg-transparent", "text-cyan-400")
+    expect(header.text).not_to include("推し元素図鑑")
+  end
+
+  it "学習・投稿画面では対応するヘッダー導線を強調する" do
+    user = create(:user)
+    sign_in(user)
+
+    get learning_path
+    header = Nokogiri::HTML(response.body).at_css("header")
+    learning_link = header.css("a").find { |link| link.text.strip == "学習する" }
+    expect(learning_link["class"]).to include("bg-cyan-400", "text-slate-950")
+
+    get new_illustration_path
+    header = Nokogiri::HTML(response.body).at_css("header")
+    post_link = header.css("a").find { |link| link.text.strip == "投稿する" }
+    expect(post_link["class"]).to include("bg-cyan-400", "text-slate-950")
   end
 
   it "ログイン時のトップ画面はマイページへリダイレクトする" do
