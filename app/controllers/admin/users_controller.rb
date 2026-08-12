@@ -8,7 +8,7 @@ module Admin
     end
 
     def show
-      @illustrations = @user.illustrations.includes(:element).with_attached_image.order(created_at: :desc)
+      @illustrations = @user.illustrations.includes(:element).with_attached_image.order(created_at: :desc).page(params[:page]).per(10)
     end
 
     def destroy

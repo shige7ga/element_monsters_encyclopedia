@@ -18,6 +18,18 @@ RSpec.describe "Elements", type: :request do
     expect(response.body).to include(illustration.element.symbol)
     expect(response.body).not_to include("作品数", "水素のイラスト")
   end
+  it "元素詳細の関連イラストを10件ずつ表示し、並び替え条件をページ移動後も維持する" do
+    11.times do |index|
+      illustration = create(:illustration, element: element, monster_name: "元素ページ作品#{index + 1}", created_at: (index + 1).minutes.ago)
+      create_list(:like, index == 10 ? 2 : 1, illustration: illustration)
+    end
+
+    get element_path(element, sort: "popular", page: 2)
+
+    expect(response.body).to include("2 / 2", "元素ページ作品1")
+    expect(response.body).to include('href="/elements/' + element.id.to_s + '?page=1&amp;sort=popular"')
+  end
+
   it "元素詳細内のイラストを新着順と人気順で切り替えられる" do
     user = create(:user)
     newest_illustration = create(:illustration, element: element, monster_name: "新着イラスト", created_at: 1.hour.ago)

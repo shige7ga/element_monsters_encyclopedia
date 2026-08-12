@@ -74,3 +74,5 @@ gem "rspec-rails", "~> 8.0", group: :test
 gem "factory_bot_rails", "~> 6.5", group: :test
 
 gem "cloudinary", "~> 2.4"
+
+gem "kaminari", "~> 1.2"

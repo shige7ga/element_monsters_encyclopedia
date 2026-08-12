@@ -20,6 +20,27 @@ RSpec.describe "Illustrations", type: :request do
     expect(response).to redirect_to(new_user_session_path)
   end
 
+  it "一覧と人気一覧を10件ずつ表示し、ページ移動後も人気順を維持する" do
+    11.times do |index|
+      illustration = create(:illustration, element: element, monster_name: "ページネーション作品#{index + 1}", created_at: (index + 1).minutes.ago)
+      create_list(:like, index == 10 ? 2 : 1, illustration: illustration)
+    end
+
+    get illustrations_path
+
+    expect(response.body).to include("1 / 2", "次へ", "ページネーション作品1")
+    expect(response.body).not_to include("ページネーション作品11")
+
+    get illustrations_path(page: 2)
+
+    expect(response.body).to include("2 / 2", "前へ", "ページネーション作品11")
+
+    get popular_illustrations_path(page: 2)
+
+    expect(response.body).to include("2 / 2", "人気", "ページネーション作品1")
+    expect(response.body).to include('href="/illustrations/popular?page=1"')
+  end
+
   it "投稿・編集フォームにモンスター名、説明、明示した送信ボタンを表示する" do
     sign_in(owner)
 
