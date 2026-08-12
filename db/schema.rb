@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_11_050000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_12_141519) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -234,9 +234,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_11_050000) do
     t.string "reset_password_token"
     t.datetime "updated_at", null: false
     t.string "user_id", null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index "lower((email)::text)", name: "index_users_on_lower_email", unique: true
+    t.index "lower((user_id)::text)", name: "index_users_on_lower_user_id", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["user_id"], name: "index_users_on_user_id", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
