@@ -71,7 +71,8 @@ RSpec.describe "Illustrations", type: :request do
     expect(response.body).not_to include("ILLUSTRATION", ">公開<")
 
     get illustrations_path
-    expect(response.body).to include("aspect-square", "aspect-ratio: 1 / 1;", "max-h-full", "max-w-full", "width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; object-position: center;", "flex-1 truncate")
+    expect(response.body).to include("aspect-square", "h-full w-full object-contain object-center", "flex-1 truncate")
+    expect(response.body).not_to include("width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; object-position: center;")
   end
 
   it "AI生成作品だけ詳細画面にAI生成バッジを表示する" do

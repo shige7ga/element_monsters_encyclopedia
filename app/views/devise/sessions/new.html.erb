@@ -34,14 +34,6 @@
         <% end %>
       </div>
 
-      <%# ログイン状態保持チェックボックス %>
-      <% if devise_mapping.rememberable? %>
-        <div class="flex items-center gap-2">
-          <%= f.check_box :remember_me, class: "checkbox checkbox-sm rounded border-slate-300 text-cyan-500" %>
-          <%= f.label :remember_me, "ログイン状態を保持する", class: "text-sm" %>
-        </div>
-      <% end %>
-
       <%# ログインボタン %>
       <%= f.submit "ログイン", class: "btn h-auto min-h-0 w-full rounded-lg bg-cyan-500 px-4 py-3 font-bold text-slate-950 hover:bg-cyan-400" %>
     <% end %>
