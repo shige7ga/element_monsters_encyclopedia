@@ -11,6 +11,40 @@ RSpec.describe Illustration, type: :model do
     expect(illustration).to be_valid
   end
 
+  it "モンスター名は空欄を許可し、前後空白を除去して40文字まで保存できる" do
+    illustration = build(:illustration, user: user, element: element, monster_name: "  モンスター  ")
+
+    expect(illustration).to be_valid
+    expect(illustration.monster_name).to eq("モンスター")
+    expect(build(:illustration, user: user, element: element, monster_name: "   ")).to be_valid
+
+    too_long_illustration = build(:illustration, user: user, element: element, monster_name: "あ" * 41)
+    expect(too_long_illustration).not_to be_valid
+    expect(too_long_illustration.errors[:monster_name]).to be_present
+  end
+
+  it "説明は空欄を許可し、前後空白を除去して1000文字まで保存できる" do
+    illustration = build(:illustration, user: user, element: element, description: "  説明文  ")
+
+    expect(illustration).to be_valid
+    expect(illustration.description).to eq("説明文")
+
+    blank_description = build(:illustration, user: user, element: element, description: "   ")
+    expect(blank_description).to be_valid
+    expect(blank_description.description).to be_nil
+
+    too_long_illustration = build(:illustration, user: user, element: element, description: "あ" * 1001)
+    expect(too_long_illustration).not_to be_valid
+    expect(too_long_illustration.errors[:description]).to be_present
+  end
+
+  it "対象元素が未選択の場合は無効である" do
+    illustration = build(:illustration, user: user, element: nil)
+
+    expect(illustration).not_to be_valid
+    expect(illustration.errors[:element_id]).to be_present
+  end
+
   it "画像がなければ無効である" do
     illustration = described_class.new(user: user, element: element, monster_name: "画像なし")
 
@@ -43,6 +77,17 @@ RSpec.describe Illustration, type: :model do
     expect(build(:illustration, user: user, element: element, creation_type: "ai_generated")).to be_valid
     expect(build(:illustration, user: user, element: element, creation_type: "unknown")).not_to be_valid
     expect(build(:illustration, user: user, element: element, creation_type: nil)).not_to be_valid
+  end
+
+  it "公開設定はbooleanとフォーム由来の値だけを許可する" do
+    expect(build(:illustration, user: user, element: element, published: true)).to be_valid
+    expect(build(:illustration, user: user, element: element, published: false)).to be_valid
+
+    illustration = build(:illustration, user: user, element: element)
+    illustration.published = "invalid"
+
+    expect(illustration).not_to be_valid
+    expect(illustration.errors[:published]).to include("は公開または非公開の値を選択してください")
   end
 
   it "公開作品と閲覧者本人の非公開作品だけを返す" do

@@ -1,21 +1,12 @@
 <%# 投稿フォーム: 元素・画像・モンスター名・説明・公開状態をまとめて入力 %>
 <%= form_with model: illustration, class: "space-y-6", data: { turbo: false } do |form| %>
-  <%# バリデーションエラー %>
-  <% if illustration.errors.any? %>
-    <div class="alert alert-error rounded-xl border border-rose-300/50 bg-rose-500/15 p-4 text-sm text-rose-100">
-      <p class="font-bold">入力内容を確認してください。</p>
-      <ul class="mt-2 list-disc space-y-1 pl-5">
-        <% illustration.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
   <%# 対象元素の選択 %>
   <div>
     <%= form.label :element_id, "対象元素", class: "mb-1 block text-sm font-semibold text-slate-200" %>
     <%= form.collection_select :element_id, Element.order(:atomic_number), :id, ->(element) { "#{element.atomic_number} · #{element.symbol} — #{element.name}" }, { prompt: "元素を選択" }, class: "select select-bordered w-full rounded-lg border-slate-600 bg-slate-950 px-3 py-2 text-white outline-none transition focus:border-cyan-300 focus:ring-1 focus:ring-cyan-300" %>
+    <% if illustration.errors[:element_id].any? %>
+      <p class="mt-1 text-sm text-rose-300"><%= illustration.errors.full_messages_for(:element_id).join("、") %></p>
+    <% end %>
   </div>
 
   <%# 画像: 形式・容量の補足をラベル横に表示し、ファイル選択ボタンの高さを確保する %>
@@ -29,17 +20,26 @@
       <%= form.label :image, "ファイル選択", class: "btn btn-sm h-auto min-h-0 shrink-0 border-0 bg-cyan-400 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
       <span>画像を選択してください</span>
     </div>
+    <% if illustration.errors[:image].any? %>
+      <p class="mt-1 text-sm text-rose-300"><%= illustration.errors.full_messages_for(:image).join("、") %></p>
+    <% end %>
   </div>
 
   <div>
     <%= form.label :monster_name, "モンスター名", class: "mb-1 block text-sm font-semibold text-slate-200" %>
     <%= form.text_field :monster_name, class: "input input-bordered w-full rounded-lg border-slate-600 bg-slate-950 px-3 py-2 text-white outline-none transition focus:border-cyan-300 focus:ring-1 focus:ring-cyan-300" %>
+    <% if illustration.errors[:monster_name].any? %>
+      <p class="mt-1 text-sm text-rose-300"><%= illustration.errors.full_messages_for(:monster_name).join("、") %></p>
+    <% end %>
   </div>
 
   <%# 説明: モンスターの特徴と元素の覚え方を一つの欄に統合 %>
   <div>
     <%= form.label :description, "説明（モンスターの特徴・元素の覚え方など）", class: "mb-1 block text-sm font-semibold text-slate-200" %>
     <%= form.text_area :description, rows: 5, placeholder: "モンスターの特徴や、元素記号・性質の覚え方などを入力してください", class: "textarea textarea-bordered w-full rounded-lg border-slate-600 bg-slate-950 px-3 py-2 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300 focus:ring-1 focus:ring-cyan-300" %>
+    <% if illustration.errors[:description].any? %>
+      <p class="mt-1 text-sm text-rose-300"><%= illustration.errors.full_messages_for(:description).join("、") %></p>
+    <% end %>
   </div>
 
   <%# 作成方法: 公開設定と同じカード内で自作・AI生成のどちらかを選択する %>
@@ -55,6 +55,9 @@
         <span class="font-bold">AI生成</span>
       </label>
     </div>
+    <% if illustration.errors[:creation_type].any? %>
+      <p class="mt-2 text-sm text-rose-300"><%= illustration.errors.full_messages_for(:creation_type).join("、") %></p>
+    <% end %>
   </fieldset>
 
   <%# 公開設定 %>
@@ -62,6 +65,9 @@
     <%= form.check_box :published, class: "checkbox checkbox-sm rounded border-slate-500 text-cyan-400 focus:ring-cyan-300" %>
     <span><span class="font-bold">公開する</span><br><span class="text-xs text-slate-400">非公開の作品は自分だけが閲覧できます。</span></span>
   </label>
+  <% if illustration.errors[:published].any? %>
+    <p class="-mt-4 text-sm text-rose-300"><%= illustration.errors.full_messages_for(:published).join("、") %></p>
+  <% end %>
 
   <%# 送信操作: Railsの自動ラベルを使わず画面種別ごとに明示 %>
   <div class="flex flex-wrap items-center gap-4">

@@ -33,3 +33,10 @@ en:
     attributes:
       user:
         user_id: "ユーザーID"
+      illustration:
+        element_id: "対象元素"
+        monster_name: "モンスター名"
+        description: "説明"
+        creation_type: "作成方法"
+        published: "公開設定"
+        image: "イラスト画像"
