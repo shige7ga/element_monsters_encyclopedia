@@ -10,23 +10,30 @@
 
       <%# 元素情報カード: 原子番号から説明までを一つのカードに集約 %>
       <section class="card mt-5 rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-950 p-5 shadow-2xl shadow-cyan-950/40 sm:p-8">
-        <div class="flex flex-col gap-5 sm:flex-row sm:items-center">
+        <%# 元素の主要情報: PCでは記号・名称・族周期・状態を一列で表示する %>
+        <div class="flex flex-wrap items-center gap-4 sm:flex-nowrap sm:gap-5">
+          <%# 元素記号 %>
           <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/40 bg-cyan-300/10 text-3xl font-black text-cyan-200 sm:h-24 sm:w-24 sm:text-4xl"><%= @element.symbol %></div>
-          <div>
+
+          <%# 元素名・原子番号・英名 %>
+          <div class="min-w-0 flex-1">
             <p class="text-xs font-semibold tracking-[0.2em] text-cyan-300">ATOMIC NUMBER <%= @element.atomic_number %></p>
-            <h1 class="mt-1 text-3xl font-black text-white"><%= @element.name %></h1>
-            <p class="text-sm text-slate-300"><%= @element.english_name %></p>
+            <h1 class="mt-1 whitespace-nowrap text-3xl font-black text-white"><%= @element.name %></h1>
+            <%# 英名と族・周期: 同じ文字サイズで補足情報として横に並べる %>
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-300">
+              <p><%= @element.english_name %></p>
+              <p><%= @element.group_number ? "#{@element.group_number}族" : "" %><%= @element.period %>周期</p>
+            </div>
+          </div>
+
+          <%# 常温での状態 %>
+          <div class="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center sm:shrink-0">
+            <p class="text-sm text-slate-400">常温での状態</p>
+            <p class="mt-1 text-lg font-bold text-cyan-200"><%= @element.common_state %></p>
           </div>
         </div>
 
-        <%# 周期・族・常温状態 %>
-        <dl class="mt-6 grid gap-3 sm:grid-cols-3">
-          <div class="rounded-xl border border-white/10 bg-white/5 p-4"><dt class="text-sm text-slate-400">周期</dt><dd class="mt-1 text-lg font-bold text-white"><%= @element.period %>周期</dd></div>
-          <div class="rounded-xl border border-white/10 bg-white/5 p-4"><dt class="text-sm text-slate-400">族</dt><dd class="mt-1 text-lg font-bold text-white"><%= @element.group_number %>族</dd></div>
-          <div class="rounded-xl border border-white/10 bg-white/5 p-4"><dt class="text-sm text-slate-400">常温での状態</dt><dd class="mt-1 text-lg font-bold text-cyan-200"><%= @element.common_state %></dd></div>
-        </dl>
-
-        <%# 元素の説明 %>
+        <%# 元素の説明: 主要情報の下に全文を表示する %>
         <div class="mt-6 border-t border-white/10 pt-6">
           <h2 class="text-lg font-bold text-white">説明</h2>
           <p class="mt-2 leading-7 text-slate-300"><%= @element.description %></p>
@@ -41,6 +48,12 @@
             <%= link_to "この元素を投稿する", new_illustration_path(element_id: @element.id), data: { turbo: false }, class: "btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-sm font-bold text-cyan-200 transition hover:bg-cyan-300/10" %>
           <% end %>
         </div>
+
+        <%# 並び替え: 新着順といいね数順を元素詳細内で切り替える %>
+        <nav aria-label="元素イラスト一覧切替" class="mt-5 flex flex-wrap gap-2 text-sm font-bold">
+          <%= link_to "新着", element_path(@element), data: { turbo: false }, aria: { current: @illustration_sort == "newest" ? "page" : nil }, class: "button-interaction rounded-lg border px-3 py-2 transition #{@illustration_sort == "newest" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
+          <%= link_to "人気", element_path(@element, sort: "popular"), data: { turbo: false }, aria: { current: @illustration_sort == "popular" ? "page" : nil }, class: "button-interaction rounded-lg border px-3 py-2 transition #{@illustration_sort == "popular" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
+        </nav>
 
         <% if @illustrations.any? %>
           <div class="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
