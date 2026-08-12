@@ -97,6 +97,29 @@ RSpec.describe "Users", type: :request do
     expect(response.body).not_to include(">周期表</a>")
   end
 
+  it "ユーザー登録で入力ルール違反を各項目のエラーとして表示する" do
+    post user_registration_path,
+         params: {
+           user: {
+             name: "あ" * 41,
+             user_id: "invalid user id",
+             email: "invalid-email",
+             password: "short",
+             password_confirmation: "different"
+           }
+         },
+         headers: { "Turbo-Frame" => "registration_modal" }
+
+    expect(response).to have_http_status(:unprocessable_content)
+    expect(CGI.unescapeHTML(response.body)).to include(
+      "Name is too long",
+      "ユーザーID は半角英数字、_、-のみ使用できます",
+      "Email is invalid",
+      "Password is too short",
+      "Password confirmation doesn't match Password"
+    )
+  end
+
   it "ユーザー登録後にマイページへリダイレクトする" do
     post user_registration_path, params: { user: attributes_for(:user) }
 
@@ -193,8 +216,29 @@ RSpec.describe "Users", type: :request do
     expect(CGI.unescapeHTML(response.body)).to include(
       'id="error_explanation"',
       "入力内容を確認してください。",
-      "User has already been taken",
+      "ユーザーID has already been taken",
       "Email is invalid"
+    )
+  end
+
+  it "ユーザー情報編集でもユーザーIDの形式と名前の文字数を検証する" do
+    user = create(:user)
+    sign_in(user)
+
+    patch user_registration_path,
+          params: {
+            user: {
+              name: "あ" * 41,
+              user_id: "invalid user id",
+              email: user.email,
+              current_password: "password123"
+            }
+          }
+
+    expect(response).to have_http_status(:unprocessable_content)
+    expect(CGI.unescapeHTML(response.body)).to include(
+      "Name is too long",
+      "ユーザーID は半角英数字、_、-のみ使用できます"
     )
   end
 
@@ -218,7 +262,7 @@ RSpec.describe "Users", type: :request do
     get new_user_registration_path, headers: { "Turbo-Frame" => "registration_modal" }
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('<turbo-frame', 'id="registration_modal"', "パスワード", "文字以上で入力してください")
+    expect(response.body).to include('<turbo-frame', 'id="registration_modal"', "パスワード", "6〜32文字で入力してください")
   end
 
   it "登録エラーをモーダル内の各入力欄に表示する" do
