@@ -315,11 +315,14 @@ SNSへイラストを投稿している、または投稿したいと考えて�
 ### 10-1. 使用予定の技術
 
 - 言語 / フレームワーク：Ruby 3.4系 / Ruby on Rails 8系
+- フロントエンド：Tailwind CSS 4 / daisyUI 5 / Hotwire
 - DB：PostgreSQL 18系
 - デプロイ先：Render + Neon
 - 画像アップロード：cloudinary
 - 環境構築：Docker
 - バージョン管理：Git/GitHub
+- テスト：RSpec / FactoryBot
+- ライブラリ：Devise(認証機能) / Kaminari(ページネーション)
 
 ### 10-2. 技術選定の理由
 
@@ -333,6 +336,16 @@ SNSへイラストを投稿している、または投稿したいと考えて�
 | AWS | 不採用 | 自由度が高く、本番環境で広く利用されている。しかし、多種なサービス構成やネットワーク等、学習すべき内容が多く、学習コストが高い。今回のWebアプリにはオーバースペックと判断し、不採用とした。 |
 | Cloudinary | 採用 | 無料枠が充実しており、初期の運用コストを抑えられる。また、RailsのActive Storageと簡単に連携でき、少ない設定で画像アップロード機能を実装できることから採用した。 |
 | Cloudflare R2 | 不採用 | 保存機能は十分だが、画像加工機能が標準でなく実装工数が増えるため不採用とした |
+| Tailwind CSS + daisyUI | 採用 | Tailwind CSSはHTML上でスタイルを完結でき、CSSファイルを増やさず効率的にUIを実装できるため採用。さらにdaisyUIを組み合わせることで、デザインの統一性を保ちながら実装工数を削減できる。 |
+| Bootstrap | 不採用 | UIを素早く構築できるが、既定デザインの影響が強く、本サービス独自のデザインへ調整する際の自由度を考慮して不採用とした。 |
+| Kaminari | 採用 | Railsとの親和性が高く、少ない実装でページネーションを導入できるため採用した。 |
+| Pagy | 不採用 | 軽量・高速だが、本サービス規模では性能差よりもRailsでの導入・実装の分かりやすさを優先して不採用とした。 |
+| RSpec + FactoryBot | 採用 | テストの意図を読みやすく記述でき、FactoryBotと組み合わせてテストデータを効率的に作成できるため採用した。 |
+| Minitest  | 不採用 | Rails標準でシンプルだが、テストの可読性やFactoryBotを活用したテストデータ管理のしやすさを重視し、RSpecを採用した。 |
+| Devise  | 採用  | ユーザー登録・ログインなどの認証機能を、安全かつ少ない実装で導入できるため採用した。 |
+| Rails Authentication Generator | 不採用 | シンプルでカスタマイズしやすいが、認証機能を個別に構築する工数を考慮し、実績と機能が充実したDeviseを優先した。 |
+
+
 
 ## 11. 画面遷移図
 
@@ -341,31 +354,3 @@ SNSへイラストを投稿している、または投稿したいと考えて�
 ## 12.ER図
 
 [![Image from Gyazo](https://i.gyazo.com/a63c543d9ef3b8879d90f9c0a67c5b3d.png)](https://gyazo.com/a63c543d9ef3b8879d90f9c0a67c5b3d)
-
-
-## テスト
-
-テストはRSpecで実行します。
-
-```bash
-bundle exec rspec
-```
-
-特定ファイルまたは行を実行する場合は次のとおりです。
-
-```bash
-bundle exec rspec spec/models/user_spec.rb
-bundle exec rspec spec/models/user_spec.rb:10
-```
-
-## CSSビルド
-
-Tailwind CSSはNode.js版のTailwind CSS v4と`cssbundling-rails`で管理しています。
-
-```bash
-yarn build:css
-yarn build:css --watch
-bin/dev
-```
-
-入力ファイルは`app/assets/stylesheets/application.tailwind.css`、出力ファイルは`app/assets/builds/application.css`です。
