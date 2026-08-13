@@ -9,6 +9,19 @@ RSpec.describe "Users", type: :request do
     expect(response).to redirect_to(new_user_session_path)
   end
 
+  it "OGPメタタグに現在ページURLと絶対URLのOGP画像を設定する" do
+    get root_path
+
+    document = Nokogiri::HTML(response.body)
+
+    expect(document.at_css('meta[property="og:title"]')["content"]).to eq("元素モンスターズ図鑑")
+    expect(document.at_css('meta[property="og:description"]')["content"]).to eq("元素モンスターズと出会って、元素を楽しむイラスト共有型図鑑アプリ")
+    expect(document.at_css('meta[property="og:type"]')["content"]).to eq("website")
+    expect(document.at_css('meta[property="og:url"]')["content"]).to eq(root_url)
+    expect(document.at_css('meta[property="og:image"]')["content"]).to match(%r{\Ahttp://www\.example\.com/assets/ogp-[a-f0-9]+\.png\z})
+    expect(document.at_css('meta[name="twitter:card"]')["content"]).to eq("summary_large_image")
+  end
+
   it "未ログイン時の共通ヘッダーに認証用ナビゲーションを表示する" do
     get root_path
 
