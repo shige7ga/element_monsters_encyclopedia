@@ -45,7 +45,7 @@ RSpec.describe "Illustrations", type: :request do
     sign_in(owner)
 
     get new_illustration_path
-    expect(response.body).to include("モンスター名", "作成方法", "自作", "AI生成", "説明（モンスターの特徴・元素の覚え方など）", "投稿する", 'type="radio"', "ファイル選択", "画像を選択してください", 'class="sr-only"')
+    expect(response.body).to include("モンスター名", "作成方法", "自作", "AI生成", "説明（モンスターの特徴・元素の覚え方など）", "投稿する", 'type="radio"', "ファイル選択", "画像を選択してください", 'class="sr-only"', 'data-controller="file-name"', 'change-&gt;file-name#update', 'data-file-name-target="name"')
     creation_type_inputs = response.body.scan(/<input[^>]*name="illustration\[creation_type\]"[^>]*>/)
     expect(creation_type_inputs).to have_attributes(length: 2)
     expect(creation_type_inputs).not_to include(a_string_matching(/checked/))

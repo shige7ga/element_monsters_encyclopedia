@@ -46,6 +46,8 @@
           <%= render "shared/section_label", label: "ILLUSTRATIONS" %>
           <% if user_signed_in? %>
             <%= link_to "この元素を投稿する", new_illustration_path(element_id: @element.id), data: { turbo: false }, class: "btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-sm font-bold text-cyan-200 transition hover:bg-cyan-300/10" %>
+          <% else %>
+            <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-sm font-bold text-cyan-200 transition hover:bg-cyan-300/10">この元素を投稿する</button>
           <% end %>
         </div>
 

@@ -57,13 +57,14 @@
             <%= link_to "図鑑を見る", illustrations_path, data: { turbo: false }, class: "#{desktop_nav_button_class} #{catalog_active ? active_nav_color_class : inactive_nav_color_class}" %>
             <%= link_to "学習する", learning_path, data: { turbo: false }, class: "#{desktop_nav_button_class} #{learning_active ? active_nav_color_class : inactive_nav_color_class}" %>
             <% if user_signed_in? %>
-              <%= link_to "投稿する", new_illustration_path, data: { turbo: false }, class: "#{desktop_nav_button_class} #{post_active ? active_nav_color_class : inactive_nav_color_class}" %>
+              <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "#{desktop_nav_button_class} #{post_active ? active_nav_color_class : inactive_nav_color_class}" %>
               <% if current_user.admin? %>
                 <%= link_to "管理画面", admin_root_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 border-0 bg-amber-300 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-amber-200" %>
               <% end %>
               <%= link_to "マイページ", mypage_path, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-white hover:bg-white/10" %>
               <%= button_to "ログアウト", destroy_user_session_path, method: :delete, form: { class: "shrink-0" }, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-white hover:bg-white/10" %>
             <% else %>
+              <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="<%= desktop_nav_button_class %> <%= inactive_nav_color_class %>">イラスト投稿</button>
               <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-white hover:bg-white/10">ユーザー登録</button>
               <button type="button" data-action="modal#open" data-modal-dialog-param="login" class="btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-white hover:bg-white/10">ログイン</button>
             <% end %>
@@ -85,13 +86,14 @@
           <%= link_to "図鑑を見る", illustrations_path, data: { turbo: false }, class: "#{mobile_nav_button_class} #{catalog_active ? active_nav_color_class : inactive_nav_color_class}" %>
           <%= link_to "学習する", learning_path, data: { turbo: false }, class: "#{mobile_nav_button_class} #{learning_active ? active_nav_color_class : inactive_nav_color_class}" %>
           <% if user_signed_in? %>
-            <%= link_to "投稿する", new_illustration_path, data: { turbo: false }, class: "#{mobile_nav_button_class} #{post_active ? active_nav_color_class : inactive_nav_color_class}" %>
+            <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "#{mobile_nav_button_class} #{post_active ? active_nav_color_class : inactive_nav_color_class}" %>
             <% if current_user.admin? %>
               <%= link_to "管理画面", admin_root_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 w-full justify-start border-0 bg-amber-300 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-amber-200" %>
             <% end %>
             <%= link_to "マイページ", mypage_path, class: "btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-slate-200 shadow-none transition hover:bg-white/10" %>
             <%= button_to "ログアウト", destroy_user_session_path, method: :delete, form: { class: "w-full" }, class: "btn btn-ghost h-auto min-h-0 w-full justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-left text-white shadow-none transition hover:bg-white/10" %>
           <% else %>
+            <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="<%= mobile_nav_button_class %> <%= inactive_nav_color_class %>">イラスト投稿</button>
             <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-left text-slate-200 shadow-none transition hover:bg-white/10">ユーザー登録</button>
             <button type="button" data-action="modal#open" data-modal-dialog-param="login" class="btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-left text-slate-200 shadow-none transition hover:bg-white/10">ログイン</button>
           <% end %>

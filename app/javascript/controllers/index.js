@@ -10,6 +10,9 @@ application.register("delete-confirmation", DeleteConfirmationController)
 import FlashMessageController from "./flash_message_controller"
 application.register("flash-message", FlashMessageController)
 
+import FileNameController from "./file_name_controller"
+application.register("file-name", FileNameController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
