@@ -66,7 +66,8 @@ RSpec.describe "Illustrations", type: :request do
   it "詳細と一覧でモンスター名・説明を表示し、画像をobject-containで収める" do
     get illustration_path(published_illustration)
 
-    expect(response.body).to include("公開作品", published_illustration.description, "object-contain", "md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]", "mx-auto", "md:mx-0")
+    expect(response.body).to include("公開作品", published_illustration.description, "h-full w-full object-contain object-center", "md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]", "mx-auto", "md:mx-0")
+    expect(response.body).not_to include("items-center justify-center", "width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; object-position: center;")
     expect(response.body).to include("min-w-0 flex-1", "mt-3", "justify-start")
     expect(response.body).not_to include("ILLUSTRATION", ">公開<")
 
