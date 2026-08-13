@@ -65,8 +65,12 @@
         <% end %>
       </div>
 
-      <%# ユーザー登録ボタン %>
+      <%# ユーザー登録ボタンとログインへの切替導線 %>
       <%= f.submit "登録する", class: "btn h-auto min-h-0 w-full rounded-lg bg-cyan-500 px-4 py-3 font-bold text-slate-950 hover:bg-cyan-400" %>
+      <p class="text-center text-sm text-slate-600">
+        すでにアカウントをお持ちの方は
+        <button type="button" data-action="modal#switch" data-modal-dialog-param="login" class="font-bold text-cyan-700 underline underline-offset-2 transition hover:text-cyan-900">ログインはこちら</button>
+      </p>
     <% end %>
   </div>
 <% end %>

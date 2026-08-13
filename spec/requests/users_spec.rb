@@ -74,7 +74,7 @@ RSpec.describe "Users", type: :request do
     logo_link = header.css("a").find { |link| link.at_css('img[alt="元素モンスターズ図鑑LOGO"]') }
     catalog_link = header.css("a").find { |link| link.text.strip == "図鑑を見る" }
     learning_link = header.css("a").find { |link| link.text.strip == "学習する" }
-    post_link = header.css("a").find { |link| link.text.strip == "投稿する" }
+    post_link = header.css("a").find { |link| link.text.strip == "イラスト投稿" }
 
     expect(logo_link["href"]).to eq(illustrations_path)
     expect(catalog_link["class"]).to include("bg-cyan-300", "text-slate-950")
@@ -94,8 +94,23 @@ RSpec.describe "Users", type: :request do
 
     get new_illustration_path
     header = Nokogiri::HTML(response.body).at_css("header")
-    post_link = header.css("a").find { |link| link.text.strip == "投稿する" }
+    post_link = header.css("a").find { |link| link.text.strip == "イラスト投稿" }
     expect(post_link["class"]).to include("bg-cyan-300", "text-slate-950")
+  end
+
+  it "未ログイン時のイラスト投稿導線はユーザー登録モーダルを開く" do
+    get root_path
+
+    header = Nokogiri::HTML(response.body).at_css("header")
+    post_button = header.css("button").find { |button| button.text.strip == "イラスト投稿" }
+
+    expect(post_button["data-action"]).to eq("modal#open")
+    expect(post_button["data-modal-dialog-param"]).to eq("registration")
+    get new_user_session_path, headers: { "Turbo-Frame" => "login_modal" }
+    expect(response.body).to include("ユーザー登録はこちら", 'data-action="modal#switch"', 'data-modal-dialog-param="registration"')
+
+    get new_user_registration_path, headers: { "Turbo-Frame" => "registration_modal" }
+    expect(response.body).to include("ログインはこちら", 'data-action="modal#switch"', 'data-modal-dialog-param="login"')
   end
 
   it "ログイン時のトップ画面はマイページへリダイレクトする" do
@@ -168,7 +183,7 @@ RSpec.describe "Users", type: :request do
 
     document = Nokogiri::HTML(response.body)
     settings_link = document.at_css('a[aria-label="ユーザー設定"]')
-    post_link = document.css("a").find { |link| link.text.strip == "イラスト投稿" }
+    post_link = document.at_css('main a[href="/illustrations/new"]')
 
     expect(settings_link["class"]).to include("border-white", "hover:border-white")
     expect(settings_link["class"]).not_to include("hover:border-cyan-300")
