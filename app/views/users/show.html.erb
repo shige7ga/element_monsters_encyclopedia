@@ -85,15 +85,8 @@
           <%= link_to "いいね一覧", likes_profile_path, data: { turbo: false }, aria: { current: @active_tab == "likes" ? "page" : nil }, class: "rounded-md px-4 py-2 transition #{@active_tab == "likes" ? "bg-cyan-400 text-slate-950" : "text-slate-300 hover:bg-white/10"}" %>
         </nav>
 
-        <%# 選択中のイラスト一覧: 共通カードを再利用する %>
-        <% if @illustrations.any? %>
-          <div class="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            <%= render partial: "illustrations/card", collection: @illustrations, as: :illustration %>
-          </div>
-          <%= render "shared/pagination", collection: @illustrations %>
-        <% else %>
-          <div class="alert mt-5 rounded-2xl border border-dashed border-slate-600 bg-slate-900/60 p-8 text-center text-sm text-slate-400">まだイラストはありません。</div>
-        <% end %>
+        <%# イラスト一覧 %>
+        <%= render "illustrations/illustrations_grid", illustrations: @illustrations %>
       </section>
     </section>
   </main>

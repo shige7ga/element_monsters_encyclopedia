@@ -31,9 +31,9 @@ class UsersController < ApplicationController
 
     @illustrations =
       if @active_tab == "likes"
-        @user.liked_illustrations.visible_to(viewer).includes(:user, :element, :likes).with_attached_image.order(created_at: :desc).page(params[:page]).per(10)
+        @user.liked_illustrations.visible_to(viewer).includes(:user, :element, :likes).with_attached_image.order(created_at: :desc).page(params[:page]).per(12)
       else
-        @user.illustrations.visible_to(viewer).includes(:user, :element, :likes).with_attached_image.order(created_at: :desc).page(params[:page]).per(10)
+        @user.illustrations.visible_to(viewer).includes(:user, :element, :likes).with_attached_image.order(created_at: :desc).page(params[:page]).per(12)
       end
   end
 
