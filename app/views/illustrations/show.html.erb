@@ -1,6 +1,11 @@
 <%# イラスト詳細: PCでは画像と情報を2カラム、モバイルでは縦一列で表示 %>
 <% content_for :title, "#{@illustration.monster_name} | 元素モンスターズ図鑑" %>
 
+<% content_for :og_title, @illustration.monster_name.presence || "元素モンスターイラスト" %>
+<% if @illustration.image.attached? %>
+  <% content_for :og_image, url_for(@illustration.image) %>
+<% end %>
+
 <div class="flex flex-1 flex-col bg-slate-950">
   <%# メイン: 左側の作品画像と右側の一体型情報カード %>
   <main class="flex-1 px-5 py-8 sm:px-8 sm:py-12">
@@ -51,6 +56,15 @@
               <%= link_to "推し元素図鑑へ", encyclopedia_entries_path, data: { turbo: false }, class: "ml-auto text-sm font-bold text-cyan-200 transition hover:text-cyan-100" %>
             </div>
           <% end %>
+
+          <%# X共有ボタン %>
+          <div class="mb-5">
+            <%= link_to "𝕏 シェア",
+              "https://twitter.com/intent/tweet?text=#{CGI.escape("#{@illustration.monster_name} | 元素モンスターズ図鑑")}&url=#{CGI.escape(illustration_url(@illustration))}",
+              target: "_blank",
+              rel: "noopener noreferrer",
+              class: "btn border bg-black border-white/10 text-white rounded-xl shadow-md hover:bg-neutral-800 hover:shadow-lg active:scale-95 transition" %>
+          </div>
 
           <%# 投稿者本人のみの管理操作: 推し登録欄がある場合は区切り線を連続させる %>
           <% if current_user == @illustration.user %>
