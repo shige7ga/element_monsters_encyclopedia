@@ -3,7 +3,8 @@
 
 <% content_for :og_title, @illustration.monster_name.presence || "元素モンスターイラスト" %>
 <% if @illustration.image.attached? %>
-  <% content_for :og_image, url_for(@illustration.image) %>
+  <%# イラスト画像への絶対URLを生成する %>
+  <% content_for :og_image, polymorphic_url(@illustration.image) %>
 <% end %>
 
 <div class="flex flex-1 flex-col bg-slate-950">

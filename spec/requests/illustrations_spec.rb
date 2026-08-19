@@ -323,6 +323,15 @@ RSpec.describe "Illustrations", type: :request do
     expect(response.body).to include("twitter.com/intent/tweet")
   end
 
+  it "XシェアリンクへのOGP画像が認識できている" do
+    get illustration_path(published_illustration)
+    document = Nokogiri::HTML(response.body)
+    og_image = document.at_css('meta[property="og:image"]')
+
+    expect(og_image).to be_present
+    expect(og_image["content"]).to start_with("http")
+  end
+
   it "Xシェアリンクに作品名が含まれる" do
     get illustration_path(published_illustration)
 
