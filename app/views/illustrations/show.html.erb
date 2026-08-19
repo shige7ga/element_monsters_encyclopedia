@@ -60,8 +60,11 @@
 
           <%# X共有ボタン %>
           <div class="mb-5">
+            <%
+              share_text = "#{@illustration.monster_name} | #{@illustration.element.name}（#{@illustration.element.symbol}・原子番号#{@illustration.element.atomic_number}） | 元素モンスターズ図鑑"
+            %>
             <%= link_to "𝕏 シェア",
-              "https://twitter.com/intent/tweet?text=#{CGI.escape("#{@illustration.monster_name} | 元素モンスターズ図鑑")}&url=#{CGI.escape(illustration_url(@illustration))}",
+              "https://twitter.com/intent/tweet?text=#{CGI.escape(share_text)}&url=#{CGI.escape(illustration_url(@illustration))}",
               target: "_blank",
               rel: "noopener noreferrer",
               class: "btn border bg-black border-white/10 text-white rounded-xl shadow-md hover:bg-neutral-800 hover:shadow-lg active:scale-95 transition" %>
