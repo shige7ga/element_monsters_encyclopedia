@@ -3,7 +3,7 @@
 
 <% content_for :og_title, @illustration.monster_name.presence || "元素モンスターイラスト" %>
 <% if @illustration.image.attached? %>
-  <%# イラスト画像への絶対URLを生成する %>
+  <%# 本番環境とローカル環境での場合分けのためにog_image_urlを使用 %>
   <% content_for :og_image, og_image_url(@illustration.image) %>
 <% end %>
 
