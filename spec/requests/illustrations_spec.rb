@@ -315,4 +315,19 @@ RSpec.describe "Illustrations", type: :request do
     expect(response).to have_http_status(:not_found)
     expect(Like.count).to eq(0)
   end
+
+  it "Xシェアリンクが表示される" do
+    get illustration_path(published_illustration)
+
+    expect(response.body).to include("𝕏 シェア")
+    expect(response.body).to include("twitter.com/intent/tweet")
+  end
+
+  it "Xシェアリンクに作品名が含まれる" do
+    get illustration_path(published_illustration)
+
+    expect(response.body).to include(
+      CGI.escape("公開作品 | 元素モンスターズ図鑑")
+    )
+  end
 end
