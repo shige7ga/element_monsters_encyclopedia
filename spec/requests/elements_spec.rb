@@ -22,8 +22,8 @@ RSpec.describe "Elements", type: :request do
     expect(response.body).to include(illustration.element.symbol)
     expect(response.body).not_to include("作品数", "水素のイラスト")
   end
-  it "元素詳細の関連イラストを10件ずつ表示し、並び替え条件をページ移動後も維持する" do
-    11.times do |index|
+  it "元素詳細の関連イラストを12件ずつ表示し、並び替え条件をページ移動後も維持する" do
+    13.times do |index|
       illustration = create(:illustration, element: element, monster_name: "元素ページ作品#{index + 1}", created_at: (index + 1).minutes.ago)
       create_list(:like, index == 10 ? 2 : 1, illustration: illustration)
     end

@@ -359,10 +359,10 @@ RSpec.describe "Users", type: :request do
     expect(response.body).not_to include(posted_illustration.monster_name)
   end
 
-  it "マイページの投稿一覧といいね一覧を10件ずつ表示する" do
+  it "マイページの投稿一覧といいね一覧を12件ずつ表示する" do
     user = create(:user)
     element = create(:element)
-    illustrations = 11.times.map do |index|
+    illustrations = 13.times.map do |index|
       create(:illustration, user: user, element: element, monster_name: "マイページ作品#{index + 1}", created_at: (index + 1).minutes.ago)
     end
     illustrations.each { |illustration| create(:like, user: user, illustration: illustration) }
@@ -370,11 +370,11 @@ RSpec.describe "Users", type: :request do
 
     get mypage_path(page: 2)
 
-    expect(response.body).to include("2 / 2", "マイページ作品11")
+    expect(response.body).to include("2 / 2", "マイページ作品13")
 
     get mypage_path(tab: "likes", page: 2)
 
-    expect(response.body).to include("あなたのいいね一覧", "2 / 2", "マイページ作品11")
+    expect(response.body).to include("あなたのいいね一覧", "2 / 2", "マイページ作品13")
     expect(response.body).to include('href="/mypage?page=1&amp;tab=likes"')
   end
 

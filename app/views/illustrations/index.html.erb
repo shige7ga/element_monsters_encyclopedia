@@ -17,18 +17,8 @@
         <%= link_to "人気", popular_illustrations_path, data: { turbo: false }, aria: { current: action_name == "popular" ? "page" : nil }, class: "button-interaction rounded-lg border px-3 py-2 transition #{action_name == "popular" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
       </nav>
 
-      <%# 作品グリッド %>
-      <% if @illustrations.any? %>
-        <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          <%= render partial: "card", collection: @illustrations, as: :illustration %>
-        </div>
-        <%= render "shared/pagination", collection: @illustrations %>
-      <% else %>
-        <div class="alert mt-8 rounded-2xl border border-dashed border-slate-600 bg-slate-900/60 p-10 text-center">
-          <p class="text-lg font-bold text-white">まだイラストはありません。</p>
-          <p class="mt-2 text-sm text-slate-400">最初の元素モンスターを投稿してみましょう。</p>
-        </div>
-      <% end %>
+      <%# イラスト一覧 %>
+      <%= render "illustrations_grid", illustrations: @illustrations %>
     </section>
   </main>
 </div>

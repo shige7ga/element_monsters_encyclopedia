@@ -57,14 +57,8 @@
           <%= link_to "人気", element_path(@element, sort: "popular"), data: { turbo: false }, aria: { current: @illustration_sort == "popular" ? "page" : nil }, class: "button-interaction rounded-lg border px-3 py-2 transition #{@illustration_sort == "popular" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
         </nav>
 
-        <% if @illustrations.any? %>
-          <div class="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            <%= render partial: "illustrations/card", collection: @illustrations, as: :illustration %>
-          </div>
-          <%= render "shared/pagination", collection: @illustrations %>
-        <% else %>
-          <div class="alert mt-5 rounded-2xl border border-dashed border-slate-600 bg-slate-900/60 p-8 text-center text-sm text-slate-400">この元素のイラストはまだありません。</div>
-        <% end %>
+        <%# イラスト一覧 %>
+        <%= render "illustrations/illustrations_grid", illustrations: @illustrations %>
       </section>
     </section>
   </main>

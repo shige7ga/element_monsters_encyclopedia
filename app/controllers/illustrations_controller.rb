@@ -7,18 +7,18 @@ class IllustrationsController < ApplicationController
   def index
     @gallery_title = "イラスト集"
     @gallery_description = "元素モンスターを見て、あなたの推し元素を探そう"
-    @illustrations = visible_illustrations.order(created_at: :desc).page(params[:page]).per(10)
+    @illustrations = visible_illustrations.order(created_at: :desc).page(params[:page]).per(12)
   end
 
   def popular
-    @illustrations = Illustration.published.popular.includes(:user, :element, :likes).with_attached_image.page(params[:page]).per(10)
+    @illustrations = Illustration.published.popular.includes(:user, :element, :likes).with_attached_image.page(params[:page]).per(12)
     render :index
   end
 
   def liked
     @gallery_title = "いいねしたイラスト"
     @gallery_description = "あなたがいいねした元素モンスターの一覧です"
-    @illustrations = current_user.liked_illustrations.visible_to(current_user).includes(:user, :element, :likes).with_attached_image.order(created_at: :desc).page(params[:page]).per(10)
+    @illustrations = current_user.liked_illustrations.visible_to(current_user).includes(:user, :element, :likes).with_attached_image.order(created_at: :desc).page(params[:page]).per(12)
     render :index
   end
 
