@@ -10,6 +10,15 @@
       <h1 class="mt-2 text-3xl font-black text-white">イラスト投稿</h1>
       <p class="mt-2 text-sm text-slate-300">作品と覚え方のヒントを図鑑に追加しましょう。</p>
 
+      <%# AI生成アシスト導線: 画像をまだ用意していない利用者が、投稿前にプロンプトを作成できるよう案内する %>
+      <aside class="mt-6 rounded-2xl border border-violet-300/40 bg-violet-300/10 p-4 sm:flex sm:items-center sm:justify-between sm:gap-5">
+        <div>
+          <p class="text-sm font-bold text-violet-100">イラストをまだ用意していない方へ</p>
+          <p class="mt-1 text-sm leading-6 text-slate-300">元素やモンスターの特徴を選ぶだけで、AIに渡せるプロンプトを作れます。</p>
+        </div>
+        <%= link_to "AIでモンスター作成をアシスト", ai_generation_assist_path, data: { turbo: false }, class: "btn mt-4 h-auto min-h-0 w-full shrink-0 rounded-xl border-0 bg-violet-300 px-4 py-3 text-sm font-bold text-slate-950 shadow-none transition hover:bg-violet-200 sm:mt-0 sm:w-auto" %>
+      </aside>
+
       <%# 投稿フォーム本体 %>
       <div class="card mt-8 rounded-3xl border border-white/15 bg-slate-900 p-6 shadow-2xl shadow-cyan-950/40 sm:p-8">
         <%= render "form", illustration: @illustration %>

@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   get "terms", to: "legal#terms", as: :terms
   get "privacy_policy", to: "legal#privacy_policy", as: :privacy_policy
   get "mypage", to: "users#mypage", as: :mypage
+  # AI APIを使わず、入力内容から生成用プロンプトを組み立てる補助画面。
+  get "ai_generation_assist", to: "ai_generation_assists#new", as: :ai_generation_assist
+  post "ai_generation_assist", to: "ai_generation_assists#create"
+  get "ai_generation_assist/how_to", to: "ai_generation_assists#how_to", as: :ai_generation_assist_how_to
   resources :users, only: :show
   resources :elements, only: %i[index show]
   # 学習の入口と元素名4択クイズ。問題セットはブラウザセッションに保持する。

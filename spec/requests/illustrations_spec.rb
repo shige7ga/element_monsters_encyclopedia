@@ -63,6 +63,15 @@ RSpec.describe "Illustrations", type: :request do
     expect(response.body).to include("<option selected=\"selected\" value=\"#{element.id}\"")
   end
 
+  it "通常の投稿画面では元素を初期選択しない" do
+    sign_in(owner)
+
+    get new_illustration_path
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).not_to include("<option selected=\"selected\" value=\"#{element.id}\"")
+  end
+
   it "詳細と一覧でモンスター名・説明を表示し、画像をobject-containで収める" do
     get illustration_path(published_illustration)
 

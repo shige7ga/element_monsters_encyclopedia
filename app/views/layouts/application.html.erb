@@ -36,7 +36,7 @@
       <% header_logo_path = user_signed_in? ? illustrations_path : root_path %>
       <% catalog_active = controller_path == "illustrations" && action_name.in?(%w[index popular show]) %>
       <% learning_active = controller_path == "learning" %>
-      <% post_active = controller_path == "illustrations" && action_name.in?(%w[new create edit update]) %>
+      <% post_active = (controller_path == "illustrations" && action_name.in?(%w[new create edit update])) || controller_path == "ai_generation_assists" %>
       <% desktop_nav_button_class = "btn btn-sm h-auto min-h-0 border px-3 py-2 text-sm font-semibold shadow-none transition" %>
       <% mobile_nav_button_class = "btn btn-sm h-auto min-h-0 w-full justify-start border px-3 py-2 text-sm font-semibold shadow-none transition" %>
       <% active_nav_color_class = "border-cyan-300 bg-cyan-300 text-slate-950 hover:bg-cyan-200" %>

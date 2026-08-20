@@ -1,0 +1,41 @@
+<%# AI生成アシストの使い方: プロンプト作成から投稿までの流れを初めての人にも分かる順で案内する %>
+<% content_for :title, "AI生成アシストの使い方 | 元素モンスターズ図鑑" %>
+
+<div class="flex flex-1 flex-col bg-slate-950">
+  <%# メイン: 7ステップの利用フローとアシスト画面への復帰導線 %>
+  <main class="flex-1 px-5 py-10 sm:px-8 sm:py-14">
+    <section class="mx-auto w-full max-w-3xl">
+      <%# ページ見出し %>
+      <p class="text-sm font-semibold tracking-[0.2em] text-violet-300">HOW TO USE</p>
+      <h1 class="mt-2 text-3xl font-black text-white">AI生成アシストの使い方</h1>
+      <p class="mt-2 text-sm leading-6 text-slate-300">ここではAI APIを利用しません。作成したプロンプトをコピーして、普段お使いのAIサービスで利用します。</p>
+
+      <%# 利用手順: 番号・操作・補足を一つのカードにまとめ、画面幅に応じて読みやすく並べる %>
+      <ol class="mt-8 space-y-4">
+        <% steps = [
+          ["元素やモンスターの特徴を選ぶ", "元素は必須です。雰囲気や形、色、モチーフを選び、必要なら追加要望も入力します。"],
+          ["プロンプトを生成する", "「プロンプトを生成する」を押すと、イラスト用と名前提案用の文章が表示されます。"],
+          ["プロンプトをコピーする", "使いたい方の「コピー」を押します。コピーしたことが画面上に表示されます。"],
+          ["ChatGPTを開く", "「ChatGPTで作成する」から別タブでChatGPTを開きます。"],
+          ["プロンプトを貼り付けて名前・イラストを生成する", "コピーした文章を貼り付け、名前案やイラストを作成します。"],
+          ["完成した画像を保存する", "生成結果から投稿したい画像を端末に保存します。"],
+          ["元素モンスターズ図鑑へ戻って投稿する", "「完成したイラストを投稿する」を押すと、選んだ元素がセットされた投稿画面へ移動します。"]
+        ] %>
+        <% steps.each_with_index do |(title, description), index| %>
+          <li class="card flex gap-4 rounded-2xl border border-white/15 bg-slate-900 p-5 shadow-lg shadow-violet-950/20">
+            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-300 font-black text-slate-950"><%= index + 1 %></span>
+            <div>
+              <h2 class="font-bold text-white"><%= title %></h2>
+              <p class="mt-1 text-sm leading-6 text-slate-300"><%= description %></p>
+            </div>
+          </li>
+        <% end %>
+      </ol>
+
+      <%# 操作導線: 読み終えた利用者がすぐにプロンプト入力へ戻れるようにする %>
+      <div class="mt-8">
+        <%= link_to "AI生成アシストを使う", ai_generation_assist_path, data: { turbo: false }, class: "btn h-auto min-h-0 rounded-xl border-0 bg-violet-300 px-5 py-3 font-bold text-slate-950 shadow-none transition hover:bg-violet-200" %>
+      </div>
+    </section>
+  </main>
+</div>
