@@ -34,6 +34,7 @@ RSpec.describe "Users", type: :request do
       "ユーザー登録",
       "ログイン",
       "図鑑を見る",
+      "モンスターを作る",
       "学習する",
       'data-navigation-target="button"',
       'data-navigation-target="menu"',
@@ -98,14 +99,15 @@ RSpec.describe "Users", type: :request do
     expect(post_link["class"]).to include("bg-cyan-300", "text-slate-950")
   end
 
-  it "未ログイン時のイラスト投稿導線はユーザー登録モーダルを開く" do
+  it "未ログイン時のヘッダーはアシストへのイラスト作成導線を表示する" do
     get root_path
 
     header = Nokogiri::HTML(response.body).at_css("header")
-    post_button = header.css("button").find { |button| button.text.strip == "イラスト投稿" }
+    creation_links = header.css("a").select { |link| link.text.strip == "イラスト作成" }
 
-    expect(post_button["data-action"]).to eq("modal#open")
-    expect(post_button["data-modal-dialog-param"]).to eq("registration")
+    expect(creation_links).to have_attributes(length: 1)
+    expect(creation_links.first["href"]).to eq(ai_generation_assist_path)
+    expect(header.text).not_to include("イラスト投稿")
     get new_user_session_path, headers: { "Turbo-Frame" => "login_modal" }
     expect(response.body).to include("ユーザー登録はこちら", 'data-action="modal#switch"', 'data-modal-dialog-param="registration"')
 
@@ -189,6 +191,7 @@ RSpec.describe "Users", type: :request do
     expect(settings_link["class"]).not_to include("hover:border-cyan-300")
     expect(settings_link.at_css("img")["class"]).to include("h-7", "w-7")
     expect(post_link["class"]).to include("button-interaction", "hover:bg-cyan-300")
+    expect(response.body).to include("AIでモンスターを作る", 'href="/ai_generation_assist"')
     expect(response.body).to include(
       "@#{user.user_id}",
       "イラスト投稿数",

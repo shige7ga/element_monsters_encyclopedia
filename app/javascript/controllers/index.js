@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import CopyController from "./copy_controller"
+application.register("copy", CopyController)
+
 import DeleteConfirmationController from "./delete_confirmation_controller"
 application.register("delete-confirmation", DeleteConfirmationController)
 

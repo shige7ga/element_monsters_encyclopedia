@@ -75,7 +75,11 @@
             <h2 class="mt-1 text-2xl font-black text-white"><%= @active_tab == "likes" ? likes_title : posts_title %></h2>
           </div>
           <% if @profile_owner %>
-            <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "button-interaction rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300" %>
+            <%# マイページの作成導線: AIで作る場合と完成済み作品を投稿する場合を選べるようにする %>
+            <div class="flex flex-wrap gap-2">
+              <%= link_to "AIでモンスターを作る", ai_generation_assist_path, data: { turbo: false }, class: "button-interaction rounded-xl border border-violet-300/70 px-4 py-3 text-sm font-bold text-violet-100 transition hover:bg-violet-300/10" %>
+              <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "button-interaction rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300" %>
+            </div>
           <% end %>
         </div>
 

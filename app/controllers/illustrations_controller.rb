@@ -27,7 +27,10 @@ class IllustrationsController < ApplicationController
   end
 
   def new
-    @illustration = current_user.illustrations.build(element_id: selected_element_id)
+    @illustration = current_user.illustrations.build(
+      element_id: selected_element_id,
+      creation_type: ai_generated_from_assist? ? "ai_generated" : nil
+    )
   end
 
   def create
@@ -83,6 +86,11 @@ class IllustrationsController < ApplicationController
   # 投稿画面への導線から渡された元素だけを初期選択する
   def selected_element_id
     Element.find_by(id: params[:element_id])&.id
+  end
+
+  # アシストで画像生成した利用者だけ、投稿時の作成方法をAI生成で初期選択する。
+  def ai_generated_from_assist?
+    params[:from_ai_assist] == "1"
   end
 
   def illustration_params
