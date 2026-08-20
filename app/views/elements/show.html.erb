@@ -44,11 +44,15 @@
       <section class="mt-8">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <%= render "shared/section_label", label: "ILLUSTRATIONS" %>
-          <% if user_signed_in? %>
-            <%= link_to "この元素を投稿する", new_illustration_path(element_id: @element.id), data: { turbo: false }, class: "btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-sm font-bold text-cyan-200 transition hover:bg-cyan-300/10" %>
-          <% else %>
-            <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-sm font-bold text-cyan-200 transition hover:bg-cyan-300/10">この元素を投稿する</button>
-          <% end %>
+          <%# 元素別の作成導線: AI作成は誰でも利用でき、投稿は既存の認証導線を維持する %>
+          <div class="flex flex-wrap gap-2">
+            <%= link_to "この元素のモンスターを作る", ai_generation_assist_path(element_id: @element.id), data: { turbo: false }, class: "btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-violet-300/60 px-4 py-2 text-sm font-bold text-violet-100 transition hover:bg-violet-300/10" %>
+            <% if user_signed_in? %>
+              <%= link_to "この元素を投稿する", new_illustration_path(element_id: @element.id), data: { turbo: false }, class: "btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-sm font-bold text-cyan-200 transition hover:bg-cyan-300/10" %>
+            <% else %>
+              <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-sm font-bold text-cyan-200 transition hover:bg-cyan-300/10">この元素を投稿する</button>
+            <% end %>
+          </div>
         </div>
 
         <%# 並び替え: 新着順といいね数順を元素詳細内で切り替える %>

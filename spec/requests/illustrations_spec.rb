@@ -13,11 +13,25 @@ RSpec.describe "Illustrations", type: :request do
 
     expect(response).to have_http_status(:ok)
     expect(response.body).to include("公開作品", "イラスト集", "周期表", "ILLUSTRATION GALLERY", "元素モンスターを見て、あなたの推し元素を探そう")
+    expect(response.body).to include("AIでモンスターを作る", 'href="/ai_generation_assist"')
     expect(response.body.index("イラスト集")).to be < response.body.index("周期表")
     expect(response.body).not_to include("非公開作品")
 
     get new_illustration_path
     expect(response).to redirect_to(new_user_session_path)
+  end
+
+  it "ログインユーザーは一覧からAI作成と通常投稿を選べる" do
+    sign_in(owner)
+
+    get illustrations_path
+
+    document = Nokogiri::HTML(response.body)
+    main_links = document.css("main a")
+
+    expect(main_links.map(&:text)).to include("AIでモンスターを作る", "イラスト投稿")
+    expect(main_links.find { |link| link.text == "AIでモンスターを作る" }["href"]).to eq(ai_generation_assist_path)
+    expect(main_links.find { |link| link.text == "イラスト投稿" }["href"]).to eq(new_illustration_path)
   end
 
   it "一覧と人気一覧を12件ずつ表示し、ページ移動後も人気順を維持する" do

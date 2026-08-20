@@ -1,7 +1,7 @@
 require "rails_helper"
 RSpec.describe "Elements", type: :request do
   let!(:element) { create(:element, atomic_number: 1_000, symbol: "T1000", name: "水素", english_name: "Hydrogen", common_state: "気体", period: 1, group_number: 18) }
-  it "周期表と元素詳細を表示し、未ログイン時の投稿導線はユーザー登録モーダルを開く" do
+  it "周期表と元素詳細を表示し、元素別AI作成と投稿の導線を表示する" do
     get elements_path
     expect(response).to have_http_status(:ok)
     expect(response.body).to include("周期表", "イラスト集", "水素の情報を表示", 'href="/illustrations"')
@@ -10,14 +10,20 @@ RSpec.describe "Elements", type: :request do
     expect(response.body).to include('data-action="modal#open periodic-table#close"', 'data-modal-dialog-param="registration"')
 
     get element_path(element)
-    expect(response.body).to include("この元素を投稿する", 'data-action="modal#open"', 'data-modal-dialog-param="registration"')
+    expect(response.body).to include(
+      "この元素のモンスターを作る",
+      "href=\"/ai_generation_assist?element_id=#{element.id}\"",
+      "この元素を投稿する",
+      'data-action="modal#open"',
+      'data-modal-dialog-param="registration"'
+    )
 
     sign_in(create(:user))
     get elements_path
     expect(response.body).to include('data-action="periodic-table#post"', "data-element-post-url=\"/illustrations/new?element_id=#{element.id}\"")
     illustration = create(:illustration, element: element, monster_name: "水素の公開イラスト", published: true)
     get element_path(element)
-    expect(response.body).to include("水素", "Hydrogen", "18族1周期", "常温での状態", "気体", "水素の公開イラスト", "ILLUSTRATIONS", "新着", "人気", "button-interaction", 'data-turbo="false"', "href=\"/illustrations/new?element_id=#{element.id}\"")
+    expect(response.body).to include("水素", "Hydrogen", "18族1周期", "常温での状態", "気体", "水素の公開イラスト", "ILLUSTRATIONS", "新着", "人気", "button-interaction", 'data-turbo="false"', "href=\"/ai_generation_assist?element_id=#{element.id}\"", "href=\"/illustrations/new?element_id=#{element.id}\"")
     expect(response.body).to include('sm:flex-nowrap', 'whitespace-nowrap', 'gap-x-3 gap-y-1')
     expect(response.body).to include(illustration.element.symbol)
     expect(response.body).not_to include("作品数", "水素のイラスト")

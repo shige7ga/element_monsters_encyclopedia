@@ -53,6 +53,13 @@ RSpec.describe "AiGenerationAssists", type: :request do
     expect(main_color_select.css("option").map(&:text)).to eq([ "選択してください", "赤", "青", "緑", "黄", "紫", "白", "黒", "金" ])
   end
 
+  it "未ログインでも元素詳細から渡された元素を初期選択してアシストを利用できる" do
+    get ai_generation_assist_path(element_id: element.id)
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("<option selected=\"selected\" value=\"#{element.id}\"")
+  end
+
   it "入力値から元素情報を含む、イラスト用と名前提案用の別々のプロンプトを生成できる" do
     post ai_generation_assist_path, params: valid_params
 
@@ -82,13 +89,10 @@ RSpec.describe "AiGenerationAssists", type: :request do
 
     document = Nokogiri::HTML(response.body)
     chatgpt_links = document.css("a[href='https://chatgpt.com/']")
-    post_links = document.css("a").select { |link| link.text.include?("完成したイラストを投稿する") }
 
     expect(chatgpt_links).to have_attributes(length: 1)
     expect(chatgpt_links.first["target"]).to eq("_blank")
     expect(chatgpt_links.first["rel"]).to eq("noopener noreferrer")
-    expect(post_links).to have_attributes(length: 1)
-    expect(post_links.first["class"]).to include("bg-cyan-400")
     expect(response.body).not_to include("プロンプトを生成しました")
   end
 
@@ -106,6 +110,18 @@ RSpec.describe "AiGenerationAssists", type: :request do
     expect(response.body).to include("<option selected=\"selected\" value=\"#{element.id}\"")
     creation_type = Nokogiri::HTML(response.body).at_css("input[name='illustration[creation_type]'][value='ai_generated']")
     expect(creation_type["checked"]).to eq("checked")
+  end
+
+  it "未ログインでは完成したイラストの投稿時にユーザー登録モーダルを開く" do
+    post ai_generation_assist_path, params: valid_params
+
+    document = Nokogiri::HTML(response.body)
+    post_button = document.css("button").find { |button| button.text.include?("完成したイラストを投稿する") }
+    post_links = document.css("a").select { |link| link.text.include?("完成したイラストを投稿する") }
+
+    expect(post_button["data-action"]).to eq("modal#open")
+    expect(post_button["data-modal-dialog-param"]).to eq("registration")
+    expect(post_links).to be_empty
   end
 
   it "元素未選択ではプロンプトを生成しない" do

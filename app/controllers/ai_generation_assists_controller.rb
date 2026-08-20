@@ -1,6 +1,6 @@
 class AiGenerationAssistsController < ApplicationController
   def new
-    @ai_generation_assist = AiGenerationAssistForm.new
+    @ai_generation_assist = AiGenerationAssistForm.new(element_id: selected_element_id)
   end
 
   def create
@@ -19,6 +19,11 @@ class AiGenerationAssistsController < ApplicationController
   end
 
   private
+
+  # 元素詳細からの導線では、存在する元素だけをアシストフォームへ初期設定する。
+  def selected_element_id
+    Element.find_by(id: params[:element_id])&.id
+  end
 
   # プロンプトに使う値だけを受け取り、保存や外部APIへの送信は行わない。
   def ai_generation_assist_params

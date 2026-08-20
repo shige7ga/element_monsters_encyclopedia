@@ -98,7 +98,11 @@
 
           <%# 投稿導線: AIで完成した画像を保存した後、選択済みの元素を引き継いで投稿する %>
           <div class="mt-6">
-            <%= link_to "完成したイラストを投稿する", new_illustration_path(element_id: @ai_generation_assist.element_id, from_ai_assist: 1), data: { turbo: false }, class: "btn h-auto min-h-0 rounded-xl border-0 bg-cyan-400 px-4 py-3 text-sm font-bold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+            <% if user_signed_in? %>
+              <%= link_to "完成したイラストを投稿する", new_illustration_path(element_id: @ai_generation_assist.element_id, from_ai_assist: 1), data: { turbo: false }, class: "btn h-auto min-h-0 rounded-xl border-0 bg-cyan-400 px-4 py-3 text-sm font-bold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+            <% else %>
+              <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn h-auto min-h-0 rounded-xl border-0 bg-cyan-400 px-4 py-3 text-sm font-bold text-slate-950 shadow-none transition hover:bg-cyan-300">完成したイラストを投稿する</button>
+            <% end %>
           </div>
         </section>
       <% end %>

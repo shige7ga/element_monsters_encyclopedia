@@ -8,8 +8,16 @@
       <%# 図鑑表示切替: 両図鑑ページで同じ位置に表示する %>
       <%= render "shared/catalog_switcher", active: :illustrations %>
 
-      <%# 見出しと投稿導線: 両図鑑ページで同じ余白・高さに揃える %>
-      <%= render "shared/catalog_header", label: "ILLUSTRATION GALLERY", title: (@gallery_title || "イラスト集"), description: (@gallery_description || "元素モンスターを見て、あなたの推し元素を探そう"), header_action: (user_signed_in? ? link_to("イラスト投稿", new_illustration_path, data: { turbo: false }, class: "button-interaction rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300") : nil) %>
+      <%# 見出しと作成導線: AI作成は誰でも、投稿はログイン利用者がすぐ始められるよう並べる %>
+      <% header_action = capture do %>
+        <div class="flex flex-wrap gap-2">
+          <%= link_to "AIでモンスターを作る", ai_generation_assist_path, data: { turbo: false }, class: "button-interaction rounded-xl border border-violet-300/70 px-4 py-3 text-sm font-bold text-violet-100 transition hover:bg-violet-300/10" %>
+          <% if user_signed_in? %>
+            <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "button-interaction rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300" %>
+          <% end %>
+        </div>
+      <% end %>
+      <%= render "shared/catalog_header", label: "ILLUSTRATION GALLERY", title: (@gallery_title || "イラスト集"), description: (@gallery_description || "元素モンスターを見て、あなたの推し元素を探そう"), header_action: header_action %>
 
       <%# 一覧切替: 新着順と人気順を切り替え、選択中の並び順を強調する %>
       <nav aria-label="イラスト一覧切替" class="mt-6 flex flex-wrap gap-2 text-sm font-bold">
