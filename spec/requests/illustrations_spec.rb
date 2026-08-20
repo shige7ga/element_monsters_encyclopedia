@@ -337,7 +337,7 @@ RSpec.describe "Illustrations", type: :request do
 
     expect(response.body).to include(
       CGI.escape(
-        "公開作品 | #{published_illustration.element.name}（#{published_illustration.element.symbol}・元素番号#{published_illustration.element.atomic_number}） | 元素モンスターズ図鑑"
+        "公開作品 | #{published_illustration.element.name}（#{published_illustration.element.symbol}・元素番号#{published_illustration.element.atomic_number}）by #{published_illustration.user.name} | 元素モンスターズ図鑑"
       )
     )
   end
