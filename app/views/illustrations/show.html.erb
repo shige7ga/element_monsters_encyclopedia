@@ -3,7 +3,8 @@
 
 <% content_for :og_title, @illustration.monster_name.presence || "元素モンスターイラスト" %>
 <% if @illustration.image.attached? %>
-  <% content_for :og_image, url_for(@illustration.image) %>
+  <%# 本番環境とローカル環境での場合分けのためにog_image_urlを使用 %>
+  <% content_for :og_image, og_image_url(@illustration.image) %>
 <% end %>
 
 <div class="flex flex-1 flex-col bg-slate-950">
@@ -51,19 +52,22 @@
 
           <%# 推し登録: 共通ボタンと推し元素図鑑への導線を同じ行に配置する %>
           <% if user_signed_in? && @illustration.published? %>
-            <div class="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 py-5">
+            <div class="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5 pb-1">
               <%= render "encyclopedia_entries/button", illustration: @illustration, entry: @encyclopedia_entry %>
               <%= link_to "推し元素図鑑へ", encyclopedia_entries_path, data: { turbo: false }, class: "ml-auto text-sm font-bold text-cyan-200 transition hover:text-cyan-100" %>
             </div>
           <% end %>
 
           <%# X共有ボタン %>
-          <div class="mb-5">
+          <div class="mb-5 mt-3">
+            <%
+              share_text = "#{@illustration.monster_name} | #{@illustration.element.name}（#{@illustration.element.symbol}・元素番号#{@illustration.element.atomic_number}）by #{@illustration.user.name} | 元素モンスターズ図鑑"
+            %>
             <%= link_to "𝕏 シェア",
-              "https://twitter.com/intent/tweet?text=#{CGI.escape("#{@illustration.monster_name} | 元素モンスターズ図鑑")}&url=#{CGI.escape(illustration_url(@illustration))}",
+              "https://twitter.com/intent/tweet?text=#{CGI.escape(share_text)}&url=#{CGI.escape(illustration_url(@illustration))}",
               target: "_blank",
               rel: "noopener noreferrer",
-              class: "btn border bg-black border-white/10 text-white rounded-xl shadow-md hover:bg-neutral-800 hover:shadow-lg active:scale-95 transition" %>
+              class: "btn btn-sm h-auto min-h-0 border bg-black border-white/10 px-4 py-2 text-sm text-white rounded-xl shadow-md hover:bg-neutral-800 hover:shadow-lg active:scale-95 transition" %>
           </div>
 
           <%# 投稿者本人のみの管理操作: 推し登録欄がある場合は区切り線を連続させる %>
