@@ -1,5 +1,5 @@
-<%# AI生成アシストの使い方: プロンプト作成から投稿までの流れを初めての人にも分かる順で案内する %>
-<% content_for :title, "AI生成アシストの使い方 | 元素モンスターズ図鑑" %>
+<%# かんたん元素モンスター作成アシストの使い方: プロンプト作成から投稿までの流れを初めての人にも分かる順で案内する %>
+<% content_for :title, "かんたん元素モンスター作成アシストの使い方 | 元素モンスターズ図鑑" %>
 
 <div class="flex flex-1 flex-col bg-slate-950">
   <%# メイン: 7ステップの利用フローとアシスト画面への復帰導線 %>
@@ -7,8 +7,8 @@
     <section class="mx-auto w-full max-w-3xl">
       <%# ページ見出し %>
       <p class="text-sm font-semibold tracking-[0.2em] text-violet-300">HOW TO USE</p>
-      <h1 class="mt-2 text-3xl font-black text-white">AI生成アシストの使い方</h1>
-      <p class="mt-2 text-sm leading-6 text-slate-300">ここではAI APIを利用しません。作成したプロンプトをコピーして、普段お使いのAIサービスで利用します。</p>
+      <h1 class="mt-2 text-3xl font-black text-white">かんたん元素モンスター作成アシストの使い方</h1>
+      <p class="mt-2 text-sm leading-6 text-slate-300">作成したプロンプトをコピーして、普段お使いのAIサービスで利用します。</p>
 
       <%# 利用手順: 番号・操作・補足を一つのカードにまとめ、画面幅に応じて読みやすく並べる %>
       <ol class="mt-8 space-y-4">
@@ -34,7 +34,7 @@
 
       <%# 操作導線: 読み終えた利用者がすぐにプロンプト入力へ戻れるようにする %>
       <div class="mt-8">
-        <%= link_to "AI生成アシストを使う", ai_generation_assist_path, data: { turbo: false }, class: "btn h-auto min-h-0 rounded-xl border-0 bg-violet-300 px-5 py-3 font-bold text-slate-950 shadow-none transition hover:bg-violet-200" %>
+        <%= link_to "かんたん元素モンスター作成アシストを使う", ai_generation_assist_path, data: { turbo: false }, class: "btn h-auto min-h-0 rounded-xl border-0 bg-violet-300 px-5 py-3 font-bold text-slate-950 shadow-none transition hover:bg-violet-200" %>
       </div>
     </section>
   </main>

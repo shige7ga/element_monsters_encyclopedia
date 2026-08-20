@@ -45,7 +45,7 @@ RSpec.describe "Illustrations", type: :request do
     sign_in(owner)
 
     get new_illustration_path
-    expect(response.body).to include("モンスター名", "作成方法", "自作", "AI生成", "説明（モンスターの特徴・元素の覚え方など）", "投稿する", 'type="radio"', "ファイル選択", "画像を選択してください", 'class="sr-only"', 'data-controller="file-name"', 'change-&gt;file-name#update', 'data-file-name-target="name"')
+    expect(response.body).to include("モンスター名", "作成方法", "自作", "AI生成", "説明（モンスターの特徴・元素の覚え方など）", "あなたが創った元素モンスターを投稿して、みんなで図鑑を育てよう！", "かんたん元素モンスター作成アシスト", "投稿する", 'type="radio"', "ファイル選択", "画像を選択してください", 'class="sr-only"', 'data-controller="file-name"', 'change-&gt;file-name#update', 'data-file-name-target="name"')
     creation_type_inputs = response.body.scan(/<input[^>]*name="illustration\[creation_type\]"[^>]*>/)
     expect(creation_type_inputs).to have_attributes(length: 2)
     expect(creation_type_inputs).not_to include(a_string_matching(/checked/))
@@ -61,6 +61,17 @@ RSpec.describe "Illustrations", type: :request do
 
     expect(response).to have_http_status(:ok)
     expect(response.body).to include("<option selected=\"selected\" value=\"#{element.id}\"")
+  end
+
+  it "アシスト経由の投稿画面では元素とAI生成を初期選択する" do
+    sign_in(owner)
+
+    get new_illustration_path(element_id: element.id, from_ai_assist: 1)
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("<option selected=\"selected\" value=\"#{element.id}\"")
+    creation_type = Nokogiri::HTML(response.body).at_css("input[name='illustration[creation_type]'][value='ai_generated']")
+    expect(creation_type["checked"]).to eq("checked")
   end
 
   it "通常の投稿画面では元素を初期選択しない" do

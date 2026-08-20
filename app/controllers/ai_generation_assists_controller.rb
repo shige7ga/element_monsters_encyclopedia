@@ -27,10 +27,8 @@ class AiGenerationAssistsController < ApplicationController
       :atmosphere,
       :monster_shape,
       :main_color,
-      :sub_color,
       :motif,
       :personality,
-      :related_words,
       :additional_request
     )
   end

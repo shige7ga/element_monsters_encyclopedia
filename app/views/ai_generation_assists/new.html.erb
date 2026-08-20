@@ -1,5 +1,5 @@
-<%# AI生成アシスト: 元素とデザイン条件から、保存しないプロンプトを作成する画面 %>
-<% content_for :title, "AI生成アシスト | 元素モンスターズ図鑑" %>
+<%# かんたん元素モンスター作成アシスト: 少ない選択項目から画像生成用プロンプトを作成する画面 %>
+<% content_for :title, "かんたん元素モンスター作成アシスト | 元素モンスターズ図鑑" %>
 
 <div class="flex flex-1 flex-col bg-slate-950">
   <%# メイン: 入力フォームと、生成後のプロンプトを縦に表示する %>
@@ -8,14 +8,14 @@
       <%# ページ見出しと使い方への導線 %>
       <div class="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p class="text-sm font-semibold tracking-[0.2em] text-violet-300">AI GENERATION ASSIST</p>
-          <h1 class="mt-2 text-3xl font-black text-white">AI生成アシスト</h1>
-          <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-300">元素とイメージを選ぶと、ChatGPTなどに貼り付けて使えるプロンプトを作れます。AI APIへの送信や内容の保存は行いません。</p>
+          <p class="text-sm font-semibold tracking-[0.2em] text-violet-300">EASY ELEMENT MONSTER ASSIST</p>
+          <h1 class="mt-2 text-3xl font-black text-white">かんたん元素モンスター作成アシスト</h1>
+          <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-300">元素とイメージを選ぶと、ChatGPTなどに貼り付けて使えるプロンプトを作れます。気軽にイラストを投稿して元素を楽しみましょう！</p>
         </div>
-        <%= link_to "使い方を見る", ai_generation_assist_how_to_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 rounded-xl border border-violet-300/60 bg-transparent px-4 py-2 font-bold text-violet-100 shadow-none transition hover:bg-violet-300/10" %>
+        <%= link_to "使い方を見る", ai_generation_assist_how_to_path, target: "_blank", rel: "noopener noreferrer", class: "btn btn-sm h-auto min-h-0 rounded-xl border border-violet-300/60 bg-transparent px-4 py-2 font-bold text-violet-100 shadow-none transition hover:bg-violet-300/10" %>
       </div>
 
-      <%# 条件入力フォーム: 選択項目はプルダウン、自由に補足したい内容はテキスト入力にする %>
+      <%# 条件入力フォーム: 元素と5つの選択、必要時だけ入力するこだわり欄に絞る %>
       <section class="card mt-8 rounded-3xl border border-white/15 bg-slate-900 p-6 shadow-2xl shadow-violet-950/30 sm:p-8">
         <%= form_with model: @ai_generation_assist, scope: :ai_generation_assist, url: ai_generation_assist_path, class: "space-y-6", data: { turbo: false } do |form| %>
           <%# 元素選択: プロンプトに既存の元素情報を反映する必須項目 %>
@@ -27,7 +27,7 @@
             <% end %>
           </div>
 
-          <%# 基本デザイン: スマートフォンでは1列、広い画面では2列で入力する %>
+          <%# 基本デザイン: スマートフォンでは1列、広い画面では2列で順番に選択する %>
           <div class="grid gap-5 sm:grid-cols-2">
             <div>
               <%= form.label :atmosphere, "雰囲気", class: "mb-1 block text-sm font-semibold text-slate-200" %>
@@ -39,11 +39,7 @@
             </div>
             <div>
               <%= form.label :main_color, "メインカラー", class: "mb-1 block text-sm font-semibold text-slate-200" %>
-              <%= form.text_field :main_color, placeholder: "例：深い青、銀色", class: "input input-bordered w-full rounded-lg border-slate-600 bg-slate-950 text-white placeholder:text-slate-500 focus:border-violet-300 focus:ring-1 focus:ring-violet-300" %>
-            </div>
-            <div>
-              <%= form.label :sub_color, "サブカラー", class: "mb-1 block text-sm font-semibold text-slate-200" %>
-              <%= form.text_field :sub_color, placeholder: "例：白、紫", class: "input input-bordered w-full rounded-lg border-slate-600 bg-slate-950 text-white placeholder:text-slate-500 focus:border-violet-300 focus:ring-1 focus:ring-violet-300" %>
+              <%= form.select :main_color, AiGenerationAssistForm::MAIN_COLOR_OPTIONS, { include_blank: "選択してください" }, class: "select select-bordered w-full rounded-lg border-slate-600 bg-slate-950 text-white focus:border-violet-300 focus:ring-1 focus:ring-violet-300" %>
             </div>
             <div>
               <%= form.label :motif, "モチーフ", class: "mb-1 block text-sm font-semibold text-slate-200" %>
@@ -51,18 +47,14 @@
             </div>
             <div>
               <%= form.label :personality, "印象・性格", class: "mb-1 block text-sm font-semibold text-slate-200" %>
-              <%= form.text_field :personality, placeholder: "例：勇敢で頼もしい", class: "input input-bordered w-full rounded-lg border-slate-600 bg-slate-950 text-white placeholder:text-slate-500 focus:border-violet-300 focus:ring-1 focus:ring-violet-300" %>
+              <%= form.select :personality, AiGenerationAssistForm::PERSONALITY_OPTIONS, { include_blank: "選択してください" }, class: "select select-bordered w-full rounded-lg border-slate-600 bg-slate-950 text-white focus:border-violet-300 focus:ring-1 focus:ring-violet-300" %>
             </div>
           </div>
 
-          <%# 補足入力: 選択肢の「その他」の具体化も、ここで自由に指定できる %>
+          <%# キーワード・こだわり: 選択肢にない希望を、単語の羅列でも自由に追加する %>
           <div>
-            <%= form.label :related_words, "関連ワード", class: "mb-1 block text-sm font-semibold text-slate-200" %>
-            <%= form.text_field :related_words, placeholder: "例：結晶、雷、古代遺跡", class: "input input-bordered w-full rounded-lg border-slate-600 bg-slate-950 text-white placeholder:text-slate-500 focus:border-violet-300 focus:ring-1 focus:ring-violet-300" %>
-          </div>
-          <div>
-            <%= form.label :additional_request, "こだわり・追加要望", class: "mb-1 block text-sm font-semibold text-slate-200" %>
-            <%= form.text_area :additional_request, rows: 4, placeholder: "「その他」を選んだ場合の詳細や、入れたい表現を自由に入力してください", class: "textarea textarea-bordered w-full rounded-lg border-slate-600 bg-slate-950 text-white placeholder:text-slate-500 focus:border-violet-300 focus:ring-1 focus:ring-violet-300" %>
+            <%= form.label :additional_request, "キーワード・こだわり", class: "mb-1 block text-sm font-semibold text-slate-200" %>
+            <%= form.text_area :additional_request, rows: 4, placeholder: "例：大きな剣を持たせたい、炎をまとっている、翼がある、宝石、王様（キーワードだけでもOK）", class: "textarea textarea-bordered w-full rounded-lg border-slate-600 bg-slate-950 text-white placeholder:text-slate-500 focus:border-violet-300 focus:ring-1 focus:ring-violet-300" %>
           </div>
 
           <%# 生成操作: 入力内容を保存せず、同じ画面にプロンプトだけを表示する %>
@@ -79,9 +71,9 @@
           <div class="flex flex-wrap items-end justify-between gap-3">
             <div>
               <p class="text-sm font-semibold tracking-[0.2em] text-violet-300">YOUR PROMPTS</p>
-              <h2 class="mt-1 text-2xl font-black text-white">プロンプトを生成しました</h2>
+              <h2 class="mt-1 text-2xl font-black text-white">プロンプト完了</h2>
             </div>
-            <%= link_to "完成したイラストを投稿する", new_illustration_path(element_id: @ai_generation_assist.element_id), data: { turbo: false }, class: "btn h-auto min-h-0 rounded-xl border-0 bg-cyan-400 px-4 py-3 text-sm font-bold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+            <%= link_to "ChatGPTで作成する", "https://chatgpt.com/", target: "_blank", rel: "noopener noreferrer", class: "btn h-auto min-h-0 rounded-xl border-0 bg-violet-300 px-5 py-3 font-bold text-slate-950 shadow-none transition hover:bg-violet-200" %>
           </div>
 
           <%# イラスト用プロンプト: 画像生成AIへ渡す文章をコピーする %>
@@ -104,10 +96,9 @@
             <p hidden data-copy-target="feedback" aria-live="polite" class="mt-2 text-sm font-bold text-emerald-300">コピーしました</p>
           </section>
 
-          <%# ChatGPT導線: ユーザーがコピー後に別タブで生成を始められるようにする %>
-          <div class="mt-6 flex flex-wrap gap-4">
-            <%= link_to "ChatGPTで作成する", "https://chatgpt.com/", target: "_blank", rel: "noopener noreferrer", class: "btn h-auto min-h-0 rounded-xl border-0 bg-violet-300 px-5 py-3 font-bold text-slate-950 shadow-none transition hover:bg-violet-200" %>
-            <%= link_to "完成したイラストを投稿する", new_illustration_path(element_id: @ai_generation_assist.element_id), data: { turbo: false }, class: "btn h-auto min-h-0 rounded-xl border border-cyan-300/60 bg-transparent px-5 py-3 font-bold text-cyan-100 shadow-none transition hover:bg-cyan-300/10" %>
+          <%# 投稿導線: AIで完成した画像を保存した後、選択済みの元素を引き継いで投稿する %>
+          <div class="mt-6">
+            <%= link_to "完成したイラストを投稿する", new_illustration_path(element_id: @ai_generation_assist.element_id, from_ai_assist: 1), data: { turbo: false }, class: "btn h-auto min-h-0 rounded-xl border-0 bg-cyan-400 px-4 py-3 text-sm font-bold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
           </div>
         </section>
       <% end %>
