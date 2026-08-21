@@ -1,5 +1,7 @@
 <%# 周期表: 周期番号と元素の位置から詳細へ進める一覧画面 %>
 <% content_for :title, "周期表 | 元素モンスターズ図鑑" %>
+<% lanthanide_class = "border-rose-300 bg-rose-500/25 text-rose-100" %>
+<% actinide_class = "border-emerald-300 bg-emerald-500/25 text-emerald-100" %>
 
 <div class="flex flex-1 flex-col bg-slate-950">
   <%# ページ見出しと操作案内 %>
@@ -13,22 +15,22 @@
 
       <%# 周期表本体: 左端に周期番号を置き、小画面では横スクロール %>
       <div class="mt-2 overflow-x-auto pb-0">
-        <div data-controller="periodic-table" class="w-full min-w-[720px] rounded-2xl border border-white/15 bg-slate-900/80 p-1.5 shadow-2xl shadow-cyan-950/40 sm:p-3">
-          <div class="mb-1 grid grid-cols-[1.25rem_repeat(18,minmax(0,1fr))] gap-px text-center text-xs font-bold text-slate-500">
+        <div data-controller="periodic-table" class="w-full min-w-[720px] rounded-2xl border border-white/15 bg-slate-900/80 p-1.5 shadow-2xl shadow-cyan-950/40 sm:p-2">
+          <div class="mb-0.5 grid grid-cols-[1.25rem_repeat(18,minmax(0,1fr))] gap-px text-center text-xs font-bold text-slate-500">
             <span aria-hidden="true"></span>
             <% (1..18).each do |group_number| %><span><%= group_number %></span><% end %>
           </div>
 
           <%# 主周期表: 6・7周期3族は下段系列への案内セル %>
-          <div class="space-y-1">
+          <div class="space-y-0.5">
             <% (1..7).each do |period| %>
               <div class="grid grid-cols-[1.25rem_repeat(18,minmax(0,1fr))] gap-px" aria-label="第<%= period %>周期">
                 <span class="flex items-center justify-center text-xs font-bold text-slate-500"><%= period %></span>
                 <% (1..18).each do |group_number| %>
                   <% if period == 6 && group_number == 3 %>
-                    <div class="flex h-[clamp(1.9rem,3.2vw,3.5rem)] min-w-0 items-center justify-center overflow-hidden rounded-lg border border-rose-300 bg-rose-500/25 px-1 text-center text-[0.6rem] font-black text-rose-100"><span class="lg:hidden">ラ</span><span class="hidden lg:inline">ランタノイド</span></div>
+                    <div class="flex h-[clamp(1.9rem,2.6vw,2.75rem)] min-w-0 items-center justify-center overflow-hidden rounded-lg border <%= lanthanide_class %> px-1 text-center text-[0.6rem] font-black"><span class="lg:hidden">ラ</span><span class="hidden lg:inline">ランタノイド</span></div>
                   <% elsif period == 7 && group_number == 3 %>
-                    <div class="flex h-[clamp(1.9rem,3.2vw,3.5rem)] min-w-0 items-center justify-center overflow-hidden rounded-lg border border-emerald-300 bg-emerald-500/25 px-1 text-center text-[0.6rem] font-black text-emerald-100"><span class="lg:hidden">ア</span><span class="hidden lg:inline">アクチノイド</span></div>
+                    <div class="flex h-[clamp(1.9rem,2.6vw,2.75rem)] min-w-0 items-center justify-center overflow-hidden rounded-lg border <%= actinide_class %> px-1 text-center text-[0.6rem] font-black"><span class="lg:hidden">ア</span><span class="hidden lg:inline">アクチノイド</span></div>
                   <% elsif (element = @elements_by_position[[period, group_number]]) %>
                     <%= render "element_cell", element: element %>
                   <% else %>
@@ -40,8 +42,8 @@
           </div>
 
           <%# 下段系列: 左端の周期番号の次、すなわち第3族の直下から表示 %>
-          <div class="mt-1 space-y-px border-t border-white/10 pt-2">
-            <% { "ランタノイド" => [@lanthanides, "border-rose-300 bg-rose-500/25 text-rose-100"], "アクチノイド" => [@actinides, "border-emerald-300 bg-emerald-500/25 text-emerald-100"] }.each do |label, (elements, color_class)| %>
+          <div class="mt-0.5 space-y-px border-t border-white/10 pt-1.5">
+            <% { "ランタノイド" => [@lanthanides, lanthanide_class], "アクチノイド" => [@actinides, actinide_class] }.each do |label, (elements, color_class)| %>
               <div class="grid grid-cols-[1.25rem_repeat(18,minmax(0,1fr))] gap-px" aria-label="<%= label %>">
                 <span aria-hidden="true"></span>
                 <div aria-hidden="true"></div>
@@ -70,6 +72,18 @@
           </div>
         </div>
       </div>
+
+      <%# 色分けの凡例: 専用色を使う下段系列だけを、周期表の補足として控えめに示す %>
+      <aside aria-label="周期表の色分け" class="mt-2 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-semibold text-slate-300">
+        <div class="flex items-center gap-2">
+          <span aria-hidden="true" class="h-3.5 w-3.5 rounded-sm border <%= lanthanide_class %>"></span>
+          <span>ランタノイド</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span aria-hidden="true" class="h-3.5 w-3.5 rounded-sm border <%= actinide_class %>"></span>
+          <span>アクチノイド</span>
+        </div>
+      </aside>
     </section>
   </main>
 </div>

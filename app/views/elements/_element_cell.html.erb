@@ -1,6 +1,6 @@
 <%# 元素マス: クリックした元素の情報を共通ポップアップへ渡す %>
-<%# 状態ごとの色を決定し、ランタノイド・アクチノイドでは系列の色を優先する %>
-<% state_class = local_assigns[:series_class] || { "気体" => "border-cyan-300 bg-cyan-300/15 text-cyan-100", "液体" => "border-violet-300 bg-violet-300/15 text-violet-100", "不明" => "border-amber-300 bg-amber-300/15 text-amber-100" }.fetch(element.common_state, "border-slate-300/70 bg-slate-100/10 text-white") %>
+<%# 下段系列だけ専用色を使い、それ以外の元素は常温状態にかかわらず同じ通常色に統一する %>
+<% cell_class = local_assigns[:series_class] || "border-slate-500 bg-slate-800 text-slate-100" %>
 
 <div class="relative min-w-0">
   <%# セル本体: 詳細・投稿先URLをStimulusの共通ポップアップへ渡す %>
@@ -12,7 +12,7 @@
     data-element-url="<%= element_path(element) %>"
     data-element-post-url="<%= new_illustration_path(element_id: element.id) %>"
     aria-label="<%= element.name %>の情報を表示"
-    class="flex h-[clamp(1.9rem,3.2vw,3.5rem)] w-full flex-col items-center justify-center rounded-lg border <%= state_class %> transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-cyan-300"
+    class="flex h-[clamp(1.9rem,2.6vw,2.75rem)] w-full flex-col items-center justify-center rounded-lg border <%= cell_class %> transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-cyan-300"
   >
     <span class="text-[clamp(0.45rem,0.75vw,0.7rem)] opacity-75"><%= element.atomic_number %></span>
     <span class="text-[clamp(0.6rem,1.15vw,1rem)] font-black"><%= element.symbol %></span>
