@@ -1,6 +1,8 @@
 require "rails_helper"
 RSpec.describe "Elements", type: :request do
   let!(:element) { create(:element, atomic_number: 1_000, symbol: "T1000", name: "水素", english_name: "Hydrogen", common_state: "気体", period: 1, group_number: 18) }
+  let!(:lanthanide) { create(:element, atomic_number: 57, symbol: "La", name: "ランタン", english_name: "Lanthanum", common_state: "固体", period: 6, group_number: nil) }
+  let!(:actinide) { create(:element, atomic_number: 89, symbol: "Ac", name: "アクチニウム", english_name: "Actinium", common_state: "固体", period: 7, group_number: nil) }
   it "周期表と元素詳細を表示し、元素別AI作成と投稿の導線を表示する" do
     get elements_path
     expect(response).to have_http_status(:ok)
@@ -27,6 +29,22 @@ RSpec.describe "Elements", type: :request do
     expect(response.body).to include('sm:flex-nowrap', 'whitespace-nowrap', 'gap-x-3 gap-y-1')
     expect(response.body).to include(illustration.element.symbol)
     expect(response.body).not_to include("作品数", "水素のイラスト")
+  end
+
+  it "通常元素を同じ通常色に統一し、下段系列だけの凡例を表示する" do
+    get elements_path
+
+    document = Nokogiri::HTML(response.body)
+    normal_cell = document.at_css("button[aria-label='#{element.name}の情報を表示']")
+    lanthanide_cell = document.at_css("button[aria-label='#{lanthanide.name}の情報を表示']")
+    actinide_cell = document.at_css("button[aria-label='#{actinide.name}の情報を表示']")
+    legend = document.at_css("aside[aria-label='周期表の色分け']")
+
+    expect(normal_cell["class"]).to include("border-slate-500", "bg-slate-800", "text-slate-100")
+    expect(normal_cell["class"]).not_to include("bg-cyan-300/15", "bg-violet-300/15", "bg-amber-300/15")
+    expect(lanthanide_cell["class"]).to include("border-rose-300", "bg-rose-500/25", "text-rose-100")
+    expect(actinide_cell["class"]).to include("border-emerald-300", "bg-emerald-500/25", "text-emerald-100")
+    expect(legend.text).to include("ランタノイド", "アクチノイド")
   end
   it "元素詳細の関連イラストを12件ずつ表示し、並び替え条件をページ移動後も維持する" do
     13.times do |index|
