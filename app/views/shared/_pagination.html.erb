@@ -3,9 +3,9 @@
   <nav aria-label="ページネーション" class="mt-8 flex flex-wrap items-center justify-center gap-3">
     <%# 前のページ: 先頭ページでは無効表示にする %>
     <% if collection.prev_page %>
-      <%= link_to "前へ", url_for(request.query_parameters.merge(page: collection.prev_page)), data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-cyan-300/50 bg-transparent px-4 py-2 text-cyan-200 shadow-none transition hover:bg-cyan-300/10" %>
+      <%= link_to t("views.shared.pagination.previous"), url_for(request.query_parameters.merge(page: collection.prev_page)), data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-cyan-300/50 bg-transparent px-4 py-2 text-cyan-200 shadow-none transition hover:bg-cyan-300/10" %>
     <% else %>
-      <span aria-disabled="true" class="btn btn-sm h-auto min-h-0 cursor-not-allowed rounded-lg border border-white/10 bg-transparent px-4 py-2 text-slate-600 shadow-none">前へ</span>
+      <span aria-disabled="true" class="btn btn-sm h-auto min-h-0 cursor-not-allowed rounded-lg border border-white/10 bg-transparent px-4 py-2 text-slate-600 shadow-none"><%= t("views.shared.pagination.previous") %></span>
     <% end %>
 
     <%# 現在位置: 並び替えやタブの条件はリンク先に引き継ぐ %>
@@ -13,9 +13,9 @@
 
     <%# 次のページ: 最終ページでは無効表示にする %>
     <% if collection.next_page %>
-      <%= link_to "次へ", url_for(request.query_parameters.merge(page: collection.next_page)), data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-cyan-300/50 bg-transparent px-4 py-2 text-cyan-200 shadow-none transition hover:bg-cyan-300/10" %>
+      <%= link_to t("views.shared.pagination.next"), url_for(request.query_parameters.merge(page: collection.next_page)), data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-cyan-300/50 bg-transparent px-4 py-2 text-cyan-200 shadow-none transition hover:bg-cyan-300/10" %>
     <% else %>
-      <span aria-disabled="true" class="btn btn-sm h-auto min-h-0 cursor-not-allowed rounded-lg border border-white/10 bg-transparent px-4 py-2 text-slate-600 shadow-none">次へ</span>
+      <span aria-disabled="true" class="btn btn-sm h-auto min-h-0 cursor-not-allowed rounded-lg border border-white/10 bg-transparent px-4 py-2 text-slate-600 shadow-none"><%= t("views.shared.pagination.next") %></span>
     <% end %>
   </nav>
 <% end %>

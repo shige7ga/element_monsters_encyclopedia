@@ -10,6 +10,6 @@ class GameSession < ApplicationRecord
   def score_does_not_exceed_total_questions
     return if score.blank? || total_questions.blank? || score <= total_questions
 
-    errors.add(:score, "は問題数以下にしてください")
+    errors.add(:score, :must_not_exceed_total_questions)
   end
 end

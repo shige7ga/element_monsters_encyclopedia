@@ -9,16 +9,16 @@ class Illustration < ApplicationRecord
   has_many :liked_by_users, through: :likes, source: :user
   has_many :encyclopedia_entries, dependent: :destroy
 
-  enum :creation_type, { self_made: "self_made", ai_generated: "ai_generated" }, validate: { message: "は自作またはAI生成を選択してください" }
+  enum :creation_type, { self_made: "self_made", ai_generated: "ai_generated" }, validate: { message: :invalid_creation_type }
 
   before_validation :normalize_text_attributes
 
   validates :user_id, presence: true
-  validates :element_id, presence: { message: "を選択してください" }
-  validates :creation_type, presence: { message: "を選択してください" }
-  validates :monster_name, length: { maximum: 40, message: "は40文字以内で入力してください" }, allow_blank: true
-  validates :description, length: { maximum: 1000, message: "は1000文字以内で入力してください" }, allow_blank: true
-  validates :published, inclusion: { in: [ true, false ], message: "は公開または非公開を選択してください" }
+  validates :element_id, presence: { message: :select }
+  validates :creation_type, presence: { message: :select }
+  validates :monster_name, length: { maximum: 40, message: :too_long }
+  validates :description, length: { maximum: 1000, message: :too_long }
+  validates :published, inclusion: { in: [ true, false ], message: :select_visibility }
   validate :published_value_is_boolean
   validate :image_is_attached
   validate :image_content_type
@@ -50,24 +50,24 @@ class Illustration < ApplicationRecord
   def published_value_is_boolean
     return if [ true, false, 0, 1, "0", "1", "true", "false" ].include?(published_before_type_cast)
 
-    errors.add(:published, "は公開または非公開の値を選択してください")
+    errors.add(:published, :invalid_visibility)
   end
 
   def image_is_attached
-    errors.add(:image, "を添付してください") unless image.attached?
+    errors.add(:image, :blank_attachment) unless image.attached?
   end
 
   def image_content_type
     return unless image.attached?
     return if image.content_type.in?(ALLOWED_IMAGE_TYPES)
 
-    errors.add(:image, "はJPEG、PNG、WebP形式にしてください")
+    errors.add(:image, :invalid_content_type)
   end
 
   def image_size
     return unless image.attached?
     return if image.byte_size <= MAX_IMAGE_SIZE
 
-    errors.add(:image, "は5MB以下にしてください")
+    errors.add(:image, :too_large)
   end
 end

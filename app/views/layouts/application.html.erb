@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "元素モンスターズ図鑑" %></title>
+    <title><%= content_for(:title) || t("application.name") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="元素モンスターズ図鑑">
+    <meta name="application-name" content="<%= t("application.name") %>">
     <meta name="mobile-web-app-capable" content="yes">
     <%# ブラウザタブ用: public配下のロゴ画像を直接参照する %>
     <%= favicon_link_tag "/favicon.png", type: "image/png" %>
@@ -14,8 +14,8 @@
     <%= csp_meta_tag %>
 
     <%# OGP: 共有先でサービス名・説明・画像を正しく表示する %>
-    <meta property="og:title" content="<%= content_for?(:og_title) ? yield(:og_title) : "元素モンスターズ図鑑" %>">
-    <meta property="og:description" content="<%= content_for?(:og_description) ? yield(:og_description) : "元素モンスターズと出会って、元素を楽しむイラスト共有型図鑑アプリ" %>">
+    <meta property="og:title" content="<%= content_for?(:og_title) ? yield(:og_title) : t("application.name") %>">
+    <meta property="og:description" content="<%= content_for?(:og_description) ? yield(:og_description) : t("application.og_description") %>">
     <meta property="og:type" content="website">
     <meta property="og:url" content="<%= request.original_url %>">
     <meta property="og:image" content="<%= content_for?(:og_image) ? yield(:og_image) : image_url("ogp.png") %>">
@@ -49,25 +49,25 @@
           <%# サービスロゴ・タイトル: 未ログイン時はトップ、ログイン時はイラスト一覧へ移動する %>
           <%= link_to header_logo_path, data: { turbo: false }, class: "flex min-w-0 items-center gap-2 text-lg font-bold tracking-tight text-white sm:text-xl" do %>
             <%= image_tag "logo.png", alt: "元素モンスターズ図鑑LOGO", class: "h-9 w-9 shrink-0 object-contain sm:h-10 sm:w-10" %>
-            <span class="truncate">元素モンスターズ図鑑</span>
+            <span class="truncate"><%= t("application.name") %></span>
           <% end %>
 
           <%# PC用ナビゲーション %>
           <nav aria-label="メインナビゲーション" class="hidden shrink-0 flex-nowrap items-center gap-2 text-sm font-semibold lg:flex">
             <%# 図鑑・学習・投稿は選択中の画面だけ水色背景で強調する %>
-            <%= link_to "図鑑を見る", illustrations_path, data: { turbo: false }, class: "#{desktop_nav_button_class} #{catalog_active ? active_nav_color_class : inactive_nav_color_class}" %>
-            <%= link_to "学習する", learning_path, data: { turbo: false }, class: "#{desktop_nav_button_class} #{learning_active ? active_nav_color_class : inactive_nav_color_class}" %>
+            <%= link_to t("common.navigation.illustrations"), illustrations_path, data: { turbo: false }, class: "#{desktop_nav_button_class} #{catalog_active ? active_nav_color_class : inactive_nav_color_class}" %>
+            <%= link_to t("common.navigation.learning"), learning_path, data: { turbo: false }, class: "#{desktop_nav_button_class} #{learning_active ? active_nav_color_class : inactive_nav_color_class}" %>
             <% if user_signed_in? %>
-              <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "#{desktop_nav_button_class} #{post_active ? active_nav_color_class : inactive_nav_color_class}" %>
+              <%= link_to t("common.buttons.post_illustration"), new_illustration_path, data: { turbo: false }, class: "#{desktop_nav_button_class} #{post_active ? active_nav_color_class : inactive_nav_color_class}" %>
               <% if current_user.admin? %>
-                <%= link_to "管理画面", admin_root_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 border-0 bg-amber-300 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-amber-200" %>
+                <%= link_to t("common.navigation.admin"), admin_root_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 border-0 bg-amber-300 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-amber-200" %>
               <% end %>
-              <%= link_to "マイページ", mypage_path, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-white hover:bg-white/10" %>
-              <%= button_to "ログアウト", destroy_user_session_path, method: :delete, form: { class: "shrink-0" }, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-white hover:bg-white/10" %>
+              <%= link_to t("common.navigation.my_page"), mypage_path, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-white hover:bg-white/10" %>
+              <%= button_to t("common.buttons.logout"), destroy_user_session_path, method: :delete, form: { class: "shrink-0" }, class: "btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-white hover:bg-white/10" %>
             <% else %>
               <%= link_to "イラスト作成", ai_generation_assist_path, data: { turbo: false }, class: "#{desktop_nav_button_class} #{post_active ? active_nav_color_class : inactive_nav_color_class}" %>
-              <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-white hover:bg-white/10">ユーザー登録</button>
-              <button type="button" data-action="modal#open" data-modal-dialog-param="login" class="btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-white hover:bg-white/10">ログイン</button>
+              <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-white hover:bg-white/10"><%= t("common.buttons.sign_up") %></button>
+              <button type="button" data-action="modal#open" data-modal-dialog-param="login" class="btn btn-sm h-auto min-h-0 rounded-lg border border-white bg-transparent px-3 py-2 text-white shadow-none transition hover:border-white hover:bg-white/10"><%= t("common.buttons.login") %></button>
             <% end %>
           </nav>
 
@@ -84,19 +84,19 @@
       <nav id="mobile-navigation" data-turbo="false" data-navigation-target="menu" aria-label="モバイルメインナビゲーション" class="hidden border-b border-white/10 bg-slate-900 px-5 py-3 lg:hidden">
         <div class="mx-auto flex max-w-6xl flex-col gap-2 text-sm font-semibold">
           <%# 図鑑・学習・投稿はPC表示と同じ色分けを適用する %>
-          <%= link_to "図鑑を見る", illustrations_path, data: { turbo: false }, class: "#{mobile_nav_button_class} #{catalog_active ? active_nav_color_class : inactive_nav_color_class}" %>
-          <%= link_to "学習する", learning_path, data: { turbo: false }, class: "#{mobile_nav_button_class} #{learning_active ? active_nav_color_class : inactive_nav_color_class}" %>
+          <%= link_to t("common.navigation.illustrations"), illustrations_path, data: { turbo: false }, class: "#{mobile_nav_button_class} #{catalog_active ? active_nav_color_class : inactive_nav_color_class}" %>
+          <%= link_to t("common.navigation.learning"), learning_path, data: { turbo: false }, class: "#{mobile_nav_button_class} #{learning_active ? active_nav_color_class : inactive_nav_color_class}" %>
           <% if user_signed_in? %>
-            <%= link_to "イラスト投稿", new_illustration_path, data: { turbo: false }, class: "#{mobile_nav_button_class} #{post_active ? active_nav_color_class : inactive_nav_color_class}" %>
+            <%= link_to t("common.buttons.post_illustration"), new_illustration_path, data: { turbo: false }, class: "#{mobile_nav_button_class} #{post_active ? active_nav_color_class : inactive_nav_color_class}" %>
             <% if current_user.admin? %>
-              <%= link_to "管理画面", admin_root_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 w-full justify-start border-0 bg-amber-300 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-amber-200" %>
+              <%= link_to t("common.navigation.admin"), admin_root_path, data: { turbo: false }, class: "btn btn-sm h-auto min-h-0 w-full justify-start border-0 bg-amber-300 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-amber-200" %>
             <% end %>
-            <%= link_to "マイページ", mypage_path, class: "btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-slate-200 shadow-none transition hover:bg-white/10" %>
-            <%= button_to "ログアウト", destroy_user_session_path, method: :delete, form: { class: "w-full" }, class: "btn btn-ghost h-auto min-h-0 w-full justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-left text-white shadow-none transition hover:bg-white/10" %>
+            <%= link_to t("common.navigation.my_page"), mypage_path, class: "btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-slate-200 shadow-none transition hover:bg-white/10" %>
+            <%= button_to t("common.buttons.logout"), destroy_user_session_path, method: :delete, form: { class: "w-full" }, class: "btn btn-ghost h-auto min-h-0 w-full justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-left text-white shadow-none transition hover:bg-white/10" %>
           <% else %>
             <%= link_to "イラスト作成", ai_generation_assist_path, data: { turbo: false }, class: "#{mobile_nav_button_class} #{post_active ? active_nav_color_class : inactive_nav_color_class}" %>
-            <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-left text-slate-200 shadow-none transition hover:bg-white/10">ユーザー登録</button>
-            <button type="button" data-action="modal#open" data-modal-dialog-param="login" class="btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-left text-slate-200 shadow-none transition hover:bg-white/10">ログイン</button>
+            <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-left text-slate-200 shadow-none transition hover:bg-white/10"><%= t("common.buttons.sign_up") %></button>
+            <button type="button" data-action="modal#open" data-modal-dialog-param="login" class="btn btn-ghost h-auto min-h-0 justify-start rounded-lg border-0 bg-transparent px-3 py-2 text-left text-slate-200 shadow-none transition hover:bg-white/10"><%= t("common.buttons.login") %></button>
           <% end %>
         </div>
       </nav>
@@ -116,7 +116,7 @@
       <%# 共通フッター: 規約への導線 %>
       <footer class="border-t border-white/10 px-5 py-6 sm:px-8">
         <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 text-sm text-slate-400 sm:flex-row">
-          <p>&copy; <%= Time.current.year %> 元素モンスターズ図鑑</p>
+          <p>&copy; <%= Time.current.year %> <%= t("application.name") %></p>
           <%# 規約・お問い合わせへの共通導線 %>
           <nav aria-label="フッターナビゲーション" class="flex flex-wrap justify-center gap-x-5 gap-y-2">
             <%= link_to "利用規約", terms_path, class: "transition hover:text-cyan-300" %>

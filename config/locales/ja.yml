@@ -1,0 +1,50 @@
+ja:
+  application:
+    name: "元素モンスターズ図鑑"
+    og_description: "元素モンスターズと出会って、元素を楽しむイラスト共有型図鑑アプリ"
+  common:
+    buttons:
+      cancel: "キャンセル"
+      save: "保存する"
+      delete: "削除"
+      delete_account: "アカウントを削除"
+      edit: "編集"
+      details: "詳細"
+      post: "投稿"
+      post_illustration: "イラスト投稿"
+      login: "ログイン"
+      logout: "ログアウト"
+      sign_up: "ユーザー登録"
+      previous: "前へ"
+      next: "次へ"
+      copy: "コピー"
+    labels:
+      public: "公開"
+      private: "非公開"
+      creator: "投稿者"
+      description: "説明"
+      target_element: "対象元素"
+      not_set: "未設定"
+    navigation:
+      illustrations: "図鑑を見る"
+      learning: "学習する"
+      my_page: "マイページ"
+      admin: "管理画面"
+      periodic_table: "周期表"
+      illustration_gallery: "イラスト集"
+  enums:
+    illustration:
+      creation_type:
+        self_made: "自作"
+        ai_generated: "AI生成"
+  time:
+    formats:
+      short: "%Y/%m/%d %H:%M"
+  helpers:
+    submit:
+      create: "%{model}を登録する"
+      update: "%{model}を更新する"
+      submit: "%{model}を保存する"
+  date:
+    formats:
+      default: "%Y/%m/%d"

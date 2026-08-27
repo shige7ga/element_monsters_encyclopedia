@@ -4,18 +4,18 @@
 
 <%= turbo_frame_tag dom_id(illustration, :like_button), class: "flex #{alignment}" do %>
   <% if user_signed_in? && illustration.liked_by?(current_user) %>
-    <%= button_to illustration_like_path(illustration), method: :delete, params: { alignment: alignment }, form: { class: "inline" }, aria: { label: "#{illustration.monster_name}のいいねを解除" }, class: "inline-flex cursor-pointer items-center gap-1 bg-transparent p-0 text-lg font-bold text-cyan-200 transition hover:text-cyan-100 focus:outline-none focus:text-cyan-100" do %>
+    <%= button_to illustration_like_path(illustration), method: :delete, params: { alignment: alignment }, form: { class: "inline" }, aria: { label: t("views.likes.destroy_aria_label", name: illustration.monster_name) }, class: "inline-flex cursor-pointer items-center gap-1 bg-transparent p-0 text-lg font-bold text-cyan-200 transition hover:text-cyan-100 focus:outline-none focus:text-cyan-100" do %>
       <span aria-hidden="true">♥</span>
       <span><%= likes_count %></span>
     <% end %>
   <% elsif user_signed_in? %>
-    <%= button_to illustration_like_path(illustration), params: { alignment: alignment }, form: { class: "inline" }, aria: { label: "#{illustration.monster_name}にいいねする" }, class: "inline-flex cursor-pointer items-center gap-1 bg-transparent p-0 text-lg font-bold text-cyan-200 transition hover:text-cyan-100 focus:outline-none focus:text-cyan-100" do %>
+    <%= button_to illustration_like_path(illustration), params: { alignment: alignment }, form: { class: "inline" }, aria: { label: t("views.likes.create_aria_label", name: illustration.monster_name) }, class: "inline-flex cursor-pointer items-center gap-1 bg-transparent p-0 text-lg font-bold text-cyan-200 transition hover:text-cyan-100 focus:outline-none focus:text-cyan-100" do %>
       <span aria-hidden="true">♡</span>
       <span><%= likes_count %></span>
     <% end %>
   <% else %>
     <%# 未ログイン時は共通ログインモーダルを開き、ページ遷移は行わない %>
-    <button type="button" data-action="modal#open" data-modal-dialog-param="login" aria-label="ログインして<%= illustration.monster_name %>にいいねする" class="inline-flex cursor-pointer items-center gap-1 bg-transparent p-0 text-lg font-bold text-cyan-200 transition hover:text-cyan-100 focus:outline-none focus:text-cyan-100">
+    <button type="button" data-action="modal#open" data-modal-dialog-param="login" aria-label="<%= t("views.likes.login_aria_label", name: illustration.monster_name) %>" class="inline-flex cursor-pointer items-center gap-1 bg-transparent p-0 text-lg font-bold text-cyan-200 transition hover:text-cyan-100 focus:outline-none focus:text-cyan-100">
       <span aria-hidden="true">♡</span>
       <span><%= likes_count %></span>
     </button>

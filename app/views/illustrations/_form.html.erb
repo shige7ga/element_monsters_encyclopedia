@@ -2,8 +2,8 @@
 <%= form_with model: illustration, class: "space-y-6", data: { turbo: false } do |form| %>
   <%# 対象元素の選択 %>
   <div>
-    <%= form.label :element_id, "対象元素", class: "mb-1 block text-sm font-semibold text-slate-200" %>
-    <%= form.collection_select :element_id, Element.order(:atomic_number), :id, ->(element) { "#{element.atomic_number} · #{element.symbol} — #{element.name}" }, { prompt: "元素を選択" }, class: "select select-bordered w-full rounded-lg border-slate-600 bg-slate-950 px-3 py-2 text-white outline-none transition focus:border-cyan-300 focus:ring-1 focus:ring-cyan-300" %>
+    <%= form.label :element_id, class: "mb-1 block text-sm font-semibold text-slate-200" %>
+    <%= form.collection_select :element_id, Element.order(:atomic_number), :id, ->(element) { "#{element.atomic_number} · #{element.symbol} — #{element.name}" }, { prompt: t("views.illustrations.form.element_prompt") }, class: "select select-bordered w-full rounded-lg border-slate-600 bg-slate-950 px-3 py-2 text-white outline-none transition focus:border-cyan-300 focus:ring-1 focus:ring-cyan-300" %>
     <% if illustration.errors[:element_id].any? %>
       <p class="mt-1 text-sm text-rose-300"><%= illustration.errors.full_messages_for(:element_id).join("、") %></p>
     <% end %>
@@ -12,13 +12,13 @@
   <%# 画像: 形式・容量の補足をラベル横に表示し、ファイル選択ボタンの高さを確保する %>
   <div>
     <div class="mb-1 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-      <%= form.label :image, "イラスト画像", class: "text-sm font-semibold text-slate-200" %>
-      <p class="text-xs text-slate-400">JPEG・PNG・WebP形式、5MB以下</p>
+      <%= form.label :image, class: "text-sm font-semibold text-slate-200" %>
+      <p class="text-xs text-slate-400"><%= t("views.illustrations.form.image_hint") %></p>
     </div>
     <div data-controller="file-name" class="flex min-h-12 items-center gap-3 rounded-lg border border-slate-600 bg-slate-950 p-1.5 text-sm text-slate-400">
       <%= form.file_field :image, accept: "image/jpeg,image/png,image/webp", data: { "file-name-target": "input", action: "change->file-name#update" }, class: "sr-only" %>
-      <%= form.label :image, "ファイル選択", class: "btn btn-sm h-auto min-h-0 shrink-0 border-0 bg-cyan-400 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
-      <span data-file-name-target="name" class="min-w-0 truncate">画像を選択してください</span>
+      <%= form.label :image, t("views.illustrations.form.select_file"), class: "btn btn-sm h-auto min-h-0 shrink-0 border-0 bg-cyan-400 px-3 py-2 text-sm font-semibold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+      <span data-file-name-target="name" class="min-w-0 truncate"><%= t("views.illustrations.form.no_file") %></span>
     </div>
     <% if illustration.errors[:image].any? %>
       <p class="mt-1 text-sm text-rose-300"><%= illustration.errors.full_messages_for(:image).join("、") %></p>
@@ -26,7 +26,7 @@
   </div>
 
   <div>
-    <%= form.label :monster_name, "モンスター名", class: "mb-1 block text-sm font-semibold text-slate-200" %>
+    <%= form.label :monster_name, class: "mb-1 block text-sm font-semibold text-slate-200" %>
     <%= form.text_field :monster_name, class: "input input-bordered w-full rounded-lg border-slate-600 bg-slate-950 px-3 py-2 text-white outline-none transition focus:border-cyan-300 focus:ring-1 focus:ring-cyan-300" %>
     <% if illustration.errors[:monster_name].any? %>
       <p class="mt-1 text-sm text-rose-300"><%= illustration.errors.full_messages_for(:monster_name).join("、") %></p>
@@ -35,8 +35,8 @@
 
   <%# 説明: モンスターの特徴と元素の覚え方を一つの欄に統合 %>
   <div>
-    <%= form.label :description, "説明（モンスターの特徴・元素の覚え方など）", class: "mb-1 block text-sm font-semibold text-slate-200" %>
-    <%= form.text_area :description, rows: 5, placeholder: "モンスターの特徴や、元素記号・性質の覚え方などを入力してください", class: "textarea textarea-bordered w-full rounded-lg border-slate-600 bg-slate-950 px-3 py-2 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300 focus:ring-1 focus:ring-cyan-300" %>
+    <%= form.label :description, t("views.illustrations.form.description_label"), class: "mb-1 block text-sm font-semibold text-slate-200" %>
+    <%= form.text_area :description, rows: 5, placeholder: t("views.illustrations.form.description_placeholder"), class: "textarea textarea-bordered w-full rounded-lg border-slate-600 bg-slate-950 px-3 py-2 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-300 focus:ring-1 focus:ring-cyan-300" %>
     <% if illustration.errors[:description].any? %>
       <p class="mt-1 text-sm text-rose-300"><%= illustration.errors.full_messages_for(:description).join("、") %></p>
     <% end %>
@@ -44,15 +44,15 @@
 
   <%# 作成方法: 公開設定と同じカード内で自作・AI生成のどちらかを選択する %>
   <fieldset class="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-slate-200">
-    <legend class="px-1 text-sm font-semibold text-slate-200">作成方法</legend>
+    <legend class="px-1 text-sm font-semibold text-slate-200"><%= Illustration.human_attribute_name(:creation_type) %></legend>
     <div class="mt-2 flex flex-wrap gap-x-6 gap-y-3">
       <label class="flex cursor-pointer items-center gap-3">
         <%= form.radio_button :creation_type, "self_made", class: "radio radio-sm border-slate-500 text-cyan-400 focus:ring-cyan-300" %>
-        <span class="font-bold">自作</span>
+        <span class="font-bold"><%= t("enums.illustration.creation_type.self_made") %></span>
       </label>
       <label class="flex cursor-pointer items-center gap-3">
         <%= form.radio_button :creation_type, "ai_generated", class: "radio radio-sm border-slate-500 text-cyan-400 focus:ring-cyan-300" %>
-        <span class="font-bold">AI生成</span>
+        <span class="font-bold"><%= t("enums.illustration.creation_type.ai_generated") %></span>
       </label>
     </div>
     <% if illustration.errors[:creation_type].any? %>
@@ -63,7 +63,7 @@
   <%# 公開設定 %>
   <label class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-slate-200">
     <%= form.check_box :published, class: "checkbox checkbox-sm rounded border-slate-500 text-cyan-400 focus:ring-cyan-300" %>
-    <span><span class="font-bold">公開する</span><br><span class="text-xs text-slate-400">非公開の作品は自分だけが閲覧できます。</span></span>
+    <span><span class="font-bold"><%= t("views.illustrations.form.public") %></span><br><span class="text-xs text-slate-400"><%= t("views.illustrations.form.private_hint") %></span></span>
   </label>
   <% if illustration.errors[:published].any? %>
     <p class="-mt-4 text-sm text-rose-300"><%= illustration.errors.full_messages_for(:published).join("、") %></p>
@@ -71,7 +71,7 @@
 
   <%# 送信操作: Railsの自動ラベルを使わず画面種別ごとに明示 %>
   <div class="flex flex-wrap items-center gap-4">
-    <%= form.submit illustration.persisted? ? "更新する" : "投稿する", class: "btn h-auto min-h-0 rounded-xl border-0 bg-cyan-400 px-5 py-3 font-bold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
-    <%= link_to "キャンセル", illustrations_path, data: { turbo: false }, class: "text-sm font-bold text-slate-300 transition hover:text-cyan-200" %>
+    <%= form.submit illustration.persisted? ? t("views.illustrations.form.update") : t("views.illustrations.form.create"), class: "btn h-auto min-h-0 rounded-xl border-0 bg-cyan-400 px-5 py-3 font-bold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+    <%= link_to t("common.buttons.cancel"), illustrations_path, data: { turbo: false }, class: "text-sm font-bold text-slate-300 transition hover:text-cyan-200" %>
   </div>
 <% end %>

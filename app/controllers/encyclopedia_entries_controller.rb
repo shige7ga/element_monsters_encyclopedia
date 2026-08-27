@@ -14,7 +14,7 @@ class EncyclopediaEntriesController < ApplicationController
     entry.illustration = @illustration
 
     if entry.save
-      respond_with_entry_button(entry, "推し元素図鑑に登録しました。")
+      respond_with_entry_button(entry, t("flash.encyclopedia_entries.registered"))
     else
       redirect_back fallback_location: illustration_path(@illustration), alert: entry.errors.full_messages.to_sentence
     end
@@ -24,7 +24,7 @@ class EncyclopediaEntriesController < ApplicationController
     entry = current_user.encyclopedia_entries.find_by!(element: @illustration.element, illustration: @illustration)
     entry.destroy!
 
-    respond_with_entry_button(nil, "推し元素図鑑から解除しました。")
+    respond_with_entry_button(nil, t("flash.encyclopedia_entries.unregistered"))
   end
 
   private

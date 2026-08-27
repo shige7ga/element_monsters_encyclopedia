@@ -10,7 +10,7 @@ RSpec.describe Like, type: :model do
     duplicate_like = build(:like, user: like.user, illustration: like.illustration)
 
     expect(duplicate_like).not_to be_valid
-    expect(duplicate_like.errors[:user_id]).to include("has already been taken")
+    expect(duplicate_like.errors[:user_id]).to include("はすでに使用されています")
   end
 
   it "イラストを削除すると関連するいいねも削除される" do

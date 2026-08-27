@@ -5,8 +5,8 @@ class IllustrationsController < ApplicationController
   before_action :authorize_view!, only: :show
 
   def index
-    @gallery_title = "イラスト集"
-    @gallery_description = "元素モンスターを見て、あなたの推し元素を探そう"
+    @gallery_title = t("views.illustrations.index.title")
+    @gallery_description = t("views.illustrations.index.description")
     @illustrations = visible_illustrations.order(created_at: :desc).page(params[:page]).per(12)
   end
 
@@ -16,8 +16,8 @@ class IllustrationsController < ApplicationController
   end
 
   def liked
-    @gallery_title = "いいねしたイラスト"
-    @gallery_description = "あなたがいいねした元素モンスターの一覧です"
+    @gallery_title = t("views.illustrations.liked.title")
+    @gallery_description = t("views.illustrations.liked.description")
     @illustrations = current_user.liked_illustrations.visible_to(current_user).includes(:user, :element, :likes).with_attached_image.order(created_at: :desc).page(params[:page]).per(12)
     render :index
   end
@@ -37,7 +37,7 @@ class IllustrationsController < ApplicationController
     @illustration = current_user.illustrations.build(illustration_params)
 
     if @illustration.save
-      redirect_to @illustration, notice: "イラストを投稿しました。"
+      redirect_to @illustration, notice: t("flash.illustrations.created")
     else
       render :new, status: :unprocessable_content
     end
@@ -48,7 +48,7 @@ class IllustrationsController < ApplicationController
 
   def update
     if @illustration.update(illustration_params)
-      redirect_to @illustration, notice: "イラストを更新しました。"
+      redirect_to @illustration, notice: t("flash.illustrations.updated")
     else
       render :edit, status: :unprocessable_content
     end
@@ -59,7 +59,7 @@ class IllustrationsController < ApplicationController
     @illustration.image.purge if @illustration.image.attached?
     @illustration.destroy!
 
-    redirect_to illustrations_path, notice: "イラストを削除しました。"
+    redirect_to illustrations_path, notice: t("flash.illustrations.destroyed")
   end
 
   private
@@ -75,7 +75,7 @@ class IllustrationsController < ApplicationController
   def authorize_view!
     return if @illustration.viewable_by?(current_user)
 
-    redirect_to illustrations_path, alert: "このイラストは非公開です。"
+    redirect_to illustrations_path, alert: t("flash.illustrations.private")
   end
 
   # 一覧カードでいいね数といいね状態を表示するためにLikeを事前読み込みする

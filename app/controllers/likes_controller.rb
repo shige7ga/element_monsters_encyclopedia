@@ -4,12 +4,12 @@ class LikesController < ApplicationController
 
   def create
     current_user.likes.create_or_find_by!(illustration: @illustration)
-    respond_with_like_button("いいねしました。")
+    respond_with_like_button(t("flash.likes.created"))
   end
 
   def destroy
     current_user.likes.find_by!(illustration: @illustration).destroy!
-    respond_with_like_button("いいねを解除しました。")
+    respond_with_like_button(t("flash.likes.destroyed"))
   end
 
   private

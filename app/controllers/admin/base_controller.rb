@@ -9,7 +9,7 @@ module Admin
       return if current_user&.admin?
 
       if current_user
-        redirect_to root_path, alert: "管理画面へのアクセス権限がありません。"
+        redirect_to root_path, alert: t("flash.admin.unauthorized")
       else
         redirect_to root_path
       end
