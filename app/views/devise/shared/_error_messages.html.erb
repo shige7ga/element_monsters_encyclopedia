@@ -2,7 +2,7 @@
 <% if resource.errors.any? %>
   <div id="error_explanation" role="alert" class="alert alert-error mb-6 rounded-2xl border border-rose-300/50 bg-rose-500/15 p-4 text-sm text-rose-100">
     <div>
-      <p class="font-bold">入力内容を確認してください。</p>
+      <p class="font-bold"><%= t("views.shared.error_summary") %></p>
       <ul class="mt-2 list-disc space-y-1 pl-5">
         <% resource.errors.full_messages.each do |message| %>
           <li><%= message %></li>

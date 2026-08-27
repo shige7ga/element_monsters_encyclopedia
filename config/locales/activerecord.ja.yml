@@ -1,0 +1,122 @@
+ja:
+  activerecord:
+    models:
+      user: "ユーザー"
+      element: "元素"
+      illustration: "イラスト"
+      encyclopedia_entry: "推し元素登録"
+      game_session: "学習履歴"
+      like: "いいね"
+    attributes:
+      user:
+        name: "表示名"
+        user_id: "ユーザーID"
+        email: "メールアドレス"
+        login: "メールアドレスまたはユーザーID"
+        password: "パスワード"
+        password_confirmation: "パスワード（確認）"
+        current_password: "現在のパスワード"
+        admin: "権限"
+      element:
+        atomic_number: "原子番号"
+        symbol: "元素記号"
+        name: "元素名"
+        english_name: "英名"
+        common_state: "常温での状態"
+        period: "周期"
+        group_number: "族"
+        description: "説明"
+      illustration:
+        user: "投稿者"
+        user_id: "投稿者"
+        element: "対象元素"
+        element_id: "対象元素"
+        monster_name: "モンスター名"
+        description: "説明"
+        creation_type: "作成方法"
+        published: "公開設定"
+        image: "イラスト画像"
+      encyclopedia_entry:
+        user: "ユーザー"
+        user_id: "ユーザー"
+        element: "元素"
+        element_id: "元素"
+        illustration: "イラスト"
+      game_session:
+        user: "ユーザー"
+        score: "正解数"
+        total_questions: "問題数"
+    errors:
+      models:
+        user:
+          attributes:
+            user_id:
+              invalid_user_id_format: "は半角英数字、_、-のみ使用できます"
+        illustration:
+          attributes:
+            element_id:
+              select: "を選択してください"
+            creation_type:
+              select: "を選択してください"
+              invalid_creation_type: "は自作またはAI生成を選択してください"
+            monster_name:
+              too_long: "は%{count}文字以内で入力してください"
+            description:
+              too_long: "は%{count}文字以内で入力してください"
+            published:
+              select_visibility: "は公開または非公開を選択してください"
+              invalid_visibility: "は公開または非公開の値を選択してください"
+            image:
+              blank_attachment: "を添付してください"
+              invalid_content_type: "はJPEG、PNG、WebP形式にしてください"
+              too_large: "は5MB以下にしてください"
+        encyclopedia_entry:
+          attributes:
+            illustration:
+              must_match_element: "は選択した元素のイラストにしてください"
+              must_be_published: "は公開済みのものを選択してください"
+        game_session:
+          attributes:
+            score:
+              must_not_exceed_total_questions: "は問題数以下にしてください"
+  activemodel:
+    models:
+      ai_generation_assist_form: "AI作成アシスト"
+    attributes:
+      ai_generation_assist_form:
+        element_id: "対象元素"
+    errors:
+      models:
+        ai_generation_assist_form:
+          attributes:
+            element_id:
+              select: "を選択してください"
+              must_exist: "は存在する元素を選択してください"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      blank: "を入力してください"
+      taken: "はすでに使用されています"
+      invalid: "は不正な値です"
+      confirmation: "と%{attribute}が一致しません"
+      too_short: "は%{count}文字以上で入力してください"
+      too_long: "は%{count}文字以内で入力してください"
+      not_a_number: "は数値で入力してください"
+      not_an_integer: "は整数で入力してください"
+      greater_than: "は%{count}より大きい値にしてください"
+      greater_than_or_equal_to: "は%{count}以上の値にしてください"
+      inclusion: "は一覧にありません"
+      required: "を入力してください"
+      accepted: "を受諾してください"
+      blank_attachment: "を添付してください"
+      empty: "を入力してください"
+      equal_to: "は%{count}と等しい値にしてください"
+      even: "は偶数にしてください"
+      exclusion: "は予約されています"
+      in: "は%{count}の範囲に含めてください"
+      less_than: "は%{count}より小さい値にしてください"
+      less_than_or_equal_to: "は%{count}以下の値にしてください"
+      model_invalid: "バリデーションに失敗しました: %{errors}"
+      odd: "は奇数にしてください"
+      other_than: "は%{count}以外の値にしてください"
+      wrong_length: "は%{count}文字で入力してください"

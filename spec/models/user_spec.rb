@@ -36,8 +36,8 @@ RSpec.describe User, type: :model do
     duplicate = build(:user, user_id: "element_hero", email: "hero@example.test")
 
     expect(duplicate).not_to be_valid
-    expect(duplicate.errors[:user_id]).to include("has already been taken")
-    expect(duplicate.errors[:email]).to include("has already been taken")
+    expect(duplicate.errors[:user_id]).to include("はすでに使用されています")
+    expect(duplicate.errors[:email]).to include("はすでに使用されています")
   end
 
   it "DBでも大文字小文字を区別しないユーザーIDの重複を拒否する" do

@@ -16,7 +16,7 @@ class AiGenerationAssistForm
   attribute :personality, :string
   attribute :additional_request, :string
 
-  validates :element_id, presence: { message: "を選択してください" }
+  validates :element_id, presence: { message: :select }
   validate :element_must_exist
 
   def element
@@ -56,7 +56,7 @@ class AiGenerationAssistForm
   def element_must_exist
     return if element_id.blank? || element.present?
 
-    errors.add(:element_id, "は存在する元素を選択してください")
+    errors.add(:element_id, :must_exist)
   end
 
   def element_information

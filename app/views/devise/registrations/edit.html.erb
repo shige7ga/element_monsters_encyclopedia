@@ -21,7 +21,7 @@
         <%# 基本情報 %>
         <div class="space-y-5">
           <div>
-            <%= f.label :name, "表示名", class: "mb-2 block text-sm font-bold text-slate-200" %>
+            <%= f.label :name, class: "mb-2 block text-sm font-bold text-slate-200" %>
             <%= f.text_field :name, autocomplete: "name", class: "input input-bordered w-full rounded-xl border-white/15 bg-slate-950 text-white outline-none transition focus:border-cyan-300" %>
             <% if resource.errors[:name].any? %>
               <p class="mt-2 text-sm text-rose-300"><%= resource.errors.full_messages_for(:name).join("、") %></p>
@@ -29,7 +29,7 @@
           </div>
 
           <div>
-            <%= f.label :user_id, "ユーザーID", class: "mb-2 block text-sm font-bold text-slate-200" %>
+            <%= f.label :user_id, class: "mb-2 block text-sm font-bold text-slate-200" %>
             <%= f.text_field :user_id, autocomplete: "username", class: "input input-bordered w-full rounded-xl border-white/15 bg-slate-950 text-white outline-none transition focus:border-cyan-300" %>
             <% if resource.errors[:user_id].any? %>
               <p class="mt-2 text-sm text-rose-300"><%= resource.errors.full_messages_for(:user_id).join("、") %></p>
@@ -37,7 +37,7 @@
           </div>
 
           <div>
-            <%= f.label :email, "メールアドレス", class: "mb-2 block text-sm font-bold text-slate-200" %>
+            <%= f.label :email, class: "mb-2 block text-sm font-bold text-slate-200" %>
             <%= f.email_field :email, autocomplete: "email", class: "input input-bordered w-full rounded-xl border-white/15 bg-slate-950 text-white outline-none transition focus:border-cyan-300" %>
             <% if resource.errors[:email].any? %>
               <p class="mt-2 text-sm text-rose-300"><%= resource.errors.full_messages_for(:email).join("、") %></p>
@@ -74,15 +74,15 @@
 
         <%# 更新確認: Devise標準どおり現在のパスワードを求める %>
         <div class="mt-8 border-t border-white/10 pt-6">
-          <%= f.label :current_password, "現在のパスワード", class: "mb-2 block text-sm font-bold text-slate-200" %>
+          <%= f.label :current_password, class: "mb-2 block text-sm font-bold text-slate-200" %>
           <%= f.password_field :current_password, autocomplete: "current-password", class: "input input-bordered w-full rounded-xl border-white/15 bg-slate-950 text-white outline-none transition focus:border-cyan-300" %>
           <p class="mt-2 text-sm text-slate-400">変更を保存するために入力してください。</p>
         </div>
 
         <%# 保存操作 %>
         <div class="mt-8 flex flex-wrap justify-end gap-3">
-          <%= link_to "キャンセル", mypage_path, data: { turbo: false }, class: "btn btn-ghost h-auto min-h-0 rounded-xl border-0 px-4 py-2 text-slate-200 shadow-none transition hover:bg-white/10" %>
-          <%= f.submit "保存する", class: "btn h-auto min-h-0 border-0 bg-cyan-400 px-5 py-2 font-bold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
+          <%= link_to t("common.buttons.cancel"), mypage_path, data: { turbo: false }, class: "btn btn-ghost h-auto min-h-0 rounded-xl border-0 px-4 py-2 text-slate-200 shadow-none transition hover:bg-white/10" %>
+          <%= f.submit t("common.buttons.save"), class: "btn h-auto min-h-0 border-0 bg-cyan-400 px-5 py-2 font-bold text-slate-950 shadow-none transition hover:bg-cyan-300" %>
         </div>
       <% end %>
 
@@ -91,7 +91,7 @@
         <h2 class="text-lg font-bold text-white">アカウント削除</h2>
         <p class="mt-2 text-sm leading-6 text-slate-400">アカウントを削除すると、関連する投稿や履歴も削除されます。</p>
         <div class="mt-5">
-          <%= delete_confirmation_button "アカウントを削除", registration_path(resource_name), class_name: "btn btn-sm h-auto min-h-0 border-0 bg-rose-400 px-4 py-2 text-slate-950 shadow-none transition hover:bg-rose-300" %>
+          <%= delete_confirmation_button t("common.buttons.delete_account"), registration_path(resource_name), class_name: "btn btn-sm h-auto min-h-0 border-0 bg-rose-400 px-4 py-2 text-slate-950 shadow-none transition hover:bg-rose-300" %>
         </div>
       </section>
     </section>

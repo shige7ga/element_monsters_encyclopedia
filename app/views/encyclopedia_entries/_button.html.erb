@@ -8,13 +8,13 @@
       <% if registered_for_illustration %>
         <%# 現在の推し作品は、押下して図鑑から解除できる %>
         <%= button_to illustration_encyclopedia_entry_path(illustration), method: :delete, class: "btn btn-sm h-auto min-h-0 rounded-xl border border-emerald-300/50 bg-emerald-300/15 px-4 py-2 text-emerald-100 shadow-none transition hover:bg-emerald-300/25" do %>
-          <span>推し登録済み</span>
+          <span><%= t("views.encyclopedia_entries.registered") %></span>
         <% end %>
       <% else %>
         <%# 同じ元素に別の推し作品がある場合だけ、更新前に確認する %>
-        <% form_options = entry ? { data: { turbo_confirm: "すでに推し元素登録がありますが、更新しますか？" } } : {} %>
+        <% form_options = entry ? { data: { turbo_confirm: t("views.encyclopedia_entries.confirm_replace") } } : {} %>
         <%= button_to illustration_encyclopedia_entry_path(illustration), form: form_options, class: "btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-cyan-200 shadow-none transition hover:bg-cyan-300/10" do %>
-          <span>推し登録</span>
+          <span><%= t("views.encyclopedia_entries.register") %></span>
         <% end %>
       <% end %>
     </div>

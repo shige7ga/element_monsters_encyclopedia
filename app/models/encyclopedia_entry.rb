@@ -13,12 +13,12 @@ class EncyclopediaEntry < ApplicationRecord
   def illustration_matches_element
     return if element.blank? || illustration.blank? || illustration.element_id == element_id
 
-    errors.add(:illustration, "は選択した元素のイラストにしてください")
+    errors.add(:illustration, :must_match_element)
   end
 
   def illustration_is_published
     return if illustration.blank? || illustration.published?
 
-    errors.add(:illustration, "は公開済みのものを選択してください")
+    errors.add(:illustration, :must_be_published)
   end
 end

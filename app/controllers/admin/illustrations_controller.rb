@@ -14,13 +14,13 @@ module Admin
       @illustration.image.purge if @illustration.image.attached?
       @illustration.destroy!
 
-      redirect_to admin_illustrations_path, notice: "イラストを削除しました。"
+      redirect_to admin_illustrations_path, notice: t("flash.illustrations.destroyed")
     end
 
     def toggle_published
       @illustration.update!(published: !@illustration.published?)
 
-      redirect_to admin_illustration_path(@illustration), notice: "公開状態を変更しました。"
+      redirect_to admin_illustration_path(@illustration), notice: t("flash.admin.illustrations.visibility_updated")
     end
 
     private

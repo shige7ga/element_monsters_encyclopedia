@@ -4,7 +4,7 @@ module Users
     protected
 
     def after_update_path_for(_resource)
-      flash[:notice] = "ユーザー情報を更新しました。"
+      flash[:notice] = t("flash.users.profile_updated")
       mypage_path
     end
   end

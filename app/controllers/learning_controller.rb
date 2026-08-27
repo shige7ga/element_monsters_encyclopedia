@@ -79,7 +79,7 @@ class LearningController < ApplicationController
     element_ids = random_question_ids
 
     if element_ids.length < QUESTION_COUNT
-      flash[:alert] = "学習を開始するには#{QUESTION_COUNT}件以上の元素データが必要です。"
+      flash[:alert] = t("flash.learning.insufficient_elements", count: QUESTION_COUNT)
       return
     end
 

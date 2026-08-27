@@ -3,16 +3,16 @@
   <nav aria-label="図鑑表示切替" class="flex rounded-lg border border-white/15 bg-slate-900 p-0.5 text-xs font-bold">
     <%# イラスト集: 切替の先頭に表示する %>
     <% if active == :illustrations %>
-      <span aria-current="page" class="rounded-md bg-cyan-400 px-3 py-1 text-slate-950">イラスト集</span>
+      <span aria-current="page" class="rounded-md bg-cyan-400 px-3 py-1 text-slate-950"><%= t("views.shared.catalog.illustrations") %></span>
     <% else %>
-      <%= link_to "イラスト集", illustrations_path, data: { turbo: false }, class: "rounded-md px-3 py-1 text-slate-300 transition hover:bg-white/10" %>
+      <%= link_to t("views.shared.catalog.illustrations"), illustrations_path, data: { turbo: false }, class: "rounded-md px-3 py-1 text-slate-300 transition hover:bg-white/10" %>
     <% end %>
 
     <%# 周期表: イラスト集の右側に表示する %>
     <% if active == :elements %>
-      <span aria-current="page" class="rounded-md bg-cyan-400 px-3 py-1 text-slate-950">周期表</span>
+      <span aria-current="page" class="rounded-md bg-cyan-400 px-3 py-1 text-slate-950"><%= t("views.shared.catalog.periodic_table") %></span>
     <% else %>
-      <%= link_to "周期表", elements_path, data: { turbo: false }, class: "rounded-md px-3 py-1 text-slate-300 transition hover:bg-white/10" %>
+      <%= link_to t("views.shared.catalog.periodic_table"), elements_path, data: { turbo: false }, class: "rounded-md px-3 py-1 text-slate-300 transition hover:bg-white/10" %>
     <% end %>
   </nav>
 </div>

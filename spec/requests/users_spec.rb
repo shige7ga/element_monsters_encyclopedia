@@ -142,11 +142,11 @@ RSpec.describe "Users", type: :request do
 
     expect(response).to have_http_status(:unprocessable_content)
     expect(CGI.unescapeHTML(response.body)).to include(
-      "Name is too long",
+      "表示名 は40文字以内で入力してください",
       "ユーザーID は半角英数字、_、-のみ使用できます",
-      "Email is invalid",
-      "Password is too short",
-      "Password confirmation doesn't match Password"
+      "メールアドレス は不正な値です",
+      "パスワード は6文字以上で入力してください",
+      "パスワード（確認） とパスワードが一致しません"
     )
   end
 
@@ -247,8 +247,8 @@ RSpec.describe "Users", type: :request do
     expect(CGI.unescapeHTML(response.body)).to include(
       'id="error_explanation"',
       "入力内容を確認してください。",
-      "ユーザーID has already been taken",
-      "Email is invalid"
+      "ユーザーID はすでに使用されています",
+      "メールアドレス は不正な値です"
     )
   end
 
@@ -268,7 +268,7 @@ RSpec.describe "Users", type: :request do
 
     expect(response).to have_http_status(:unprocessable_content)
     expect(CGI.unescapeHTML(response.body)).to include(
-      "Name is too long",
+      "表示名 は40文字以内で入力してください",
       "ユーザーID は半角英数字、_、-のみ使用できます"
     )
   end
@@ -310,7 +310,7 @@ RSpec.describe "Users", type: :request do
          headers: { "Turbo-Frame" => "login_modal" }
 
     expect(response).to have_http_status(:unprocessable_content)
-    expect(CGI.unescapeHTML(response.body)).to include('role="alert"', "Invalid login or password.")
+    expect(CGI.unescapeHTML(response.body)).to include('role="alert"', "メールアドレスまたはユーザーID、もしくはパスワードが正しくありません。")
   end
 
   it "ログインの空欄エラーを各入力欄の下に表示する" do
@@ -320,8 +320,8 @@ RSpec.describe "Users", type: :request do
 
     expect(response).to have_http_status(:unprocessable_content)
     expect(CGI.unescapeHTML(response.body)).to include(
-      "Email or user ID can't be blank",
-      "Password can't be blank"
+      "メールアドレスまたはユーザーID を入力してください",
+      "パスワード を入力してください"
     )
     expect(response.body).not_to include('role="alert"')
   end
@@ -395,5 +395,13 @@ RSpec.describe "Users", type: :request do
     get user_path(user, tab: "likes")
     expect(response.body).to include("投稿者さんのいいね一覧", liked_illustration.monster_name)
     expect(response.body).not_to include(posted_illustration.monster_name)
+  end
+
+  it "パスワード再設定画面にDeviseの英語文言を表示しない" do
+    get new_user_password_path
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("パスワードをお忘れですか？", "メールアドレス", "パスワード再設定の案内を送信する")
+    expect(response.body).not_to include("Forgot your password?", "Send me password reset instructions")
   end
 end

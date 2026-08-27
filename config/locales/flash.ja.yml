@@ -1,0 +1,23 @@
+ja:
+  flash:
+    admin:
+      unauthorized: "管理画面へのアクセス権限がありません。"
+      users:
+        destroyed: "ユーザーを削除しました。"
+      illustrations:
+        visibility_updated: "公開状態を変更しました。"
+    users:
+      profile_updated: "ユーザー情報を更新しました。"
+    illustrations:
+      created: "イラストを投稿しました。"
+      updated: "イラストを更新しました。"
+      destroyed: "イラストを削除しました。"
+      private: "このイラストは非公開です。"
+    likes:
+      created: "いいねしました。"
+      destroyed: "いいねを解除しました。"
+    encyclopedia_entries:
+      registered: "推し元素図鑑に登録しました。"
+      unregistered: "推し元素図鑑から解除しました。"
+    learning:
+      insufficient_elements: "学習を開始するには%{count}件以上の元素データが必要です。"

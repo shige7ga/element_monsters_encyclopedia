@@ -16,7 +16,7 @@ class User < ApplicationRecord
   validates :user_id,
             presence: true,
             length: { in: 3..40 },
-            format: { with: /\A[a-zA-Z0-9_-]+\z/, message: "は半角英数字、_、-のみ使用できます" },
+            format: { with: /\A[a-zA-Z0-9_-]+\z/, message: :invalid_user_id_format },
             uniqueness: { case_sensitive: false }
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :password, length: { in: 6..32 }, allow_blank: true

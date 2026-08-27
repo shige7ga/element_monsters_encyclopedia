@@ -4,7 +4,7 @@ RSpec.describe Element, type: :model do
     create(:element, atomic_number: 1_000, symbol: "T1000")
     duplicate = build(:element, atomic_number: 1_000, symbol: "T1000")
     expect(duplicate).not_to be_valid
-    expect(duplicate.errors[:atomic_number]).to include("has already been taken")
-    expect(duplicate.errors[:symbol]).to include("has already been taken")
+    expect(duplicate.errors[:atomic_number]).to include("はすでに使用されています")
+    expect(duplicate.errors[:symbol]).to include("はすでに使用されています")
   end
 end

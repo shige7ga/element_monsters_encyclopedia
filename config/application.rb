@@ -16,6 +16,9 @@ module Myapp
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # 画面表示・Devise・Active Recordの文言は日本語localeで統一する。
+    config.i18n.default_locale = :ja
+    config.i18n.available_locales = %i[ja]
     config.generators do |generator|
       generator.test_framework :rspec
       generator.fixture_replacement :factory_bot, dir: "spec/factories"

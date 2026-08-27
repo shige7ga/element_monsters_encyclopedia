@@ -14,11 +14,11 @@
       <div class="flex shrink-0 items-center gap-2">
         <%= render "likes/button", illustration: illustration %>
         <% unless illustration.published? %>
-          <span class="badge shrink-0 rounded-full border border-amber-300/40 bg-amber-300/15 px-2 py-0.5 text-[0.65rem] font-bold text-amber-100">非公開</span>
+          <span class="badge shrink-0 rounded-full border border-amber-300/40 bg-amber-300/15 px-2 py-0.5 text-[0.65rem] font-bold text-amber-100"><%= t("views.illustrations.private") %></span>
         <% end %>
       </div>
     </div>
     <p class="mt-2 text-sm text-cyan-200"><%= illustration.element.symbol %> · <%= illustration.element.name %></p>
-    <p class="mt-1 text-xs text-slate-400">投稿者: <%= illustration.user.name.presence || illustration.user.user_id %></p>
+    <p class="mt-1 text-xs text-slate-400"><%= t("views.illustrations.author", name: illustration.user.name.presence || illustration.user.user_id) %></p>
   </div>
 </article>

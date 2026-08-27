@@ -14,7 +14,7 @@ RSpec.describe EncyclopediaEntry, type: :model do
     duplicate_entry = build(:encyclopedia_entry, user: user, element: element, illustration: illustration)
 
     expect(duplicate_entry).not_to be_valid
-    expect(duplicate_entry.errors[:element_id]).to include("has already been taken")
+    expect(duplicate_entry.errors[:element_id]).to include("はすでに使用されています")
   end
 
   it "別元素または非公開のイラストは登録できない" do

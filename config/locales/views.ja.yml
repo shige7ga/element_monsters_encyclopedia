@@ -1,0 +1,99 @@
+ja:
+  views:
+    shared:
+      loading: "読み込み中..."
+      delete_confirmation:
+        title: "削除の確認"
+        message: "本当に削除しますか？削除したデータは元に戻せません。"
+      error_summary: "入力内容を確認してください。"
+      pagination:
+        previous: "前へ"
+        next: "次へ"
+      catalog:
+        illustrations: "イラスト集"
+        periodic_table: "周期表"
+    devise:
+      registration:
+        title: "ユーザー登録"
+        name_label: "ユーザー名（任意）"
+        password_hint: "※6〜32文字で入力してください。"
+        submit: "登録する"
+        login_prompt: "すでにアカウントをお持ちの方は"
+        login_link: "ログインはこちら"
+      session:
+        title: "ログイン"
+        submit: "ログイン"
+        registration_prompt: "はじめての方は"
+        registration_link: "ユーザー登録はこちら"
+      close: "閉じる"
+      passwords:
+        new:
+          title: "パスワードをお忘れですか？"
+          submit: "パスワード再設定の案内を送信する"
+        edit:
+          title: "パスワードを変更"
+          password_label: "新しいパスワード"
+          password_confirmation_label: "新しいパスワード（確認）"
+          minimum_length: "%{count}文字以上で入力してください"
+          submit: "パスワードを変更する"
+      confirmations:
+        title: "確認メールを再送する"
+        submit: "確認メールを再送する"
+      unlocks:
+        title: "ロック解除メールを再送する"
+        submit: "ロック解除メールを再送する"
+      links:
+        login: "ログイン"
+        sign_up: "ユーザー登録"
+        forgot_password: "パスワードをお忘れですか？"
+        confirmation_instructions: "確認メールが届かない場合"
+        unlock_instructions: "ロック解除メールが届かない場合"
+        omniauth: "%{provider}でログイン"
+      mailer:
+        greeting: "%{email}さん"
+        confirmation_instructions:
+          body: "以下のリンクからメールアドレスを確認できます。"
+          link: "メールアドレスを確認する"
+        email_changed:
+          pending_body: "メールアドレスを%{email}へ変更する手続きを受け付けました。"
+          body: "メールアドレスを%{email}へ変更しました。"
+        password_change:
+          body: "パスワードが変更されました。"
+        reset_password_instructions:
+          body: "パスワード再設定のリクエストを受け付けました。以下のリンクから変更できます。"
+          link: "パスワードを変更する"
+          ignore: "このメールに心当たりがない場合は、破棄してください。"
+          notice: "リンク先で新しいパスワードを設定するまで、パスワードは変更されません。"
+        unlock_instructions:
+          body: "ログインに何度も失敗したため、アカウントがロックされました。"
+          link_instruction: "以下のリンクからロックを解除できます。"
+          link: "アカウントのロックを解除する"
+    illustrations:
+      index:
+        title: "イラスト集"
+        description: "元素モンスターを見て、あなたの推し元素を探そう"
+      liked:
+        title: "いいねしたイラスト"
+        description: "あなたがいいねした元素モンスターの一覧です"
+      form:
+        element_prompt: "元素を選択"
+        image_hint: "JPEG・PNG・WebP形式、5MB以下"
+        select_file: "ファイル選択"
+        no_file: "画像を選択してください"
+        description_label: "説明（モンスターの特徴・元素の覚え方など）"
+        description_placeholder: "モンスターの特徴や、元素記号・性質の覚え方などを入力してください"
+        public: "公開する"
+        private_hint: "非公開の作品は自分だけが閲覧できます。"
+        create: "投稿する"
+        update: "更新する"
+      no_description: "説明はまだありません。"
+      private: "非公開"
+      author: "投稿者: %{name}"
+    encyclopedia_entries:
+      register: "推し登録"
+      registered: "推し登録済み"
+      confirm_replace: "すでに推し元素登録がありますが、更新しますか？"
+    likes:
+      create_aria_label: "%{name}にいいねする"
+      destroy_aria_label: "%{name}のいいねを解除"
+      login_aria_label: "ログインして%{name}にいいねする"
