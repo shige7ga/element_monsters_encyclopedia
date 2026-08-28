@@ -16,6 +16,12 @@ RSpec.describe "Illustrations", type: :request do
     expect(response.body).to include("AIでモンスターを作る", 'href="/ai_generation_assist"')
     expect(response.body.index("イラスト集")).to be < response.body.index("周期表")
     expect(response.body).not_to include("非公開作品")
+    sort_links = Nokogiri::HTML(response.body).css('nav[aria-label="イラスト一覧切替"] a')
+    recommended_link = sort_links.find { |link| link.text == "おすすめ" }
+
+    expect(sort_links.map(&:text)).to eq(%w[おすすめ 新着 人気])
+    expect(recommended_link["aria-current"]).to eq("page")
+    expect(sort_links.find { |link| link.text == "新着" }["href"]).to eq("/illustrations?sort=newest")
 
     get new_illustration_path
     expect(response).to redirect_to(new_user_session_path)
@@ -34,7 +40,21 @@ RSpec.describe "Illustrations", type: :request do
     expect(main_links.find { |link| link.text == "イラスト投稿" }["href"]).to eq(new_illustration_path)
   end
 
-  it "一覧と人気一覧を12件ずつ表示し、ページ移動後も人気順を維持する" do
+  it "新着では従来どおり新しい公開作品から表示し、本人の非公開作品も表示する" do
+    newest_illustration = create(:illustration, element: element, monster_name: "新着作品", created_at: 1.minute.ago)
+    older_illustration = create(:illustration, element: element, monster_name: "以前の作品", created_at: 2.hours.ago)
+    sign_in(owner)
+
+    get illustrations_path(sort: "newest")
+
+    sort_links = Nokogiri::HTML(response.body).css('nav[aria-label="イラスト一覧切替"] a')
+    newest_link = sort_links.find { |link| link.text == "新着" }
+
+    expect(newest_link["aria-current"]).to eq("page")
+    expect(response.body.index("新着作品")).to be < response.body.index("以前の作品")
+    expect(response.body).to include("非公開作品")
+  end
+  it "おすすめ・新着・人気一覧を12件ずつ表示し、ページ移動後も並び替え条件を維持する" do
     13.times do |index|
       illustration = create(:illustration, element: element, monster_name: "ページネーション作品#{index + 1}", created_at: (index + 1).minutes.ago)
       create_list(:like, index == 10 ? 2 : 1, illustration: illustration)
@@ -42,12 +62,15 @@ RSpec.describe "Illustrations", type: :request do
 
     get illustrations_path
 
-    expect(response.body).to include("1 / 2", "次へ", "ページネーション作品1")
-    expect(response.body).not_to include("ページネーション作品13")
+    expect(response.body).to include("1 / 2", "次へ", "おすすめ")
 
     get illustrations_path(page: 2)
 
-    expect(response.body).to include("2 / 2", "前へ", "ページネーション作品13")
+    expect(response.body).to include("2 / 2", "前へ")
+    expect(response.body).to include('href="/illustrations?page=1"')
+
+    get illustrations_path(sort: "newest", page: 2)
+    expect(response.body).to include("2 / 2", "新着", 'href="/illustrations?page=1&amp;sort=newest"')
 
     get popular_illustrations_path(page: 2)
 
@@ -122,7 +145,7 @@ RSpec.describe "Illustrations", type: :request do
 
   it "投稿者は自分の非公開作品を閲覧できるが、他人は閲覧できない" do
     sign_in(owner)
-    get illustrations_path
+    get illustrations_path(sort: "newest")
     expect(response.body).to include("非公開作品")
 
     get illustration_path(private_illustration)

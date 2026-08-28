@@ -75,6 +75,10 @@ ja:
       liked:
         title: "いいねしたイラスト"
         description: "あなたがいいねした元素モンスターの一覧です"
+      sorts:
+        recommended: "おすすめ"
+        newest: "新着"
+        popular: "人気"
       form:
         element_prompt: "元素を選択"
         image_hint: "JPEG・PNG・WebP形式、5MB以下"

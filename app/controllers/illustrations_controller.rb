@@ -7,11 +7,13 @@ class IllustrationsController < ApplicationController
   def index
     @gallery_title = t("views.illustrations.index.title")
     @gallery_description = t("views.illustrations.index.description")
-    @illustrations = visible_illustrations.order(created_at: :desc).page(params[:page]).per(12)
+    @illustration_sort = params[:sort] == "newest" ? "newest" : "recommended"
+    @illustrations = index_illustrations.page(params[:page]).per(12)
   end
 
   def popular
-    @illustrations = Illustration.published.popular.includes(:user, :element, :likes).with_attached_image.page(params[:page]).per(12)
+    @illustration_sort = "popular"
+    @illustrations = published_illustrations.popular.page(params[:page]).per(12)
     render :index
   end
 
@@ -79,6 +81,18 @@ class IllustrationsController < ApplicationController
   end
 
   # 一覧カードでいいね数といいね状態を表示するためにLikeを事前読み込みする
+  # おすすめは公開作品をランダム表示し、新着は従来どおり本人の非公開作品も含める
+  def index_illustrations
+    return visible_illustrations.order(created_at: :desc) if @illustration_sort == "newest"
+
+    published_illustrations.recommended
+  end
+
+  # おすすめ・人気一覧では公開済み作品だけを表示する
+  def published_illustrations
+    Illustration.published.includes(:user, :element, :likes).with_attached_image
+  end
+
   def visible_illustrations
     Illustration.visible_to(current_user).includes(:user, :element, :likes).with_attached_image
   end

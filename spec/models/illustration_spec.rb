@@ -108,4 +108,8 @@ RSpec.describe Illustration, type: :model do
 
     expect(described_class.popular).to start_with(popular_illustration)
   end
+
+  it "おすすめ順ではデータベースのランダム順を使用する" do
+    expect(described_class.published.recommended.to_sql).to include("RANDOM()")
+  end
 end
