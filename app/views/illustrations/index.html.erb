@@ -19,10 +19,11 @@
       <% end %>
       <%= render "shared/catalog_header", label: "ILLUSTRATION GALLERY", title: (@gallery_title || "イラスト集"), description: (@gallery_description || "元素モンスターを見て、あなたの推し元素を探そう"), header_action: header_action %>
 
-      <%# 一覧切替: 新着順と人気順を切り替え、選択中の並び順を強調する %>
+      <%# 一覧切替: おすすめ・新着・人気を切り替え、選択中の並び順を強調する %>
       <nav aria-label="イラスト一覧切替" class="mt-6 flex flex-wrap gap-2 text-sm font-bold">
-        <%= link_to "新着", illustrations_path, data: { turbo: false }, aria: { current: action_name == "index" ? "page" : nil }, class: "button-interaction rounded-lg border px-3 py-2 transition #{action_name == "index" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
-        <%= link_to "人気", popular_illustrations_path, data: { turbo: false }, aria: { current: action_name == "popular" ? "page" : nil }, class: "button-interaction rounded-lg border px-3 py-2 transition #{action_name == "popular" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
+        <%= link_to t("views.illustrations.sorts.recommended"), illustrations_path, data: { turbo: false }, aria: { current: @illustration_sort == "recommended" ? "page" : nil }, class: "button-interaction rounded-lg border px-3 py-2 transition #{@illustration_sort == "recommended" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
+        <%= link_to t("views.illustrations.sorts.newest"), illustrations_path(sort: "newest"), data: { turbo: false }, aria: { current: @illustration_sort == "newest" ? "page" : nil }, class: "button-interaction rounded-lg border px-3 py-2 transition #{@illustration_sort == "newest" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
+        <%= link_to t("views.illustrations.sorts.popular"), popular_illustrations_path, data: { turbo: false }, aria: { current: @illustration_sort == "popular" ? "page" : nil }, class: "button-interaction rounded-lg border px-3 py-2 transition #{@illustration_sort == "popular" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
       </nav>
 
       <%# イラスト一覧 %>

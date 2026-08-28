@@ -27,6 +27,7 @@ class Illustration < ApplicationRecord
   scope :published, -> { where(published: true) }
   scope :visible_to, ->(viewer) { viewer ? published.or(where(user: viewer)) : published }
   scope :popular, -> { left_joins(:likes).group(:id).order(Arel.sql("COUNT(likes.id) DESC"), created_at: :desc) }
+  scope :recommended, -> { order(Arel.sql("RANDOM()")) }
 
   def liked_by?(viewer)
     return false unless viewer
