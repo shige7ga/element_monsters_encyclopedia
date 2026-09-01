@@ -243,5 +243,13 @@ element_descriptions = {
 
 ELEMENTS.each do |atomic_number, symbol, name, english_name, period, group_number|
   common_state = [ 1, 2, 7, 8, 9, 10, 17, 18, 36, 54, 86 ].include?(atomic_number) ? "気体" : [ 35, 80 ].include?(atomic_number) ? "液体" : atomic_number >= 109 ? "不明" : "固体"
-  Element.upsert({ atomic_number: atomic_number, symbol: symbol, name: name, english_name: english_name, common_state: common_state, description: element_descriptions.fetch(atomic_number), period: period, group_number: group_number, created_at: Time.current, updated_at: Time.current }, unique_by: :index_elements_on_atomic_number)
+  Element.find_or_create_by!(atomic_number: atomic_number) do |element|
+    element.symbol = symbol
+    element.name = name
+    element.english_name = english_name
+    element.common_state = common_state
+    element.description = element_descriptions.fetch(atomic_number)
+    element.period = period
+    element.group_number = group_number
+  end
 end
