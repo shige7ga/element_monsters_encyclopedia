@@ -8,35 +8,35 @@
       <%# 戻る導線 %>
       <%= button_to "← 周期表へ戻る", elements_path, method: :get, form: { data: { turbo: false } }, class: "border-0 bg-transparent p-0 text-sm font-bold text-cyan-300 transition hover:text-cyan-100" %>
 
-      <%# 元素情報カード: 原子番号から説明までを一つのカードに集約 %>
-      <section class="card mt-5 rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-950 p-5 shadow-2xl shadow-cyan-950/40 sm:p-8">
-        <%# 元素の主要情報: PCでは記号・名称・族周期・状態を一列で表示する %>
-        <div class="flex flex-wrap items-center gap-4 sm:flex-nowrap sm:gap-5">
-          <%# 元素記号 %>
-          <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/40 bg-cyan-300/10 text-3xl font-black text-cyan-200 sm:h-24 sm:w-24 sm:text-4xl"><%= @element.symbol %></div>
-
-          <%# 元素名・原子番号・英名 %>
-          <div class="min-w-0 flex-1">
-            <p class="text-xs font-semibold tracking-[0.2em] text-cyan-300">ATOMIC NUMBER <%= @element.atomic_number %></p>
-            <h1 class="mt-1 whitespace-nowrap text-3xl font-black text-white"><%= @element.name %></h1>
-            <%# 英名と族・周期: 同じ文字サイズで補足情報として横に並べる %>
-            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-300">
-              <p><%= @element.english_name %></p>
-              <p><%= @element.group_number ? "#{@element.group_number}族" : "" %><%= @element.period %>周期</p>
+      <%# 元素情報カード: モバイルは縦並び、PCでは主要情報と説明を2カラムで表示 %>
+      <section class="card mt-5 rounded-3xl border border-white/15 bg-gradient-to-br from-slate-800 to-slate-950 p-5 shadow-2xl shadow-cyan-950/40 sm:p-6">
+        <%# 上段: 元素の主要情報と説明 %>
+        <div class="grid gap-5 md:grid-cols-[fit-content(32rem)_minmax(0,1fr)] md:gap-8">
+          <%# 主要情報: 記号・原子番号・元素名・英名と族周期 %>
+          <div class="flex min-w-0 items-center gap-3 sm:gap-4">
+            <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/40 bg-cyan-300/10 text-3xl font-black text-cyan-200 sm:h-20 sm:w-20 sm:text-4xl"><%= @element.symbol %></div>
+            <div class="min-w-0">
+              <p class="text-[0.65rem] font-semibold tracking-[0.16em] text-cyan-300 sm:text-xs sm:tracking-[0.2em]">ATOMIC NUMBER <%= @element.atomic_number %></p>
+              <h1 class="mt-0.5 break-words text-2xl font-black leading-tight text-white sm:text-3xl"><%= @element.name %></h1>
+              <%# 英名と族・周期: モバイルでも一行で表示する補足情報 %>
+              <p class="mt-1 truncate text-sm leading-5 text-slate-300"><%= @element.english_name %> ・ <%= @element.group_number ? "#{@element.group_number}族" : "" %><%= @element.period %>周期</p>
             </div>
           </div>
 
-          <%# 常温での状態 %>
-          <div class="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-center sm:shrink-0">
-            <p class="text-sm text-slate-400">常温での状態</p>
-            <p class="mt-1 text-lg font-bold text-cyan-200"><%= @element.common_state %></p>
+          <%# 説明: モバイルでは主要情報の下、PCでは右カラムに配置 %>
+          <div class="border-t border-white/10 pt-4 md:border-l md:border-t-0 md:pl-8 md:pt-0">
+            <h2 class="text-base font-bold text-white">説明</h2>
+            <p class="mt-1.5 text-sm leading-6 text-slate-300"><%= @element.description %></p>
           </div>
         </div>
 
-        <%# 元素の説明: 主要情報の下に全文を表示する %>
-        <div class="mt-6 border-t border-white/10 pt-6">
-          <h2 class="text-lg font-bold text-white">説明</h2>
-          <p class="mt-2 leading-7 text-slate-300"><%= @element.description %></p>
+        <%# 基本データ: 常温での状態を情報カード内のデータ項目として表示 %>
+        <div class="mt-4 border-t border-white/10 pt-4">
+          <h2 class="text-sm font-bold text-white">基本データ</h2>
+          <dl class="mt-2 flex items-baseline gap-4 text-sm">
+            <dt class="text-slate-400">常温での状態</dt>
+            <dd class="font-bold text-cyan-200"><%= @element.common_state %></dd>
+          </dl>
         </div>
       </section>
 
@@ -45,19 +45,20 @@
         <div class="flex flex-wrap items-center justify-between gap-3">
           <%= render "shared/section_label", label: "ILLUSTRATIONS" %>
           <%# 元素別の作成導線: AI作成は誰でも利用でき、投稿は既存の認証導線を維持する %>
-          <div class="flex flex-wrap gap-2">
-            <%= link_to "この元素のモンスターを作る", ai_generation_assist_path(element_id: @element.id), data: { turbo: false }, class: "btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-violet-300/60 px-4 py-2 text-sm font-bold text-violet-100 transition hover:bg-violet-300/10" %>
+          <div class="flex w-full flex-nowrap gap-1.5 sm:w-auto sm:gap-2">
+            <%= link_to "この元素モンスターを作る", ai_generation_assist_path(element_id: @element.id), data: { turbo: false }, class: "btn btn-outline btn-sm h-auto min-h-0 flex-1 whitespace-nowrap rounded-xl border border-violet-300/60 px-1.5 py-2 text-[0.625rem] font-bold text-violet-100 transition hover:bg-violet-300/10 sm:flex-none sm:px-3 sm:text-xs md:px-4 md:text-sm" %>
             <% if user_signed_in? %>
-              <%= link_to "この元素を投稿する", new_illustration_path(element_id: @element.id), data: { turbo: false }, class: "btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-sm font-bold text-cyan-200 transition hover:bg-cyan-300/10" %>
+              <%= link_to "この元素を投稿する", new_illustration_path(element_id: @element.id), data: { turbo: false }, class: "btn btn-outline btn-sm h-auto min-h-0 flex-1 whitespace-nowrap rounded-xl border border-cyan-300/50 px-1.5 py-2 text-[0.625rem] font-bold text-cyan-200 transition hover:bg-cyan-300/10 sm:flex-none sm:px-3 sm:text-xs md:px-4 md:text-sm" %>
             <% else %>
-              <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn btn-outline btn-sm h-auto min-h-0 rounded-xl border border-cyan-300/50 px-4 py-2 text-sm font-bold text-cyan-200 transition hover:bg-cyan-300/10">この元素を投稿する</button>
+              <button type="button" data-action="modal#open" data-modal-dialog-param="registration" class="btn btn-outline btn-sm h-auto min-h-0 flex-1 whitespace-nowrap rounded-xl border border-cyan-300/50 px-1.5 py-2 text-[0.625rem] font-bold text-cyan-200 transition hover:bg-cyan-300/10 sm:flex-none sm:px-3 sm:text-xs md:px-4 md:text-sm">この元素を投稿する</button>
             <% end %>
           </div>
         </div>
 
-        <%# 並び替え: 新着順といいね数順を元素詳細内で切り替える %>
+        <%# 並び替え: おすすめ・新着・いいね数順を元素詳細内で切り替える %>
         <nav aria-label="元素イラスト一覧切替" class="mt-5 flex flex-wrap gap-2 text-sm font-bold">
-          <%= link_to "新着", element_path(@element), data: { turbo: false }, aria: { current: @illustration_sort == "newest" ? "page" : nil }, class: "button-interaction rounded-lg border px-3 py-2 transition #{@illustration_sort == "newest" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
+          <%= link_to t("views.illustrations.sorts.recommended"), element_path(@element), data: { turbo: false }, aria: { current: @illustration_sort == "recommended" ? "page" : nil }, class: "button-interaction rounded-lg border px-3 py-2 transition #{@illustration_sort == "recommended" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
+          <%= link_to "新着", element_path(@element, sort: "newest"), data: { turbo: false }, aria: { current: @illustration_sort == "newest" ? "page" : nil }, class: "button-interaction rounded-lg border px-3 py-2 transition #{@illustration_sort == "newest" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
           <%= link_to "人気", element_path(@element, sort: "popular"), data: { turbo: false }, aria: { current: @illustration_sort == "popular" ? "page" : nil }, class: "button-interaction rounded-lg border px-3 py-2 transition #{@illustration_sort == "popular" ? "border-cyan-300 text-cyan-200" : "border-white/15 text-slate-300 hover:border-cyan-300 hover:text-cyan-200"}" %>
         </nav>
 
