@@ -8,16 +8,26 @@ class ElementsController < ApplicationController
 
   def show
     @element = Element.find(params[:id])
-    @illustration_sort = params[:sort] == "popular" ? "popular" : "newest"
+    @illustration_sort = %w[newest popular].include?(params[:sort]) ? params[:sort] : "recommended"
     @illustrations = element_illustrations
   end
 
   private
 
-  # 元素詳細では公開作品と閲覧中ユーザー自身の非公開作品だけを並び替える。
+  # おすすめは公開作品のみ、既存のおすすめスコープを使ってランダムに表示する。
+  # 新着・人気では公開作品と閲覧中ユーザー自身の非公開作品を表示する。
   def element_illustrations
     illustrations = @element.illustrations.visible_to(current_user).includes(:user, :likes).with_attached_image
 
-    (@illustration_sort == "popular" ? illustrations.popular : illustrations.order(created_at: :desc)).page(params[:page]).per(12)
+    sorted_illustrations = case @illustration_sort
+    when "recommended"
+      illustrations.published.recommended
+    when "popular"
+      illustrations.popular
+    else
+      illustrations.order(created_at: :desc)
+    end
+
+    sorted_illustrations.page(params[:page]).per(12)
   end
 end
