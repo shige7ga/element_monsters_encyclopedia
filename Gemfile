@@ -75,4 +75,4 @@ gem "factory_bot_rails", "~> 6.5", group: :test
 
 gem "cloudinary", "~> 2.4"
 
-gem "kaminari", "~> 1.2"
+gem "kaminari", "~> 1.3"
